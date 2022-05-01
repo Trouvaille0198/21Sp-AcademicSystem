@@ -1,0 +1,452 @@
+basePath: /api/v1
+definitions:
+  model.Course:
+    properties:
+      credit:
+        description: 学分
+        example: 4
+        type: integer
+      department:
+        description: 所属院系
+        example: 计算机
+        type: string
+      name:
+        description: 课名
+        example: 数据库原理
+        type: string
+      number:
+        description: 课号
+        example: "0121"
+        type: string
+      selections:
+        items:
+          $ref: '#/definitions/model.Selection'
+        type: array
+      teacher_name:
+        description: 教师姓名
+        example: 老师A
+        type: string
+      term:
+        description: 学期
+        example: 22-冬季学期
+        type: string
+    type: object
+  model.CourseByStuResponse:
+    properties:
+      credit:
+        description: 学分
+        type: integer
+      department:
+        description: 所属院系
+        type: string
+      id:
+        type: integer
+      name:
+        description: 课名
+        type: string
+      number:
+        description: 课号
+        type: string
+      score:
+        description: 成绩
+        type: integer
+      student_name:
+        description: 学生名
+        type: string
+      teacher_name:
+        description: 老师名
+        type: string
+      term:
+        description: 学期
+        type: string
+    type: object
+  model.Selection:
+    properties:
+      courseID:
+        type: integer
+      score:
+        description: 分数, -1表示未评分
+        example: 75
+        type: integer
+      studentID:
+        type: integer
+    type: object
+  model.Student:
+    properties:
+      age:
+        example: 21
+        type: integer
+      department:
+        description: 所属院系
+        example: 计算机
+        type: string
+      name:
+        example: 王二
+        type: string
+      number:
+        example: "0198"
+        type: string
+      password:
+        example: "123"
+        type: string
+      selections:
+        description: 选课情况
+        items:
+          $ref: '#/definitions/model.Selection'
+        type: array
+      sex:
+        example: 男
+        type: string
+    type: object
+info:
+  contact: {}
+  description: 学生选课系统
+  license: {}
+  title: Academic System
+  version: "1.0"
+paths:
+  /course:
+    get:
+      description: 获取课程 可以自由添加筛选属性
+      parameters:
+      - description: 学分
+        example: 4
+        in: query
+        name: credit
+        type: integer
+      - description: 所属院系
+        example: 计算机
+        in: query
+        name: department
+        type: string
+      - description: 课名
+        example: 数据库原理
+        in: query
+        name: name
+        type: string
+      - description: 课号
+        example: "0121"
+        in: query
+        name: number
+        type: string
+      - description: 教师姓名
+        example: 老师A
+        in: query
+        name: teacher_name
+        type: string
+      - description: 学期
+        example: 22-冬季学期
+        in: query
+        name: term
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: 获取课程
+      tags:
+      - course
+    post:
+      description: 创建课程
+      parameters:
+      - description: course 实例
+        in: body
+        name: course
+        required: true
+        schema:
+          $ref: '#/definitions/model.Course'
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: 创建课程
+      tags:
+      - course
+  /course/{id}:
+    get:
+      consumes:
+      - application/json
+      description: 根据id获取课程信息
+      parameters:
+      - description: course ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Course'
+      summary: 根据id获取课程信息
+      tags:
+      - course
+    put:
+      consumes:
+      - application/json
+      description: 整体更新课程信息
+      parameters:
+      - description: course ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: course 实例
+        in: body
+        name: course
+        required: true
+        schema:
+          $ref: '#/definitions/model.Course'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: 整体更新课程信息
+      tags:
+      - course
+  /login/admin:
+    post:
+      consumes:
+      - multipart/form-data
+      description: 以管理员身份登录
+      parameters:
+      - description: 账号
+        in: formData
+        name: number
+        required: true
+        type: string
+      - description: 密码
+        in: formData
+        name: password
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+      summary: 以管理员身份登录
+      tags:
+      - login
+  /login/student:
+    post:
+      consumes:
+      - multipart/form-data
+      description: 以学生身份登录
+      parameters:
+      - description: 学号
+        in: formData
+        name: number
+        required: true
+        type: string
+      - description: 密码
+        in: formData
+        name: password
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Student'
+      summary: 以学生身份登录
+      tags:
+      - login
+  /selection:
+    delete:
+      description: 删除选课
+      parameters:
+      - description: 选课情况
+        in: body
+        name: selection
+        required: true
+        schema:
+          $ref: '#/definitions/model.Selection'
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: 删除选课
+      tags:
+      - selection
+    post:
+      description: 创建选课
+      parameters:
+      - description: 选课情况
+        in: body
+        name: selection
+        required: true
+        schema:
+          $ref: '#/definitions/model.Selection'
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: 创建选课
+      tags:
+      - selection
+  /student:
+    get:
+      description: 获取学生 可以自由添加筛选属性
+      parameters:
+      - example: 21
+        in: query
+        name: age
+        type: integer
+      - description: 所属院系
+        example: 计算机
+        in: query
+        name: department
+        type: string
+      - example: 王二
+        in: query
+        name: name
+        type: string
+      - example: "0198"
+        in: query
+        name: number
+        type: string
+      - example: "123"
+        in: query
+        name: password
+        type: string
+      - example: 男
+        in: query
+        name: sex
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: 获取学生
+      tags:
+      - student
+    post:
+      description: 创建学生
+      parameters:
+      - description: student 实例
+        in: body
+        name: student
+        required: true
+        schema:
+          $ref: '#/definitions/model.Student'
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: 创建学生
+      tags:
+      - student
+  /student/{id}:
+    get:
+      consumes:
+      - application/json
+      description: 根据id获取学生信息
+      parameters:
+      - description: student ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Student'
+      summary: 根据id获取学生信息
+      tags:
+      - student
+  /student/{id}/course:
+    get:
+      consumes:
+      - application/json
+      description: 获取指定学生的所有课程
+      parameters:
+      - description: student ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 是否有成绩 不写即全部返回
+        in: query
+        name: hasScore
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.CourseByStuResponse'
+            type: array
+      summary: 获取指定学生的所有课程
+      tags:
+      - student
+      - course
+  /student/{student_id}/course/{course_id}:
+    put:
+      description: 更新课程成绩
+      parameters:
+      - description: student ID
+        in: path
+        name: student_id
+        required: true
+        type: string
+      - description: course ID
+        in: path
+        name: course_id
+        required: true
+        type: string
+      - description: score
+        in: formData
+        name: score
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: 更新课程成绩
+      tags:
+      - selection
+      - admin
+  /test/generate-examples:
+    get:
+      description: 生成样例数据
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: 生成样例数据
+      tags:
+      - test
+  /test/ping:
+    get:
+      description: pong me!
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: ping!
+      tags:
+      - test
+swagger: "2.0"
