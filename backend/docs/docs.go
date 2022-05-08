@@ -41,10 +41,9 @@ var doc = `{
                         "in": "query"
                     },
                     {
-                        "type": "string",
-                        "example": "计算机",
-                        "description": "所属院系",
-                        "name": "department",
+                        "type": "integer",
+                        "description": "院系号",
+                        "name": "department_id",
                         "in": "query"
                     },
                     {
@@ -59,20 +58,6 @@ var doc = `{
                         "example": "0121",
                         "description": "课号",
                         "name": "number",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "example": "老师A",
-                        "description": "教师姓名",
-                        "name": "teacher_name",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "example": "22-冬季学期",
-                        "description": "学期",
-                        "name": "term",
                         "in": "query"
                     }
                 ],
@@ -258,6 +243,42 @@ var doc = `{
                 }
             }
         },
+        "/login/teacher": {
+            "post": {
+                "description": "以教师身份登录",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "login"
+                ],
+                "summary": "以教师身份登录",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "账号",
+                        "name": "number",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "密码",
+                        "name": "password",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
+        },
         "/selection": {
             "post": {
                 "description": "创建选课",
@@ -323,37 +344,41 @@ var doc = `{
                     {
                         "type": "integer",
                         "example": 21,
+                        "description": "年龄",
                         "name": "age",
                         "in": "query"
                     },
                     {
-                        "type": "string",
-                        "example": "计算机",
+                        "type": "integer",
                         "description": "所属院系",
-                        "name": "department",
+                        "name": "department_id",
                         "in": "query"
                     },
                     {
                         "type": "string",
                         "example": "王二",
+                        "description": "姓名",
                         "name": "name",
                         "in": "query"
                     },
                     {
                         "type": "string",
                         "example": "0198",
+                        "description": "学号",
                         "name": "number",
                         "in": "query"
                     },
                     {
                         "type": "string",
                         "example": "123",
+                        "description": "密码",
                         "name": "password",
                         "in": "query"
                     },
                     {
                         "type": "string",
                         "example": "男",
+                        "description": "性别",
                         "name": "sex",
                         "in": "query"
                     }
@@ -553,10 +578,9 @@ var doc = `{
                     "type": "integer",
                     "example": 4
                 },
-                "department": {
-                    "description": "所属院系",
-                    "type": "string",
-                    "example": "计算机"
+                "department_id": {
+                    "description": "院系号",
+                    "type": "integer"
                 },
                 "name": {
                     "description": "课名",
@@ -567,22 +591,6 @@ var doc = `{
                     "description": "课号",
                     "type": "string",
                     "example": "0121"
-                },
-                "selections": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/model.Selection"
-                    }
-                },
-                "teacher_name": {
-                    "description": "教师姓名",
-                    "type": "string",
-                    "example": "老师A"
-                },
-                "term": {
-                    "description": "学期",
-                    "type": "string",
-                    "example": "22-冬季学期"
                 }
             }
         },
@@ -629,7 +637,7 @@ var doc = `{
         "model.Selection": {
             "type": "object",
             "properties": {
-                "courseID": {
+                "offeredCourseID": {
                     "type": "integer"
                 },
                 "score": {
@@ -646,23 +654,26 @@ var doc = `{
             "type": "object",
             "properties": {
                 "age": {
+                    "description": "年龄",
                     "type": "integer",
                     "example": 21
                 },
-                "department": {
+                "department_id": {
                     "description": "所属院系",
-                    "type": "string",
-                    "example": "计算机"
+                    "type": "integer"
                 },
                 "name": {
+                    "description": "姓名",
                     "type": "string",
                     "example": "王二"
                 },
                 "number": {
+                    "description": "学号",
                     "type": "string",
                     "example": "0198"
                 },
                 "password": {
+                    "description": "密码",
                     "type": "string",
                     "example": "123"
                 },
@@ -674,6 +685,7 @@ var doc = `{
                     }
                 },
                 "sex": {
+                    "description": "性别",
                     "type": "string",
                     "example": "男"
                 }
@@ -698,7 +710,7 @@ var SwaggerInfo = swaggerInfo{
 	BasePath:    "/api/v1",
 	Schemes:     []string{},
 	Title:       "Academic System",
-	Description: "学生选课系统",
+	Description: "教务管理系统",
 }
 
 type s struct{}

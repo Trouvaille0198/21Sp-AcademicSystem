@@ -9,29 +9,29 @@ import (
 // 三种情况: 未选 已选 已修
 type Selection struct {
 	gorm.Model
-	StudentID uint `gorm:"student_id"`
-	CourseID  uint `gorm:"course_id"`
-	Score     int  `json:"score" gorm:"default:-1" example:"75"` // 分数, -1表示未评分
+	StudentID       uint `gorm:"student_id"`
+	OfferedCourseID uint `gorm:"offered_course_id"`
+	Score           int  `json:"score" gorm:"default:-1" example:"75"` // 分数, -1表示未评分
 }
 
 // CreateSelectionsExample 创建课程关联实例
 func CreateSelectionsExample() (selections []Selection) {
 	selections = []Selection{
-		{StudentID: 1, CourseID: 1, Score: -1},
-		{StudentID: 1, CourseID: 2, Score: -1},
-		{StudentID: 1, CourseID: 3, Score: -1},
-		{StudentID: 1, CourseID: 4, Score: 75},
-		{StudentID: 1, CourseID: 6, Score: -1},
+		{StudentID: 1, OfferedCourseID: 1, Score: -1},
+		{StudentID: 1, OfferedCourseID: 2, Score: -1},
+		{StudentID: 1, OfferedCourseID: 4, Score: 75},
+		{StudentID: 1, OfferedCourseID: 3, Score: -1},
+		{StudentID: 1, OfferedCourseID: 6, Score: -1},
 
-		{StudentID: 2, CourseID: 1, Score: -1},
-		{StudentID: 2, CourseID: 3, Score: -1},
-		{StudentID: 2, CourseID: 4, Score: 93},
-		{StudentID: 2, CourseID: 5, Score: 70},
+		{StudentID: 2, OfferedCourseID: 1, Score: -1},
+		{StudentID: 2, OfferedCourseID: 3, Score: -1},
+		{StudentID: 2, OfferedCourseID: 4, Score: 93},
+		{StudentID: 2, OfferedCourseID: 5, Score: 70},
 
-		{StudentID: 3, CourseID: 4, Score: 68},
-		{StudentID: 1, CourseID: 6, Score: -1},
+		{StudentID: 3, OfferedCourseID: 4, Score: 68},
+		{StudentID: 1, OfferedCourseID: 6, Score: -1},
 
-		{StudentID: 5, CourseID: 4, Score: 85},
+		{StudentID: 5, OfferedCourseID: 4, Score: 85},
 	}
 
 	db.Model(&Selection{}).Create(&selections)
@@ -43,28 +43,28 @@ func CreateSelection(selection Selection) (*Selection, error) {
 	// 判断数据库中是否存在重复选课
 	var duplicatedResults []*Selection
 	rowsAffected := db.Model(&Selection{}).Where(
-		"student_id = ? AND course_id = ?",
-		selection.StudentID, selection.CourseID).Find(&duplicatedResults).RowsAffected
+		"student_id = ? AND offered_course_id = ?",
+		selection.StudentID, selection.OfferedCourseID).Find(&duplicatedResults).RowsAffected
 	if rowsAffected > 0 {
 		return nil, errors.New("选课关系已存在！")
 	}
 
-	// 判断学生是否已选课名、学期均相同的课程
-	targetCourse, err := GetCourseByID(int(selection.CourseID))
-	if err != nil {
-		return nil, err
-	}
-	duplicatedCourses, err := GetCoursesByStudent(int(selection.StudentID))
-	if err != nil {
-		return nil, err
-	}
-	for _, course := range *duplicatedCourses {
-		if course.Name == targetCourse.Name && course.Term == targetCourse.Term {
-			return nil, errors.New("学生已选课程名、学期均相同的课程！")
-		}
-	}
+	// TODO 判断学生是否已选课名、学期均相同的课程
+	//targetCourse, err := GetOfferedCourseByID(int(selection.OfferedCourseID))
+	//if err != nil {
+	//	return nil, err
+	//}
+	//duplicatedCourses, err := GetCoursesByStudent(int(selection.StudentID))
+	//if err != nil {
+	//	return nil, err
+	//}
+	//for _, course := range *duplicatedCourses {
+	//	if course.Name == targetCourse.Name && course.Term == targetCourse.Term {
+	//		return nil, errors.New("学生已选课程名、学期均相同的课程！")
+	//	}
+	//}
 
-	err = db.Model(&Selection{}).Create(&selection).Error
+	err := db.Model(&Selection{}).Create(&selection).Error
 	if err != nil {
 		return &Selection{}, err
 	}
@@ -80,7 +80,7 @@ func UpdateSelection(id int, data map[string]interface{}) (err error) {
 // DeleteSelection 删除指定id选课记录
 func DeleteSelection(selection Selection) error {
 	result := db.Model(&Selection{}).Where(
-		"student_id = ? AND course_id = ?", selection.StudentID, selection.CourseID).Unscoped().Delete(&Selection{})
+		"student_id = ? AND offered_course_id = ?", selection.StudentID, selection.OfferedCourseID).Unscoped().Delete(&Selection{})
 	err := result.Error
 	rowsAffected := result.RowsAffected
 	if err != nil {
@@ -101,11 +101,11 @@ func GetSelectionsByStudentID(studentID int) ([]*Selection, error) {
 	return selections, nil
 }
 
-// GetSelection 根据学生id和课程id获取选课记录
-func GetSelection(studentID, courseID int) (*Selection, error) {
+// GetSelection 根据学生id和开课课程id获取选课记录
+func GetSelection(studentID, offeredCourseID int) (*Selection, error) {
 	var selection Selection
 	err := db.Model(&Selection{}).Where(
-		"student_id = ? AND course_id = ?", studentID, courseID).Find(&selection).Error
+		"student_id = ? AND offered_course_id = ?", studentID, offeredCourseID).Find(&selection).Error
 	if err != nil || errors.Is(err, gorm.ErrRecordNotFound) {
 		return &Selection{}, err
 	}

@@ -6,10 +6,9 @@ definitions:
         description: 学分
         example: 4
         type: integer
-      department:
-        description: 所属院系
-        example: 计算机
-        type: string
+      department_id:
+        description: 院系号
+        type: integer
       name:
         description: 课名
         example: 数据库原理
@@ -17,18 +16,6 @@ definitions:
       number:
         description: 课号
         example: "0121"
-        type: string
-      selections:
-        items:
-          $ref: '#/definitions/model.Selection'
-        type: array
-      teacher_name:
-        description: 教师姓名
-        example: 老师A
-        type: string
-      term:
-        description: 学期
-        example: 22-冬季学期
         type: string
     type: object
   model.CourseByStuResponse:
@@ -62,7 +49,7 @@ definitions:
     type: object
   model.Selection:
     properties:
-      courseID:
+      offeredCourseID:
         type: integer
       score:
         description: 分数, -1表示未评分
@@ -74,19 +61,22 @@ definitions:
   model.Student:
     properties:
       age:
+        description: 年龄
         example: 21
         type: integer
-      department:
+      department_id:
         description: 所属院系
-        example: 计算机
-        type: string
+        type: integer
       name:
+        description: 姓名
         example: 王二
         type: string
       number:
+        description: 学号
         example: "0198"
         type: string
       password:
+        description: 密码
         example: "123"
         type: string
       selections:
@@ -95,12 +85,13 @@ definitions:
           $ref: '#/definitions/model.Selection'
         type: array
       sex:
+        description: 性别
         example: 男
         type: string
     type: object
 info:
   contact: {}
-  description: 学生选课系统
+  description: 教务管理系统
   license: {}
   title: Academic System
   version: "1.0"
@@ -114,11 +105,10 @@ paths:
         in: query
         name: credit
         type: integer
-      - description: 所属院系
-        example: 计算机
+      - description: 院系号
         in: query
-        name: department
-        type: string
+        name: department_id
+        type: integer
       - description: 课名
         example: 数据库原理
         in: query
@@ -128,16 +118,6 @@ paths:
         example: "0121"
         in: query
         name: number
-        type: string
-      - description: 教师姓名
-        example: 老师A
-        in: query
-        name: teacher_name
-        type: string
-      - description: 学期
-        example: 22-冬季学期
-        in: query
-        name: term
         type: string
       responses:
         "200":
@@ -261,6 +241,30 @@ paths:
       summary: 以学生身份登录
       tags:
       - login
+  /login/teacher:
+    post:
+      consumes:
+      - multipart/form-data
+      description: 以教师身份登录
+      parameters:
+      - description: 账号
+        in: formData
+        name: number
+        required: true
+        type: string
+      - description: 密码
+        in: formData
+        name: password
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+      summary: 以教师身份登录
+      tags:
+      - login
   /selection:
     delete:
       description: 删除选课
@@ -300,28 +304,32 @@ paths:
     get:
       description: 获取学生 可以自由添加筛选属性
       parameters:
-      - example: 21
+      - description: 年龄
+        example: 21
         in: query
         name: age
         type: integer
       - description: 所属院系
-        example: 计算机
         in: query
-        name: department
-        type: string
-      - example: 王二
+        name: department_id
+        type: integer
+      - description: 姓名
+        example: 王二
         in: query
         name: name
         type: string
-      - example: "0198"
+      - description: 学号
+        example: "0198"
         in: query
         name: number
         type: string
-      - example: "123"
+      - description: 密码
+        example: "123"
         in: query
         name: password
         type: string
-      - example: 男
+      - description: 性别
+        example: 男
         in: query
         name: sex
         type: string

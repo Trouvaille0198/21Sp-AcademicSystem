@@ -6,8 +6,9 @@ import (
 	"log"
 )
 
-var db *gorm.DB
+var db *gorm.DB // 全局db对象
 
+// Setup 初始化数据库连接
 func Setup() {
 	var err error
 	db, err = gorm.Open(sqlite.Open("example.db"), &gorm.Config{})

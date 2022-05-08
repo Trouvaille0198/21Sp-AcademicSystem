@@ -7,12 +7,13 @@ import (
 
 type Student struct {
 	gorm.Model
-	Number     string `json:"number" form:"number" gorm:"unique;index" example:"0198"`
-	Name       string `json:"name" form:"name" example:"王二"`
-	Sex        string `json:"sex" form:"sex" example:"男"`
-	Age        uint8  `json:"age" form:"age" example:"21"`
-	Department string `json:"department" form:"department" example:"计算机"` // 所属院系
-	Password   string `json:"password" form:"password" gorm:"default:123" example:"123"`
+	Number   string `json:"number" form:"number" gorm:"unique;index" example:"0198"`   // 学号
+	Name     string `json:"name" form:"name" example:"王二"`                             // 姓名
+	Sex      string `json:"sex" form:"sex" example:"男"`                                // 性别
+	Age      uint8  `json:"age" form:"age" example:"21"`                               // 年龄
+	Password string `json:"password" form:"password" gorm:"default:123" example:"123"` // 密码
+
+	DepartmentID uint `json:"department_id" form:"department_id"` // 所属院系
 
 	Selections []Selection `json:"selections"` // 选课情况
 }
@@ -20,11 +21,12 @@ type Student struct {
 // CreateStudentsExample 创建学生样例
 func CreateStudentsExample() (students []Student) {
 	students = []Student{
-		{Number: "0196", Name: "学生A", Sex: "男", Age: 21, Department: "计算机"},
-		{Number: "0197", Name: "学生B", Sex: "女", Age: 22, Department: "通讯"},
-		{Number: "0198", Name: "学生C", Sex: "男", Age: 20, Department: "计算机"},
-		{Number: "0199", Name: "学生D", Sex: "女", Age: 21, Department: "计算机"},
-		{Number: "0200", Name: "学生E", Sex: "男", Age: 21, Department: "机械"}}
+		{Number: "0196", Name: "学生A", Sex: "男", Age: 21, DepartmentID: 1},
+		{Number: "0197", Name: "学生B", Sex: "女", Age: 22, DepartmentID: 2},
+		{Number: "0198", Name: "学生C", Sex: "男", Age: 20, DepartmentID: 3},
+		{Number: "0199", Name: "学生D", Sex: "女", Age: 21, DepartmentID: 4},
+		{Number: "0200", Name: "学生E", Sex: "男", Age: 21, DepartmentID: 1},
+	}
 
 	db.Model(&Student{}).Create(&students)
 	return

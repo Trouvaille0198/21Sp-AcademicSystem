@@ -2,6 +2,7 @@ package v1
 
 import (
 	"academic-system/model"
+	"academic-system/model/response"
 	"academic-system/pkg/util"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -21,7 +22,7 @@ import (
 func GetCoursesByStudent(c *gin.Context) {
 	hasScore, ok := c.GetQuery("hasScore")
 	studentID, _ := util.String2Int(c.Param("id"))
-	var courses *[]model.CourseByStuResponse
+	var courses *[]response.CourseByStuResponse
 	var sqlErr error
 	if !ok {
 		courses, sqlErr = model.GetCoursesByStudent(studentID)

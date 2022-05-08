@@ -25,8 +25,12 @@ func Ping(c *gin.Context) {
 // @Success      200  {string} string
 // @Router       /test/generate-examples [get]
 func GenerateExamples(c *gin.Context) {
+	// 创建顺序有讲究 不能乱
+	model.CreateDepartmentsExample()
 	model.CreateStudentsExample()
+	model.CreateTeachersExample()
 	model.CreateCoursesExample()
+	model.CreateOfferedCoursesExample()
 	model.CreateSelectionsExample()
 
 	c.JSON(http.StatusOK, gin.H{

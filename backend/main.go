@@ -5,9 +5,14 @@ import (
 	"academic-system/router"
 )
 
+//go:generate go env -w GO111MODULE=on
+//go:generate go env -w GOPROXY=https://goproxy.cn,direct
+//go:generate go mod tidy
+//go:generate go mod download
+
 // @title           Academic System
 // @version         1.0
-// @description     学生选课系统
+// @description     教务管理系统
 
 // @BasePath  /api/v1
 func main() {

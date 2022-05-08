@@ -1,4 +1,4 @@
-package model
+package response
 
 // CourseByStuResponse 学生视角下的课程信息
 type CourseByStuResponse struct {

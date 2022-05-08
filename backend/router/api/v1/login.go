@@ -67,3 +67,36 @@ func LoginAsAdmin(c *gin.Context) {
 	})
 
 }
+
+// LoginAsTeacher godoc
+// @Summary      以教师身份登录
+// @Description  以教师身份登录
+// @Tags         login
+// @Param        number   formData   string  true  "账号"
+// @Param        password   formData   string  true  "密码"
+// @Accept       mpfd
+// @Produce      json
+// @Success      200
+// @Router       /login/teacher [post]
+func LoginAsTeacher(c *gin.Context) {
+	number := c.PostForm("number")
+	password := c.PostForm("password")
+
+	teacher, err := model.GetTeacherByNumber(number)
+	if err != nil || teacher.ID == 0 {
+		c.JSON(http.StatusNotFound, gin.H{
+			"message": "找不到此账号",
+		})
+		return
+	}
+	// 简单地验证一下密码
+	if teacher.Password != password {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"message": "密码错误",
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"teacher": teacher,
+	})
+}
