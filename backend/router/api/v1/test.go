@@ -29,7 +29,7 @@ func GenerateExamples(c *gin.Context) {
 	// 创建顺序有讲究 不能乱
 	model.CreateDepartmentsExample()
 	service.CreateStudentsExample()
-	model.CreateTeachersExample()
+	service.CreateTeachersExample()
 	model.CreateCoursesExample()
 	model.CreateOfferedCoursesExample()
 	model.CreateSelectionsExample()

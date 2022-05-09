@@ -16,16 +16,29 @@ type OfferedCourse struct {
 	Selections []Selection `json:"selections"`
 }
 
+// OfferedCourseRes 老师视角下的开课信息
 type OfferedCourseRes struct {
 	ID          uint   `json:"id"`
 	Name        string `json:"name"`
 	Number      string `json:"number"`
 	Credit      uint   `json:"credit"`
 	TeacherName string `json:"teacher_name"`
-	StudentName string `json:"student_name"`
 	Department  string `json:"department"`
 	Term        string `json:"term"`
-	Score       int    `json:"score"`
+}
+
+// SelectedCourseRes 学生视角下的选课记录
+type SelectedCourseRes struct {
+	OfferedCourseID uint   `json:"offered_course_id"`
+	SelectionID     uint   `json:"selection_id"`
+	Name            string `json:"name"`
+	Number          string `json:"number"`
+	Credit          uint   `json:"credit"`
+	TeacherName     string `json:"teacher_name"`
+	StudentName     string `json:"student_name"`
+	Department      string `json:"department"`
+	Term            string `json:"term"`
+	Score           int    `json:"score"`
 }
 
 // CreateOfferedCoursesExample 创建课程样例

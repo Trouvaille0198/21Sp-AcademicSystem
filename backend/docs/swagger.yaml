@@ -51,7 +51,26 @@ definitions:
         type: string
       number:
         type: string
+      teacher_name:
+        type: string
+      term:
+        type: string
+    type: object
+  model.SelectedCourseRes:
+    properties:
+      credit:
+        type: integer
+      department:
+        type: string
+      name:
+        type: string
+      number:
+        type: string
+      offered_course_id:
+        type: integer
       score:
+        type: integer
+      selection_id:
         type: integer
       student_name:
         type: string
@@ -132,6 +151,36 @@ definitions:
       name:
         type: string
       number:
+        type: string
+      sex:
+        type: string
+    type: object
+  model.TeacherCreateReq:
+    properties:
+      age:
+        type: integer
+      name:
+        type: string
+      number:
+        type: string
+      password:
+        type: string
+      sex:
+        type: string
+    type: object
+  model.TeacherRes:
+    properties:
+      age:
+        type: integer
+      department_name:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      number:
+        type: string
+      password:
         type: string
       sex:
         type: string
@@ -413,7 +462,7 @@ paths:
       summary: 根据id获取学生信息
       tags:
       - student
-  /student/{id}/offered_course:
+  /student/{id}/selected_course:
     get:
       consumes:
       - application/json
@@ -435,7 +484,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/model.OfferedCourseRes'
+              $ref: '#/definitions/model.SelectedCourseRes'
             type: array
       summary: 获取指定学生的所有课程
       tags:
@@ -469,6 +518,93 @@ paths:
       tags:
       - selection
       - admin
+  /teacher:
+    get:
+      description: 获取所有老师信息
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.TeacherRes'
+            type: array
+      summary: 获取所有老师信息
+      tags:
+      - teacher
+    post:
+      description: 创建老师
+      parameters:
+      - description: teacher 实例
+        in: body
+        name: teacher
+        required: true
+        schema:
+          $ref: '#/definitions/model.TeacherCreateReq'
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: 创建老师
+      tags:
+      - teacher
+  /teacher/{id}:
+    delete:
+      description: 根据id删除老师
+      parameters:
+      - description: teacher ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: 根据id删除老师
+      tags:
+      - teacher
+    get:
+      description: 根据id获取老师信息
+      parameters:
+      - description: teacher ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.TeacherRes'
+      summary: 根据id获取老师信息
+      tags:
+      - teacher
+  /teacher/{id}/offered_course:
+    get:
+      consumes:
+      - application/json
+      description: get offered courses by teacher id 获取指定教师的所有开课课程
+      parameters:
+      - description: teacher ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.OfferedCourseRes'
+            type: array
+      summary: 获取指定教师的所有开课课程
+      tags:
+      - teacher
+      - course
   /test/generate-examples:
     get:
       description: 生成样例数据

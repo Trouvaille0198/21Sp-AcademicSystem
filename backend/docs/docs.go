@@ -434,7 +434,7 @@ var doc = `{
                 }
             }
         },
-        "/student/{id}/offered_course": {
+        "/student/{id}/selected_course": {
             "get": {
                 "description": "get offered courses by student id 获取指定学生的所有课程",
                 "consumes": [
@@ -469,7 +469,7 @@ var doc = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/model.OfferedCourseRes"
+                                "$ref": "#/definitions/model.SelectedCourseRes"
                             }
                         }
                     }
@@ -512,6 +512,138 @@ var doc = `{
                         "description": "OK",
                         "schema": {
                             "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/teacher": {
+            "get": {
+                "description": "获取所有老师信息",
+                "tags": [
+                    "teacher"
+                ],
+                "summary": "获取所有老师信息",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.TeacherRes"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "创建老师",
+                "tags": [
+                    "teacher"
+                ],
+                "summary": "创建老师",
+                "parameters": [
+                    {
+                        "description": "teacher 实例",
+                        "name": "teacher",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.TeacherCreateReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/teacher/{id}": {
+            "get": {
+                "description": "根据id获取老师信息",
+                "tags": [
+                    "teacher"
+                ],
+                "summary": "根据id获取老师信息",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "teacher ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.TeacherRes"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "根据id删除老师",
+                "tags": [
+                    "teacher"
+                ],
+                "summary": "根据id删除老师",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "teacher ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/teacher/{id}/offered_course": {
+            "get": {
+                "description": "get offered courses by teacher id 获取指定教师的所有开课课程",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "teacher",
+                    "course"
+                ],
+                "summary": "获取指定教师的所有开课课程",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "teacher ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.OfferedCourseRes"
+                            }
                         }
                     }
                 }
@@ -625,7 +757,36 @@ var doc = `{
                 "number": {
                     "type": "string"
                 },
+                "teacher_name": {
+                    "type": "string"
+                },
+                "term": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.SelectedCourseRes": {
+            "type": "object",
+            "properties": {
+                "credit": {
+                    "type": "integer"
+                },
+                "department": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "number": {
+                    "type": "string"
+                },
+                "offered_course_id": {
+                    "type": "integer"
+                },
                 "score": {
+                    "type": "integer"
+                },
+                "selection_id": {
                     "type": "integer"
                 },
                 "student_name": {
@@ -742,6 +903,52 @@ var doc = `{
                     "type": "string"
                 },
                 "number": {
+                    "type": "string"
+                },
+                "sex": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.TeacherCreateReq": {
+            "type": "object",
+            "properties": {
+                "age": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "number": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "sex": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.TeacherRes": {
+            "type": "object",
+            "properties": {
+                "age": {
+                    "type": "integer"
+                },
+                "department_name": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "number": {
+                    "type": "string"
+                },
+                "password": {
                     "type": "string"
                 },
                 "sex": {

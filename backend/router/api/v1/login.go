@@ -1,7 +1,6 @@
 package v1
 
 import (
-	"academic-system/model"
 	"academic-system/service"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -83,7 +82,7 @@ func LoginAsTeacher(c *gin.Context) {
 	number := c.PostForm("number")
 	password := c.PostForm("password")
 
-	teacher, err := model.GetTeacherByNumber(number)
+	teacher, err := service.GetTeacherByNumber(number)
 	if err != nil || teacher.ID == 0 {
 		c.JSON(http.StatusNotFound, gin.H{
 			"message": "找不到此账号",
