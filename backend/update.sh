@@ -1,7 +1,9 @@
-cd ~/Repo/21Sp-AcademicSystem || exit
+kill -9 $(pgrep academic-system)
+cd ~/Repo/21Sp-AcademicSystem
 git restore *
 git pull
-cd ~/Repo/21Sp-AcademicSystem/backend || exit
+cd ~/Repo/21Sp-AcademicSystem/backend
+go mod tidy
 swag init
 go build
-./academic-system
+nohup ./academic-system &
