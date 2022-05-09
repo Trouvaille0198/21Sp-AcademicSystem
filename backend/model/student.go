@@ -6,7 +6,7 @@ import (
 
 // Student 数据库学生表
 type Student struct {
-	gorm.Model
+	ID       uint   `gorm:"primarykey"`
 	Number   string `gorm:"unique;index"` // 学号
 	Name     string // 姓名
 	Sex      string // 性别
@@ -35,4 +35,10 @@ type StudentRes struct {
 	Sex            string `json:"sex"`
 	Age            uint   `json:"age"`
 	DepartmentName string `json:"department_name"`
+}
+
+// BeforeDelete 删除学生时级联删除选课关系
+func (stu *Student) BeforeDelete(tx *gorm.DB) (err error) {
+	_ = tx.Where("student_id = ?", stu.ID).Unscoped().Delete(&Selection{}).RowsAffected
+	return
 }

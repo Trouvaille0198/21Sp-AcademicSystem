@@ -6,7 +6,7 @@ import (
 )
 
 type Teacher struct {
-	gorm.Model
+	ID       uint   `gorm:"primarykey"`
 	Number   string `json:"number" form:"number" gorm:"unique;index" example:"0198"` // 教师工号
 	Name     string `json:"name" form:"name" example:"王二"`
 	Sex      string `json:"sex" form:"sex" example:"男"`
@@ -14,6 +14,12 @@ type Teacher struct {
 	Password string `json:"password" form:"password" gorm:"default:123" example:"123"`
 
 	DepartmentID uint `json:"department_id" form:"department_id"` // 所属院系
+}
+
+// BeforeDelete 删除老师时级联删除开课记录
+func (t *Teacher) BeforeDelete(tx *gorm.DB) (err error) {
+	_ = tx.Where("teacher_id = ?", t.ID).Delete(&OfferedCourse{}).RowsAffected
+	return
 }
 
 // CreateTeachersExample 创建教师样例

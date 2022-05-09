@@ -47,6 +47,11 @@ var doc = `{
                         "in": "query"
                     },
                     {
+                        "type": "integer",
+                        "name": "id",
+                        "in": "query"
+                    },
+                    {
                         "type": "string",
                         "example": "数据库原理",
                         "description": "课名",
@@ -429,9 +434,9 @@ var doc = `{
                 }
             }
         },
-        "/student/{id}/course": {
+        "/student/{id}/offered_course": {
             "get": {
-                "description": "获取指定学生的所有课程",
+                "description": "get offered courses by student id 获取指定学生的所有课程",
                 "consumes": [
                     "application/json"
                 ],
@@ -560,6 +565,9 @@ var doc = `{
                     "description": "院系号",
                     "type": "integer"
                 },
+                "id": {
+                    "type": "integer"
+                },
                 "name": {
                     "description": "课名",
                     "type": "string",
@@ -577,6 +585,9 @@ var doc = `{
             "properties": {
                 "course_id": {
                     "description": "课号",
+                    "type": "integer"
+                },
+                "id": {
                     "type": "integer"
                 },
                 "selections": {
@@ -605,6 +616,9 @@ var doc = `{
                 "department": {
                     "type": "string"
                 },
+                "id": {
+                    "type": "integer"
+                },
                 "name": {
                     "type": "string"
                 },
@@ -628,6 +642,9 @@ var doc = `{
         "model.Selection": {
             "type": "object",
             "properties": {
+                "id": {
+                    "type": "integer"
+                },
                 "offeredCourse": {
                     "type": "object",
                     "$ref": "#/definitions/model.OfferedCourse"
@@ -658,6 +675,9 @@ var doc = `{
                 },
                 "departmentID": {
                     "description": "所属院系号",
+                    "type": "integer"
+                },
+                "id": {
                     "type": "integer"
                 },
                 "name": {
@@ -715,11 +735,13 @@ var doc = `{
                 "department_name": {
                     "type": "string"
                 },
+                "id": {
+                    "type": "integer"
+                },
                 "name": {
                     "type": "string"
                 },
                 "number": {
-                    "description": "ID uint ` + "`" + `json:\"id\"` + "`" + `",
                     "type": "string"
                 },
                 "sex": {

@@ -8,7 +8,7 @@ import (
 // Selection 记录学生选课情况
 // 三种情况: 未选 已选 已修
 type Selection struct {
-	gorm.Model
+	ID              uint `gorm:"primarykey"`
 	StudentID       uint `gorm:"student_id"`
 	OfferedCourseID uint `gorm:"offered_course_id"`
 

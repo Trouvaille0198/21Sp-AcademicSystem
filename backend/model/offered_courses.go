@@ -7,7 +7,7 @@ import (
 
 // OfferedCourse 开课信息
 type OfferedCourse struct {
-	gorm.Model
+	ID   uint   `gorm:"primarykey"`
 	Term string `json:"term" form:"term" example:"22-冬季学期"` // 学期
 
 	CourseID  uint `json:"course_id" form:"course_id"`   // 课号

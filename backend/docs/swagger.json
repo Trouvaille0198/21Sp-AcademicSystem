@@ -31,6 +31,11 @@
                         "in": "query"
                     },
                     {
+                        "type": "integer",
+                        "name": "id",
+                        "in": "query"
+                    },
+                    {
                         "type": "string",
                         "example": "数据库原理",
                         "description": "课名",
@@ -413,9 +418,9 @@
                 }
             }
         },
-        "/student/{id}/course": {
+        "/student/{id}/offered_course": {
             "get": {
-                "description": "获取指定学生的所有课程",
+                "description": "get offered courses by student id 获取指定学生的所有课程",
                 "consumes": [
                     "application/json"
                 ],
@@ -544,6 +549,9 @@
                     "description": "院系号",
                     "type": "integer"
                 },
+                "id": {
+                    "type": "integer"
+                },
                 "name": {
                     "description": "课名",
                     "type": "string",
@@ -561,6 +569,9 @@
             "properties": {
                 "course_id": {
                     "description": "课号",
+                    "type": "integer"
+                },
+                "id": {
                     "type": "integer"
                 },
                 "selections": {
@@ -589,6 +600,9 @@
                 "department": {
                     "type": "string"
                 },
+                "id": {
+                    "type": "integer"
+                },
                 "name": {
                     "type": "string"
                 },
@@ -612,6 +626,9 @@
         "model.Selection": {
             "type": "object",
             "properties": {
+                "id": {
+                    "type": "integer"
+                },
                 "offeredCourse": {
                     "type": "object",
                     "$ref": "#/definitions/model.OfferedCourse"
@@ -642,6 +659,9 @@
                 },
                 "departmentID": {
                     "description": "所属院系号",
+                    "type": "integer"
+                },
+                "id": {
                     "type": "integer"
                 },
                 "name": {
@@ -699,11 +719,13 @@
                 "department_name": {
                     "type": "string"
                 },
+                "id": {
+                    "type": "integer"
+                },
                 "name": {
                     "type": "string"
                 },
                 "number": {
-                    "description": "ID uint `json:\"id\"`",
                     "type": "string"
                 },
                 "sex": {

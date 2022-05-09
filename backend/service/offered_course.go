@@ -31,7 +31,7 @@ func GetOCsByStuWithScore(studentID int) (*[]model.OfferedCourseRes, error) {
 		"where oc.teacher_id = t.id and "+
 		"oc.course_id = c.id and c.department_id = d.id and se.offered_course_id = oc.id and "+
 		"se.student_id = s.id "+
-		"and s.id = ? and sc.score <> -1", studentID).Scan(&courseByStuResult).Error
+		"and s.id = ? and se.score <> -1", studentID).Scan(&courseByStuResult).Error
 	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
 		return nil, err
 	}
@@ -47,7 +47,7 @@ func GetOCsByStuWithoutScore(studentID int) (*[]model.OfferedCourseRes, error) {
 		"where oc.teacher_id = t.id and "+
 		"oc.course_id = c.id and c.department_id = d.id and se.offered_course_id = oc.id and "+
 		"se.student_id = s.id "+
-		"and s.id = ? and sc.score = -1", studentID).Scan(&courseByStuResult).Error
+		"and s.id = ? and se.score = -1", studentID).Scan(&courseByStuResult).Error
 	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
 		return nil, err
 	}

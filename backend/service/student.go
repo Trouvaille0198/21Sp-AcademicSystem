@@ -4,6 +4,7 @@ import (
 	"academic-system/model"
 	"errors"
 	"gorm.io/gorm"
+	"strconv"
 )
 
 // CreateStudentsExample 创建学生样例
@@ -77,9 +78,12 @@ func CreateStudent(student model.Student) (*model.Student, error) {
 
 // DeleteStudent 删除指定id学生
 func DeleteStudent(id int) error {
-	err := db.Model(&model.Student{}).Where("id = ?", id).Delete(&model.Student{}).Error
-	if err != nil {
-		return err
+	res := db.Model(&model.Student{}).Delete(&model.Student{ID: uint(id)})
+	if res.RowsAffected == 0 {
+		return errors.New("删除失败, 不存在id为" + strconv.Itoa(id) + "的学生")
+	}
+	if res.Error != nil {
+		return res.Error
 	}
 	return nil
 }

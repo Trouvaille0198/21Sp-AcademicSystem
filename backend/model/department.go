@@ -1,11 +1,7 @@
 package model
 
-import (
-	"gorm.io/gorm"
-)
-
 type Department struct {
-	gorm.Model
+	ID     uint   `gorm:"primarykey"`
 	Number string `json:"number" form:"number" gorm:"unique;index"` // 院系号
 	Name   string `json:"name" form:"name"  gorm:"unique"`          // 院系名
 
