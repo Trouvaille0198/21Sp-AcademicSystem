@@ -190,7 +190,7 @@ info:
   description: 教务管理系统
   license: {}
   title: Academic System
-  version: "1.0"
+  version: "1.1"
 paths:
   /course:
     get:

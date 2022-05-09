@@ -17,7 +17,7 @@ import (
 //go:generate go mod download
 
 // @title           Academic System
-// @version         1.1
+// @version         1.2
 // @description     教务管理系统
 // @BasePath  /api/v1
 
