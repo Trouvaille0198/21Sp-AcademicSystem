@@ -39,4 +39,5 @@ jobs:
           first_ssh: |
             echo "Begin deploy"
             cd ~/Repo/21Sp-AcademicSystem
-            bash ./backend/update.sh
+            nohup bash ./backend/update.sh >/dev/null 2>&1 &
+            

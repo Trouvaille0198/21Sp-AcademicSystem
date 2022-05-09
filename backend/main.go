@@ -6,8 +6,9 @@ import (
 	"academic-system/initialize"
 	"academic-system/router"
 	"academic-system/utils"
-	"github.com/spf13/viper"
 	"log"
+
+	"github.com/spf13/viper"
 )
 
 //go:generate go env -w GO111MODULE=on
@@ -16,7 +17,7 @@ import (
 //go:generate go mod download
 
 // @title           Academic System
-// @version         1.0
+// @version         1.1
 // @description     教务管理系统
 // @BasePath  /api/v1
 

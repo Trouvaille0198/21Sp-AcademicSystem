@@ -3,7 +3,8 @@ cd ~/Repo/21Sp-AcademicSystem
 git restore *
 git pull
 cd ~/Repo/21Sp-AcademicSystem/backend
+# rm -r nohup.out
 go mod tidy
 swag init
 go build
-nohup ./academic-system &
+./academic-system
