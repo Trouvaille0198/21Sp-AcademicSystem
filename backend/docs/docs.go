@@ -335,59 +335,19 @@ var doc = `{
         },
         "/student": {
             "get": {
-                "description": "获取学生 可以自由添加筛选属性",
+                "description": "获取所有学生信息",
                 "tags": [
                     "student"
                 ],
-                "summary": "获取学生",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "example": 21,
-                        "description": "年龄",
-                        "name": "age",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "所属院系",
-                        "name": "department_id",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "example": "王二",
-                        "description": "姓名",
-                        "name": "name",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "example": "0198",
-                        "description": "学号",
-                        "name": "number",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "example": "123",
-                        "description": "密码",
-                        "name": "password",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "example": "男",
-                        "description": "性别",
-                        "name": "sex",
-                        "in": "query"
-                    }
-                ],
+                "summary": "获取所有学生信息",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "string"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.StudentRes"
+                            }
                         }
                     }
                 }
@@ -405,7 +365,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.Student"
+                            "$ref": "#/definitions/model.StudentCreateReq"
                         }
                     }
                 ],
@@ -422,12 +382,6 @@ var doc = `{
         "/student/{id}": {
             "get": {
                 "description": "根据id获取学生信息",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
                 "tags": [
                     "student"
                 ],
@@ -445,7 +399,31 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.Student"
+                            "$ref": "#/definitions/model.StudentRes"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "根据id删除学生",
+                "tags": [
+                    "student"
+                ],
+                "summary": "根据id删除学生",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "student ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
@@ -486,7 +464,7 @@ var doc = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/model.CourseByStuResponse"
+                                "$ref": "#/definitions/model.OfferedCourseRes"
                             }
                         }
                     }
@@ -594,42 +572,55 @@ var doc = `{
                 }
             }
         },
-        "model.CourseByStuResponse": {
+        "model.OfferedCourse": {
             "type": "object",
             "properties": {
-                "credit": {
-                    "description": "学分",
-                    "type": "integer"
-                },
-                "department": {
-                    "description": "所属院系",
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "description": "课名",
-                    "type": "string"
-                },
-                "number": {
+                "course_id": {
                     "description": "课号",
-                    "type": "string"
-                },
-                "score": {
-                    "description": "成绩",
                     "type": "integer"
                 },
-                "student_name": {
-                    "description": "学生名",
-                    "type": "string"
+                "selections": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.Selection"
+                    }
                 },
-                "teacher_name": {
-                    "description": "老师名",
-                    "type": "string"
+                "teacher_id": {
+                    "description": "教师工号",
+                    "type": "integer"
                 },
                 "term": {
                     "description": "学期",
+                    "type": "string",
+                    "example": "22-冬季学期"
+                }
+            }
+        },
+        "model.OfferedCourseRes": {
+            "type": "object",
+            "properties": {
+                "credit": {
+                    "type": "integer"
+                },
+                "department": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "number": {
+                    "type": "string"
+                },
+                "score": {
+                    "type": "integer"
+                },
+                "student_name": {
+                    "type": "string"
+                },
+                "teacher_name": {
+                    "type": "string"
+                },
+                "term": {
                     "type": "string"
                 }
             }
@@ -637,6 +628,10 @@ var doc = `{
         "model.Selection": {
             "type": "object",
             "properties": {
+                "offeredCourse": {
+                    "type": "object",
+                    "$ref": "#/definitions/model.OfferedCourse"
+                },
                 "offeredCourseID": {
                     "type": "integer"
                 },
@@ -644,6 +639,10 @@ var doc = `{
                     "description": "分数, -1表示未评分",
                     "type": "integer",
                     "example": 75
+                },
+                "student": {
+                    "type": "object",
+                    "$ref": "#/definitions/model.Student"
                 },
                 "studentID": {
                     "type": "integer"
@@ -655,22 +654,19 @@ var doc = `{
             "properties": {
                 "age": {
                     "description": "年龄",
-                    "type": "integer",
-                    "example": 21
+                    "type": "integer"
                 },
-                "department_id": {
-                    "description": "所属院系",
+                "departmentID": {
+                    "description": "所属院系号",
                     "type": "integer"
                 },
                 "name": {
                     "description": "姓名",
-                    "type": "string",
-                    "example": "王二"
+                    "type": "string"
                 },
                 "number": {
                     "description": "学号",
-                    "type": "string",
-                    "example": "0198"
+                    "type": "string"
                 },
                 "password": {
                     "description": "密码",
@@ -686,8 +682,48 @@ var doc = `{
                 },
                 "sex": {
                     "description": "性别",
-                    "type": "string",
-                    "example": "男"
+                    "type": "string"
+                }
+            }
+        },
+        "model.StudentCreateReq": {
+            "type": "object",
+            "properties": {
+                "age": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "number": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "sex": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.StudentRes": {
+            "type": "object",
+            "properties": {
+                "age": {
+                    "type": "integer"
+                },
+                "department_name": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "number": {
+                    "description": "ID uint ` + "`" + `json:\"id\"` + "`" + `",
+                    "type": "string"
+                },
+                "sex": {
+                    "type": "string"
                 }
             }
         }

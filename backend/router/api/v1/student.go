@@ -2,93 +2,82 @@ package v1
 
 import (
 	"academic-system/model"
-	"academic-system/pkg/util"
+	"academic-system/service"
+	"academic-system/utils"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 // GetStudentByID godoc
 // @Summary      根据id获取学生信息
 // @Description  根据id获取学生信息
 // @Tags         student
-// @Accept       json
-// @Produce      json
 // @Param        id   path      int  true  "student ID"
-// @Success      200  {object}  model.Student
+// @Success      200  {object}  model.StudentRes
 // @Router       /student/{id} [get]
 func GetStudentByID(c *gin.Context) {
-	studentID, _ := util.String2Int(c.Param("id"))
+	studentID, _ := utils.String2Int(c.Param("id"))
 
-	student, err := model.GetStudentByID(studentID)
+	student, err := service.GetStudentResByID(studentID)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": err.Error(),
-		})
+		model.FailWithMessage(err.Error(), c)
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"student": student,
-	})
+	model.OkWithData(student, c)
 }
 
-// GetStudentsByAttrs godoc
-// @Summary      获取学生
-// @Description  获取学生 可以自由添加筛选属性
+// GetAllStudents godoc
+// @Summary      获取所有学生信息
+// @Description  获取所有学生信息
 // @Tags         student
-// @Param 		 student   query   model.Student   false   "student 实例"
-// @Success      200  {string} string
+// @Success      200  {object}  []model.StudentRes
 // @Router       /student [get]
-func GetStudentsByAttrs(c *gin.Context) {
-	student := model.Student{}
-	if err := c.ShouldBindQuery(&student); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": err.Error(),
-		})
-		return
-	}
-	studentsResult, err := model.GetStudentByAttrs(student)
+func GetAllStudents(c *gin.Context) {
+	students, err := service.GetAllStudentsRes()
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": err.Error(),
-		})
+		model.FailWithMessage(err.Error(), c)
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"message": "查询成功",
-		"student": studentsResult,
-	})
+	model.OkWithData(students, c)
 }
 
 // CreateStudent godoc
 // @Summary      创建学生
 // @Description  创建学生
 // @Tags         student
-// @Param 		 student   body   model.Student    true   "student 实例"
+// @Param 		 student   body   model.StudentCreateReq    true   "student 实例"
 // @Success      200  {string} string
 // @Router       /student [post]
 func CreateStudent(c *gin.Context) {
 	student := model.Student{}
 	if err := c.ShouldBindJSON(&student); err != nil {
+		model.FailWithMessage(err.Error(), c)
+		return
+	}
+	newStudent, err := service.CreateStudent(student)
+	if err != nil {
 		if err.Error() == "UNIQUE constraint failed: students.number" {
-			c.JSON(http.StatusConflict, gin.H{
-				"message": "学号已存在！",
-			})
+			model.FailWithMessage("学号已存在", c)
 			return
 		}
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": err.Error(),
-		})
+		model.FailWithMessage(err.Error(), c)
 		return
 	}
-	newStudent, err := model.CreateStudent(student)
+	model.OkWithData(newStudent, c)
+}
+
+// DeleteStudentByID godoc
+// @Summary      根据id删除学生
+// @Description  根据id删除学生
+// @Tags         student
+// @Param        id   path      int  true  "student ID"
+// @Success      200  {string} string
+// @Router       /student/{id} [delete]
+func DeleteStudentByID(c *gin.Context) {
+	studentID, _ := utils.String2Int(c.Param("id"))
+	err := service.DeleteStudent(studentID)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": err.Error(),
-		})
+		model.FailWithMessage(err.Error(), c)
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"message": "创建成功",
-		"student": newStudent,
-	})
+	model.Ok(c)
 }

@@ -2,6 +2,7 @@ package v1
 
 import (
 	"academic-system/model"
+	"academic-system/service"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -27,7 +28,7 @@ func Ping(c *gin.Context) {
 func GenerateExamples(c *gin.Context) {
 	// 创建顺序有讲究 不能乱
 	model.CreateDepartmentsExample()
-	model.CreateStudentsExample()
+	service.CreateStudentsExample()
 	model.CreateTeachersExample()
 	model.CreateCoursesExample()
 	model.CreateOfferedCoursesExample()

@@ -2,55 +2,10 @@ package v1
 
 import (
 	"academic-system/model"
-	"academic-system/model/response"
-	"academic-system/pkg/util"
+	"academic-system/utils"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"strconv"
 )
-
-// GetCoursesByStudent godoc
-// @Summary      获取指定学生的所有课程
-// @Description  获取指定学生的所有课程
-// @Tags         student, course
-// @Accept       json
-// @Produce      json
-// @Param 		 id   path   int   true   "student ID"
-// @Param        hasScore query bool false "是否有成绩 不写即全部返回"
-// @Success      200  {object}  []model.CourseByStuResponse
-// @Router       /student/{id}/course [get]
-func GetCoursesByStudent(c *gin.Context) {
-	hasScore, ok := c.GetQuery("hasScore")
-	studentID, _ := util.String2Int(c.Param("id"))
-	var courses *[]response.CourseByStuResponse
-	var sqlErr error
-	if !ok {
-		courses, sqlErr = model.GetCoursesByStudent(studentID)
-	} else {
-		hasScore, err := strconv.ParseBool(hasScore)
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"message": err.Error(),
-			})
-			return
-		}
-		if hasScore {
-			courses, sqlErr = model.GetCoursesByStudentWithScore(studentID)
-		} else {
-			courses, sqlErr = model.GetCoursesByStudentWithoutScore(studentID)
-		}
-	}
-
-	if sqlErr != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": sqlErr.Error(),
-		})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{
-		"courses": courses,
-	})
-}
 
 // UpdateWholeCourse godoc
 // @Summary      整体更新课程信息
@@ -63,7 +18,7 @@ func GetCoursesByStudent(c *gin.Context) {
 // @Success      200  {string} string
 // @Router       /course/{id} [put]
 func UpdateWholeCourse(c *gin.Context) {
-	courseID, _ := util.String2Int(c.Param("id"))
+	courseID, _ := utils.String2Int(c.Param("id"))
 	course := model.Course{}
 	if err := c.ShouldBindJSON(&course); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -92,7 +47,7 @@ func UpdateWholeCourse(c *gin.Context) {
 // @Success      200  {object}  model.Course
 // @Router       /course/{id} [get]
 func GetCourseByID(c *gin.Context) {
-	courseID, _ := util.String2Int(c.Param("id"))
+	courseID, _ := utils.String2Int(c.Param("id"))
 
 	course, err := model.GetCourseByID(courseID)
 	if err != nil {

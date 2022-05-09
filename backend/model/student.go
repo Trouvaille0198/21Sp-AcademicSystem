@@ -1,100 +1,38 @@
 package model
 
 import (
-	"errors"
 	"gorm.io/gorm"
 )
 
+// Student 数据库学生表
 type Student struct {
 	gorm.Model
-	Number   string `json:"number" form:"number" gorm:"unique;index" example:"0198"`   // 学号
-	Name     string `json:"name" form:"name" example:"王二"`                             // 姓名
-	Sex      string `json:"sex" form:"sex" example:"男"`                                // 性别
-	Age      uint8  `json:"age" form:"age" example:"21"`                               // 年龄
-	Password string `json:"password" form:"password" gorm:"default:123" example:"123"` // 密码
+	Number   string `gorm:"unique;index"` // 学号
+	Name     string // 姓名
+	Sex      string // 性别
+	Age      uint   // 年龄
+	Password string `gorm:"default:123" example:"123"` // 密码
 
-	DepartmentID uint `json:"department_id" form:"department_id"` // 所属院系
+	DepartmentID uint // 所属院系号
 
-	Selections []Selection `json:"selections"` // 选课情况
+	Selections []Selection // 选课情况
 }
 
-// CreateStudentsExample 创建学生样例
-func CreateStudentsExample() (students []Student) {
-	students = []Student{
-		{Number: "0196", Name: "学生A", Sex: "男", Age: 21, DepartmentID: 1},
-		{Number: "0197", Name: "学生B", Sex: "女", Age: 22, DepartmentID: 2},
-		{Number: "0198", Name: "学生C", Sex: "男", Age: 20, DepartmentID: 3},
-		{Number: "0199", Name: "学生D", Sex: "女", Age: 21, DepartmentID: 4},
-		{Number: "0200", Name: "学生E", Sex: "男", Age: 21, DepartmentID: 1},
-	}
-
-	db.Model(&Student{}).Create(&students)
-	return
+// StudentCreateReq 创建学生的请求格式
+type StudentCreateReq struct {
+	Number   string `json:"number"`
+	Name     string `json:"name"`
+	Sex      string `json:"sex"`
+	Age      uint   `json:"age"`
+	Password string `json:"password"`
 }
 
-// GetAllStudents 获取所有学生信息
-func GetAllStudents() (*[]Student, error) {
-	var students []Student
-	err := db.Model(&Student{}).Find(&students).Error
-	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
-		return nil, err
-	}
-	return &students, nil
-}
-
-// GetStudentByID 获取指定id的学生信息
-func GetStudentByID(id int) (*Student, error) {
-	var student Student
-	err := db.Model(&Student{}).Where("id = ?", id).First(&student).Error
-	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
-		return nil, err
-	}
-	return &student, nil
-}
-
-// GetStudentByNumber 获取指定学号的学生信息
-func GetStudentByNumber(number string) (*Student, error) {
-	var student Student
-	err := db.Model(&Student{}).Where("number = ?", number).First(&student).Error
-	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
-		return nil, err
-	}
-	return &student, nil
-}
-
-// GetStudentByAttrs 通用方法 根据条件获取所有学生信息
-func GetStudentByAttrs(student Student) (*[]Student, error) {
-	var students []Student
-	err := db.Model(&Student{}).Where(student).Find(&students).Error
-	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
-		return nil, err
-	}
-	return &students, nil
-}
-
-// UpdateStudent 通用方法 修改指定id的学生信息
-func UpdateStudent(id int, data map[string]interface{}) error {
-	err := db.Model(&Student{}).Where("id = ?", id).Updates(data).Error
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-// CreateStudent 创建学生实例
-func CreateStudent(student Student) (*Student, error) {
-	err := db.Omit("selections").Create(&student).Error
-	if err != nil {
-		return &Student{}, err
-	}
-	return &student, nil
-}
-
-// DeleteStudent 删除指定id学生
-func DeleteStudent(id int) error {
-	err := db.Model(&Student{}).Where("id = ?", id).Delete(&Student{}).Error
-	if err != nil {
-		return err
-	}
-	return nil
+// StudentRes 学生信息
+type StudentRes struct {
+	ID             uint   `json:"id"`
+	Number         string `json:"number"`
+	Name           string `json:"name"`
+	Sex            string `json:"sex"`
+	Age            uint   `json:"age"`
+	DepartmentName string `json:"department_name"`
 }

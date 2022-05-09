@@ -1,0 +1,8 @@
+server-name: "academic-system"
+port: 8080
+gorm-info:
+  name: "root"
+  host: "sh-cdb-1q4p2vuy.sql.tencentcdb.com"
+  port: 59484
+  password: "Sun699218"
+  dbName: "academic_system"

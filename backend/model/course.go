@@ -1,7 +1,6 @@
 package model
 
 import (
-	"academic-system/model/response"
 	"errors"
 	"gorm.io/gorm"
 )
@@ -13,6 +12,19 @@ type Course struct {
 	Credit uint8  `json:"credit" form:"credit" example:"4"`                 // 学分
 
 	DepartmentID uint `json:"department_id" form:"department_id"` // 院系号
+}
+
+// CourseRes ...
+type CourseRes struct {
+	ID          uint   `json:"id"`
+	Score       int    `json:"score"`        // 成绩
+	Number      string `json:"number"`       // 课号
+	Name        string `json:"name"`         // 课名
+	Credit      uint8  `json:"credit"`       // 学分
+	Department  string `json:"department"`   // 所属院系
+	Term        string `json:"term"`         // 学期
+	TeacherName string `json:"teacher_name"` // 老师名
+	StudentName string `json:"student_name"` // 学生名
 }
 
 // CreateCoursesExample 创建课程样例
@@ -27,7 +39,6 @@ func CreateCoursesExample() (courses []Course) {
 		{Number: "0023", Name: "编译原理", Credit: 4, DepartmentID: 3},
 		{Number: "0024", Name: "编译原理", Credit: 4, DepartmentID: 1},
 	}
-
 	db.Model(&Course{}).Create(&courses)
 	return
 }
@@ -60,48 +71,6 @@ func GetCourseByAttrs(course Course) (*[]Course, error) {
 		return nil, err
 	}
 	return &courses, nil
-}
-
-// GetCoursesByStudent 获取指定学生的所有课程
-func GetCoursesByStudent(studentID int) (*[]response.CourseByStuResponse, error) {
-	var courseByStuResult []response.CourseByStuResponse
-	err := db.Raw("select distinct c.id, sc.score, c.number, c.name, c.credit, c.department, c.term, "+
-		"c.teacher_name, s.name as student_name "+
-		"from courses as c, selections as sc, students as s "+
-		"where sc.course_id = c.id and sc.student_id = s.id "+
-		"and s.id = ?", studentID).Scan(&courseByStuResult).Error
-	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
-		return nil, err
-	}
-	return &courseByStuResult, nil
-}
-
-// GetCoursesByStudentWithScore 获取指定学生的所有有成绩的课程
-func GetCoursesByStudentWithScore(studentID int) (*[]response.CourseByStuResponse, error) {
-	var courseByStuResult []response.CourseByStuResponse
-	err := db.Raw("select distinct c.id, sc.score, c.number, c.name, c.credit, c.department, c.term, "+
-		"c.teacher_name, s.name as student_name "+
-		"from courses as c, selections as sc, students as s "+
-		"where sc.course_id = c.id and sc.student_id = s.id "+
-		"and s.id = ? and sc.score <> -1", studentID).Scan(&courseByStuResult).Error
-	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
-		return nil, err
-	}
-	return &courseByStuResult, nil
-}
-
-// GetCoursesByStudentWithoutScore 获取指定学生的所有无成绩的课程
-func GetCoursesByStudentWithoutScore(studentID int) (*[]response.CourseByStuResponse, error) {
-	var courseByStuResult []response.CourseByStuResponse
-	err := db.Raw("select distinct c.id, sc.score, c.number, c.name, c.credit, c.department, c.term, "+
-		"c.teacher_name, s.name as student_name "+
-		"from courses as c, selections as sc, students as s "+
-		"where sc.course_id = c.id and sc.student_id = s.id "+
-		"and s.id = ? and sc.score = -1", studentID).Scan(&courseByStuResult).Error
-	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
-		return nil, err
-	}
-	return &courseByStuResult, nil
 }
 
 // UpdateCourse 通用方法 修改指定id的课程信息

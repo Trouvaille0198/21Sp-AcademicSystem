@@ -13,8 +13,7 @@ type Teacher struct {
 	Age      uint8  `json:"age" form:"age" example:"21"`
 	Password string `json:"password" form:"password" gorm:"default:123" example:"123"`
 
-	DepartmentID uint        `json:"department_id" form:"department_id"` // 所属院系
-	Selections   []Selection `json:"selections"`                         // 选课情况
+	DepartmentID uint `json:"department_id" form:"department_id"` // 所属院系
 }
 
 // CreateTeachersExample 创建教师样例

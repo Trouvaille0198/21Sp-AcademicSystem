@@ -11,7 +11,10 @@ type Selection struct {
 	gorm.Model
 	StudentID       uint `gorm:"student_id"`
 	OfferedCourseID uint `gorm:"offered_course_id"`
-	Score           int  `json:"score" gorm:"default:-1" example:"75"` // 分数, -1表示未评分
+
+	Student       Student
+	OfferedCourse OfferedCourse
+	Score         int `json:"score" gorm:"default:-1" example:"75"` // 分数, -1表示未评分
 }
 
 // CreateSelectionsExample 创建课程关联实例
@@ -59,7 +62,7 @@ func CreateSelection(selection Selection) (*Selection, error) {
 	//	return nil, err
 	//}
 	//for _, course := range *duplicatedCourses {
-	//	if course.Name == targetCourse.Name && course.Term == targetCourse.Term {
+	//	if course.ServerName == targetCourse.ServerName && course.Term == targetCourse.Term {
 	//		return nil, errors.New("学生已选课程名、学期均相同的课程！")
 	//	}
 	//}

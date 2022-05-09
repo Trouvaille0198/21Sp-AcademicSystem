@@ -2,7 +2,7 @@ package v1
 
 import (
 	"academic-system/model"
-	"academic-system/pkg/util"
+	"academic-system/utils"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -17,9 +17,9 @@ import (
 // @Success      200  {string} string
 // @Router       /student/{student_id}/course/{course_id} [put]
 func UpdateSelectionScore(c *gin.Context) {
-	studentID, err1 := util.String2Int(c.Param("student_id"))
-	courseID, err2 := util.String2Int(c.Param("course_id"))
-	score, err3 := util.String2Int(c.PostForm("score"))
+	studentID, err1 := utils.String2Int(c.Param("student_id"))
+	courseID, err2 := utils.String2Int(c.Param("course_id"))
+	score, err3 := utils.String2Int(c.PostForm("score"))
 	if err1 != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "student_id 不合法！",

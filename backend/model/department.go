@@ -6,12 +6,17 @@ import (
 
 type Department struct {
 	gorm.Model
-	Number string `json:"number" form:"number" gorm:"unique;index" example:"006"` // 院系号
-	Name   string `json:"name" form:"name" example:"计算机学院"`                       // 院系名
+	Number string `json:"number" form:"number" gorm:"unique;index"` // 院系号
+	Name   string `json:"name" form:"name"  gorm:"unique"`          // 院系名
 
 	Students []Student `json:"students" form:"students"` // 学生
 	Teachers []Teacher `json:"teachers" form:"teachers"` // 教师
 	Courses  []Course  `json:"courses" form:"courses"`   // 课程
+}
+
+type DepartmentRes struct {
+	Number string `json:"number"` // 院系号
+	Name   string `json:"name"`   // 院系名
 }
 
 // CreateDepartmentsExample 创建学院样例

@@ -44,10 +44,12 @@ func NewRouter() *gin.Engine {
 		rv1.POST("/login/admin", v1.LoginAsAdmin)
 		rv1.POST("/login/teacher", v1.LoginAsTeacher)
 		// 学生
-		rv1.GET("/student", v1.GetStudentsByAttrs)
+		rv1.GET("/student", v1.GetAllStudents)
 		rv1.GET("/student/:id", v1.GetStudentByID)
-		rv1.GET("/student/:id/course", v1.GetCoursesByStudent)
+		rv1.DELETE("/student/:id", v1.DeleteStudentByID)
+		rv1.GET("/student/:id/offered_course ", v1.GetOCsByStu)
 		rv1.POST("/student", v1.CreateStudent)
+
 		rv1.PUT("/student/:student_id/course/:course_id", v1.UpdateSelectionScore)
 		// 课程
 		rv1.POST("/course", v1.CreateCourse)

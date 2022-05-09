@@ -16,6 +16,18 @@ type OfferedCourse struct {
 	Selections []Selection `json:"selections"`
 }
 
+type OfferedCourseRes struct {
+	ID          uint   `json:"id"`
+	Name        string `json:"name"`
+	Number      string `json:"number"`
+	Credit      uint   `json:"credit"`
+	TeacherName string `json:"teacher_name"`
+	StudentName string `json:"student_name"`
+	Department  string `json:"department"`
+	Term        string `json:"term"`
+	Score       int    `json:"score"`
+}
+
 // CreateOfferedCoursesExample 创建课程样例
 func CreateOfferedCoursesExample() (offeredCourses []OfferedCourse) {
 	offeredCourses = []OfferedCourse{
