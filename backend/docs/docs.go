@@ -605,11 +605,11 @@ var doc = `{
         },
         "/test/delete-all": {
             "delete": {
-                "description": "删除全部数据 没用",
+                "description": "删除全部数据",
                 "tags": [
                     "test"
                 ],
-                "summary": "删除全部数据 没用",
+                "summary": "删除全部数据",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -698,7 +698,7 @@ var doc = `{
         "model.OfferedCourse": {
             "type": "object",
             "properties": {
-                "course_id": {
+                "courseID": {
                     "description": "课号",
                     "type": "integer"
                 },
@@ -711,14 +711,13 @@ var doc = `{
                         "$ref": "#/definitions/model.Selection"
                     }
                 },
-                "teacher_id": {
+                "teacherID": {
                     "description": "教师工号",
                     "type": "integer"
                 },
                 "term": {
                     "description": "学期",
-                    "type": "string",
-                    "example": "22-冬季学期"
+                    "type": "string"
                 }
             }
         },
@@ -798,8 +797,7 @@ var doc = `{
                 },
                 "score": {
                     "description": "分数, -1表示未评分",
-                    "type": "integer",
-                    "example": 75
+                    "type": "integer"
                 },
                 "student": {
                     "type": "object",

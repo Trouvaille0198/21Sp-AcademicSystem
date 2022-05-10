@@ -12,7 +12,7 @@ type Teacher struct {
 	Age      uint8
 	Password string `gorm:"default:123"`
 
-	DepartmentID uint `json:"department_id" form:"department_id"` // 所属院系
+	DepartmentID uint // 所属院系
 }
 
 // TeacherCreateReq 创建老师的请求格式

@@ -2,12 +2,17 @@ package model
 
 type Department struct {
 	ID     uint   `gorm:"primarykey"`
-	Number string `json:"number" form:"number" gorm:"unique;index"` // 院系号
-	Name   string `json:"name" form:"name"  gorm:"unique"`          // 院系名
+	Number string `gorm:"unique;index"` // 院系号
+	Name   string `gorm:"unique"`       // 院系名
 
 	Students []Student `json:"students" form:"students"` // 学生
 	Teachers []Teacher `json:"teachers" form:"teachers"` // 教师
 	Courses  []Course  `json:"courses" form:"courses"`   // 课程
+}
+
+type DepartmentCreateReq struct {
+	Number string `form:"number"` // 院系号
+	Name   string `form:"name"`   // 院系名
 }
 
 type DepartmentRes struct {

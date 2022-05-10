@@ -5,7 +5,6 @@ import (
 	"academic-system/global"
 	"academic-system/initialize"
 	"academic-system/router"
-	"academic-system/utils"
 	"log"
 
 	"github.com/spf13/viper"
@@ -40,9 +39,9 @@ func InitConfig() {
 	global.Settings = serverConfig
 }
 func main() {
-	utils.InitConfig()
+	initialize.InitConfig()
 	initialize.Setup() // 初始化gorm数据库连接
 
 	r := router.NewRouter()
-	_ = r.Run(":8088")
+	_ = r.Run(":8080")
 }

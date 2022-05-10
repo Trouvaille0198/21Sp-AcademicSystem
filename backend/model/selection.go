@@ -14,7 +14,7 @@ type Selection struct {
 
 	Student       Student
 	OfferedCourse OfferedCourse
-	Score         int `json:"score" gorm:"default:-1" example:"75"` // 分数, -1表示未评分
+	Score         int `gorm:"default:-1"` // 分数, -1表示未评分
 }
 
 // CreateSelectionsExample 创建课程关联实例

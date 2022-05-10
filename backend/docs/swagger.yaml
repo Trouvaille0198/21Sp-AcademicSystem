@@ -28,7 +28,7 @@ definitions:
     type: object
   model.OfferedCourse:
     properties:
-      course_id:
+      courseID:
         description: 课号
         type: integer
       id:
@@ -37,12 +37,11 @@ definitions:
         items:
           $ref: '#/definitions/model.Selection'
         type: array
-      teacher_id:
+      teacherID:
         description: 教师工号
         type: integer
       term:
         description: 学期
-        example: 22-冬季学期
         type: string
     type: object
   model.OfferedCourseRes:
@@ -96,7 +95,6 @@ definitions:
         type: integer
       score:
         description: 分数, -1表示未评分
-        example: 75
         type: integer
       student:
         $ref: '#/definitions/model.Student'
@@ -586,13 +584,13 @@ paths:
       - offered_course
   /test/delete-all:
     delete:
-      description: 删除全部数据 没用
+      description: 删除全部数据
       responses:
         "200":
           description: OK
           schema:
             type: string
-      summary: 删除全部数据 没用
+      summary: 删除全部数据
       tags:
       - test
   /test/generate-examples:

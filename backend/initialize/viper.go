@@ -1,4 +1,4 @@
-package utils
+package initialize
 
 import (
 	"academic-system/config"
