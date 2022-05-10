@@ -23,8 +23,8 @@ func CreateCoursesExample() (courses []model.Course) {
 	return
 }
 
-// GetAllCourses 获取所有课程信息
-func GetAllCourses() ([]*model.CourseRes, error) {
+// GetCourses 获取所有课程信息
+func GetCourses() ([]*model.CourseRes, error) {
 	var courses []*model.CourseRes
 	err := db.Table("course").
 		Select("course.id", "course.number", "course.name", "course.credit", "department.name as department_name").
@@ -69,4 +69,9 @@ func DeleteCourse(id int) (err error) {
 		return res.Error
 	}
 	return nil
+}
+
+// DeleteAllCourses 删除所有课程
+func DeleteAllCourses() {
+	db.Where("1 = 1").Delete(&model.Course{})
 }

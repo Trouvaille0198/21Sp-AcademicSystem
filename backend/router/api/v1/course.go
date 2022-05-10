@@ -2,40 +2,10 @@ package v1
 
 import (
 	"academic-system/model"
+	"academic-system/service"
 	"academic-system/utils"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
-
-// UpdateWholeCourse godoc
-// @Summary      整体更新课程信息
-// @Description  整体更新课程信息
-// @Tags         course
-// @Accept       json
-// @Produce      json
-// @Param 		 id   path   int   true   "course ID"
-// @Param 		 course   body   model.Course   true   "course 实例"
-// @Success      200  {string} string
-// @Router       /course/{id} [put]
-func UpdateWholeCourse(c *gin.Context) {
-	courseID, _ := utils.String2Int(c.Param("id"))
-	course := model.Course{}
-	if err := c.ShouldBindJSON(&course); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": err.Error(),
-		})
-		return
-	}
-	if err := model.UpdateWholeCourse(courseID, course); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": err.Error(),
-		})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{
-		"message": "更新成功",
-	})
-}
 
 // GetCourseByID godoc
 // @Summary      根据id获取课程信息
@@ -44,75 +14,67 @@ func UpdateWholeCourse(c *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        id   path      int  true  "course ID"
-// @Success      200  {object}  model.Course
+// @Success      200  {object}  model.CourseRes
 // @Router       /course/{id} [get]
 func GetCourseByID(c *gin.Context) {
 	courseID, _ := utils.String2Int(c.Param("id"))
-
-	course, err := model.GetCourseByID(courseID)
+	course, err := service.GetCourseByID(courseID)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": err.Error(),
-		})
+		model.FailWithMessage(err.Error(), c)
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"student": course,
-	})
+	model.OkWithData(course, c)
 }
 
 // CreateCourse godoc
 // @Summary      创建课程
 // @Description  创建课程
 // @Tags         course
-// @Param 		 course   body   model.Course   true   "course 实例"
+// @Param 		 course   body   model.CourseCreateReq  true   "course 实例"
 // @Success      200  {string} string
 // @Router       /course [post]
 func CreateCourse(c *gin.Context) {
 	course := model.Course{}
 	if err := c.ShouldBindJSON(&course); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": err.Error(),
-		})
+		model.FailWithMessage(err.Error(), c)
 		return
 	}
-	newCourse, err := model.CreateCourse(course)
+	newCourse, err := service.CreateCourse(course)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": err.Error(),
-		})
+		model.FailWithMessage(err.Error(), c)
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"message": "创建成功",
-		"course":  newCourse,
-	})
+	model.OkWithData(newCourse, c)
 }
 
-// GetCoursesByAttrs godoc
-// @Summary      获取课程
-// @Description  获取课程 可以自由添加筛选属性
+// GetCourses godoc
+// @Summary      获取所有课程
+// @Description  获取所有课程
 // @Tags         course
-// @Param 		 course   query   model.Course   false   "course 实例"
-// @Success      200  {string} string
+// @Success      200  {object}  []model.CourseRes
 // @Router       /course [get]
-func GetCoursesByAttrs(c *gin.Context) {
-	course := model.Course{}
-	if err := c.ShouldBindQuery(&course); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": err.Error(),
-		})
-		return
-	}
-	coursesResult, err := model.GetCourseByAttrs(course)
+func GetCourses(c *gin.Context) {
+	coursesResult, err := service.GetCourses()
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": err.Error(),
-		})
+		model.FailWithMessage(err.Error(), c)
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"message": "查询成功",
-		"course":  coursesResult,
-	})
+	model.OkWithData(coursesResult, c)
+}
+
+// DeleteCourseByID godoc
+// @Summary      根据id删除课程
+// @Description  根据id删除课程
+// @Tags         course
+// @Param        id   path      int  true  "course ID"
+// @Success      200  {string} string
+// @Router       /course/{id} [delete]
+func DeleteCourseByID(c *gin.Context) {
+	courseID, _ := utils.String2Int(c.Param("id"))
+	err := service.DeleteCourse(courseID)
+	if err != nil {
+		model.FailWithMessage(err.Error(), c)
+		return
+	}
+	model.Ok(c)
 }

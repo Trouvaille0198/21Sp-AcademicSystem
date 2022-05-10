@@ -6,13 +6,13 @@ import (
 
 type Course struct {
 	ID     uint   `gorm:"primarykey"`
-	Number string `json:"number" form:"number" gorm:"index" example:"0121"` // 课号
-	Name   string `json:"name" form:"name" example:"数据库原理"`                 // 课名
-	Credit uint8  `json:"credit" form:"credit" example:"4"`                 // 学分
+	Number string `gorm:"index,unique"` // 课号
+	Name   string // 课名
+	Credit uint8  // 学分
 
-	OfferedCourses []OfferedCourse `json:"offered_courses"`
+	OfferedCourses []OfferedCourse
 
-	DepartmentID uint `json:"department_id" form:"department_id"` // 院系号
+	DepartmentID uint // 院系号
 }
 
 type CourseRes struct {
@@ -21,6 +21,13 @@ type CourseRes struct {
 	Name           string `json:"name"`
 	Credit         uint8  `json:"credit"`
 	DepartmentName string `json:"department_name"` // 院系名
+}
+
+type CourseCreateReq struct {
+	Number       string `form:"number"`
+	Name         string `form:"name"`
+	Credit       uint8  `form:"credit"`
+	DepartmentID uint   `form:"department_id"` // 院系号
 }
 
 //// CourseRes ...

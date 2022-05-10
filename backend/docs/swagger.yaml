@@ -1,23 +1,29 @@
 basePath: /api/v1
 definitions:
-  model.Course:
+  model.CourseCreateReq:
     properties:
       credit:
-        description: 学分
-        example: 4
         type: integer
-      department_id:
+      departmentID:
         description: 院系号
         type: integer
+      name:
+        type: string
+      number:
+        type: string
+    type: object
+  model.CourseRes:
+    properties:
+      credit:
+        type: integer
+      department_name:
+        description: 院系名
+        type: string
       id:
         type: integer
       name:
-        description: 课名
-        example: 数据库原理
         type: string
       number:
-        description: 课号
-        example: "0121"
         type: string
     type: object
   model.OfferedCourse:
@@ -131,6 +137,8 @@ definitions:
     properties:
       age:
         type: integer
+      departmentID:
+        type: integer
       name:
         type: string
       number:
@@ -158,6 +166,8 @@ definitions:
   model.TeacherCreateReq:
     properties:
       age:
+        type: integer
+      departmentID:
         type: integer
       name:
         type: string
@@ -190,40 +200,19 @@ info:
   description: 教务管理系统
   license: {}
   title: Academic System
-  version: "1.1"
+  version: "1.2"
 paths:
   /course:
     get:
-      description: 获取课程 可以自由添加筛选属性
-      parameters:
-      - description: 学分
-        example: 4
-        in: query
-        name: credit
-        type: integer
-      - description: 院系号
-        in: query
-        name: department_id
-        type: integer
-      - in: query
-        name: id
-        type: integer
-      - description: 课名
-        example: 数据库原理
-        in: query
-        name: name
-        type: string
-      - description: 课号
-        example: "0121"
-        in: query
-        name: number
-        type: string
+      description: 获取所有课程
       responses:
         "200":
           description: OK
           schema:
-            type: string
-      summary: 获取课程
+            items:
+              $ref: '#/definitions/model.CourseRes'
+            type: array
+      summary: 获取所有课程
       tags:
       - course
     post:
@@ -234,7 +223,7 @@ paths:
         name: course
         required: true
         schema:
-          $ref: '#/definitions/model.Course'
+          $ref: '#/definitions/model.CourseCreateReq'
       responses:
         "200":
           description: OK
@@ -244,6 +233,22 @@ paths:
       tags:
       - course
   /course/{id}:
+    delete:
+      description: 根据id删除课程
+      parameters:
+      - description: course ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: 根据id删除课程
+      tags:
+      - course
     get:
       consumes:
       - application/json
@@ -260,34 +265,8 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.Course'
+            $ref: '#/definitions/model.CourseRes'
       summary: 根据id获取课程信息
-      tags:
-      - course
-    put:
-      consumes:
-      - application/json
-      description: 整体更新课程信息
-      parameters:
-      - description: course ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: course 实例
-        in: body
-        name: course
-        required: true
-        schema:
-          $ref: '#/definitions/model.Course'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: string
-      summary: 整体更新课程信息
       tags:
       - course
   /login/admin:
@@ -489,7 +468,7 @@ paths:
       summary: 获取指定学生的所有课程
       tags:
       - student
-      - course
+      - offered_course
   /student/{student_id}/course/{course_id}:
     put:
       description: 更新课程成绩
@@ -604,7 +583,18 @@ paths:
       summary: 获取指定教师的所有开课课程
       tags:
       - teacher
-      - course
+      - offered_course
+  /test/delete-all:
+    delete:
+      description: 删除全部数据 没用
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: 删除全部数据 没用
+      tags:
+      - test
   /test/generate-examples:
     get:
       description: 生成样例数据

@@ -26,3 +26,8 @@ func CreateDepartmentsExample() (departments []Department) {
 	db.Model(&Department{}).Create(&departments)
 	return
 }
+
+// DeleteAllDepartments 删除所有学院
+func DeleteAllDepartments() {
+	db.Where("1 = 1").Delete(&Department{})
+}

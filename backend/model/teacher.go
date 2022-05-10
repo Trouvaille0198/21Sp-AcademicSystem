@@ -17,11 +17,12 @@ type Teacher struct {
 
 // TeacherCreateReq 创建老师的请求格式
 type TeacherCreateReq struct {
-	Number   string `json:"number"`
-	Name     string `json:"name"`
-	Sex      string `json:"sex"`
-	Age      uint   `json:"age"`
-	Password string `json:"password"`
+	Number       string `form:"number"`
+	Name         string `form:"name"`
+	Sex          string `form:"sex"`
+	Age          uint   `form:"age"`
+	Password     string `form:"password"`
+	DepartmentID uint   `form:"department_id"`
 }
 
 type TeacherRes struct {

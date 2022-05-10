@@ -20,11 +20,12 @@ type Student struct {
 
 // StudentCreateReq 创建学生的请求格式
 type StudentCreateReq struct {
-	Number   string `json:"number"`
-	Name     string `json:"name"`
-	Sex      string `json:"sex"`
-	Age      uint   `json:"age"`
-	Password string `json:"password"`
+	Number       string `form:"number"`
+	Name         string `form:"name"`
+	Sex          string `form:"sex"`
+	Age          uint   `form:"age"`
+	Password     string `form:"password"`
+	DepartmentID uint   `form:"department_id"`
 }
 
 // StudentRes 学生信息

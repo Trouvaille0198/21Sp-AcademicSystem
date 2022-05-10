@@ -39,6 +39,7 @@ func NewRouter() *gin.Engine {
 		// 功能性接口
 		rv1.GET("test/ping", v1.Ping)
 		rv1.GET("test/generate-examples", v1.GenerateExamples)
+		rv1.DELETE("test/delete-all", v1.DeleteAll)
 		// 登录
 		rv1.POST("/login/student", v1.LoginAsStu)
 		rv1.POST("/login/admin", v1.LoginAsAdmin)
@@ -61,7 +62,7 @@ func NewRouter() *gin.Engine {
 		rv1.POST("/course", v1.CreateCourse)
 		rv1.GET("course", v1.GetCourses)
 		rv1.GET("/course/:id", v1.GetCourseByID)
-		rv1.PUT("/course/:id", v1.DeleteCourseByID)
+		rv1.DELETE("/course/:id", v1.DeleteCourseByID)
 		// 选课
 		rv1.POST("/selection", v1.CreateSelection)
 		rv1.DELETE("/selection", v1.DeleteSelection)

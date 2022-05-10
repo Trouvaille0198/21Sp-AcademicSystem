@@ -27,50 +27,19 @@ var doc = `{
     "paths": {
         "/course": {
             "get": {
-                "description": "获取课程 可以自由添加筛选属性",
+                "description": "获取所有课程",
                 "tags": [
                     "course"
                 ],
-                "summary": "获取课程",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "example": 4,
-                        "description": "学分",
-                        "name": "credit",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "院系号",
-                        "name": "department_id",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "name": "id",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "example": "数据库原理",
-                        "description": "课名",
-                        "name": "name",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "example": "0121",
-                        "description": "课号",
-                        "name": "number",
-                        "in": "query"
-                    }
-                ],
+                "summary": "获取所有课程",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "string"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.CourseRes"
+                            }
                         }
                     }
                 }
@@ -88,7 +57,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.Course"
+                            "$ref": "#/definitions/model.CourseCreateReq"
                         }
                     }
                 ],
@@ -128,23 +97,17 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.Course"
+                            "$ref": "#/definitions/model.CourseRes"
                         }
                     }
                 }
             },
-            "put": {
-                "description": "整体更新课程信息",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
+            "delete": {
+                "description": "根据id删除课程",
                 "tags": [
                     "course"
                 ],
-                "summary": "整体更新课程信息",
+                "summary": "根据id删除课程",
                 "parameters": [
                     {
                         "type": "integer",
@@ -152,15 +115,6 @@ var doc = `{
                         "name": "id",
                         "in": "path",
                         "required": true
-                    },
-                    {
-                        "description": "course 实例",
-                        "name": "course",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.Course"
-                        }
                     }
                 ],
                 "responses": {
@@ -445,7 +399,7 @@ var doc = `{
                 ],
                 "tags": [
                     "student",
-                    "course"
+                    "offered_course"
                 ],
                 "summary": "获取指定学生的所有课程",
                 "parameters": [
@@ -624,7 +578,7 @@ var doc = `{
                 ],
                 "tags": [
                     "teacher",
-                    "course"
+                    "offered_course"
                 ],
                 "summary": "获取指定教师的所有开课课程",
                 "parameters": [
@@ -644,6 +598,23 @@ var doc = `{
                             "items": {
                                 "$ref": "#/definitions/model.OfferedCourseRes"
                             }
+                        }
+                    }
+                }
+            }
+        },
+        "/test/delete-all": {
+            "delete": {
+                "description": "删除全部数据 没用",
+                "tags": [
+                    "test"
+                ],
+                "summary": "删除全部数据 没用",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
@@ -685,30 +656,42 @@ var doc = `{
         }
     },
     "definitions": {
-        "model.Course": {
+        "model.CourseCreateReq": {
             "type": "object",
             "properties": {
                 "credit": {
-                    "description": "学分",
-                    "type": "integer",
-                    "example": 4
+                    "type": "integer"
                 },
-                "department_id": {
+                "departmentID": {
                     "description": "院系号",
                     "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "number": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.CourseRes": {
+            "type": "object",
+            "properties": {
+                "credit": {
+                    "type": "integer"
+                },
+                "department_name": {
+                    "description": "院系名",
+                    "type": "string"
                 },
                 "id": {
                     "type": "integer"
                 },
                 "name": {
-                    "description": "课名",
-                    "type": "string",
-                    "example": "数据库原理"
+                    "type": "string"
                 },
                 "number": {
-                    "description": "课号",
-                    "type": "string",
-                    "example": "0121"
+                    "type": "string"
                 }
             }
         },
@@ -873,6 +856,9 @@ var doc = `{
                 "age": {
                     "type": "integer"
                 },
+                "departmentID": {
+                    "type": "integer"
+                },
                 "name": {
                     "type": "string"
                 },
@@ -914,6 +900,9 @@ var doc = `{
             "type": "object",
             "properties": {
                 "age": {
+                    "type": "integer"
+                },
+                "departmentID": {
                     "type": "integer"
                 },
                 "name": {
@@ -970,7 +959,7 @@ type swaggerInfo struct {
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = swaggerInfo{
-	Version:     "1.1",
+	Version:     "1.2",
 	Host:        "",
 	BasePath:    "/api/v1",
 	Schemes:     []string{},

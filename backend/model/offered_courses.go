@@ -66,3 +66,8 @@ func GetOfferedCourseByID(id int) (*OfferedCourse, error) {
 	}
 	return &offeredCourse, nil
 }
+
+// DeleteAllOfferedCourse 删除所有开课信息
+func DeleteAllOfferedCourse() {
+	db.Where("1 = 1").Delete(&OfferedCourse{})
+}

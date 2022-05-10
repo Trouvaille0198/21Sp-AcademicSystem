@@ -124,3 +124,8 @@ func UpdateSelectionScore(id uint, score int) error {
 	err := db.Model(&Selection{}).Where("id = ?", id).Updates(Selection{Score: score}).Error
 	return err
 }
+
+// DeleteAllSelections 删除所有选课记录
+func DeleteAllSelections() {
+	db.Where("1 = 1").Delete(&Selection{})
+}
