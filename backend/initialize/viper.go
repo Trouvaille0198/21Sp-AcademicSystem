@@ -1,4 +1,4 @@
-package utils
+package initialize
 
 import (
 	"academic-system/config"
@@ -11,7 +11,7 @@ func InitConfig() {
 	// 实例化viper
 	v := viper.New()
 	// 设置配置文件的路径
-	v.SetConfigFile("./setting.yml")
+	v.SetConfigFile("setting.yml")
 	err := v.ReadInConfig()
 	if err != nil {
 		log.Println(err)

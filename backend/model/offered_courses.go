@@ -8,10 +8,10 @@ import (
 // OfferedCourse 开课信息
 type OfferedCourse struct {
 	ID   uint   `gorm:"primarykey"`
-	Term string `json:"term" form:"term" example:"22-冬季学期"` // 学期
+	Term string // 学期
 
-	CourseID  uint `json:"course_id" form:"course_id"`   // 课号
-	TeacherID uint `json:"teacher_id" form:"teacher_id"` // 教师工号
+	CourseID  uint // 课号
+	TeacherID uint // 教师工号
 
 	Selections []Selection `json:"selections"`
 }
@@ -65,4 +65,9 @@ func GetOfferedCourseByID(id int) (*OfferedCourse, error) {
 		return nil, err
 	}
 	return &offeredCourse, nil
+}
+
+// DeleteAllOfferedCourse 删除所有开课信息
+func DeleteAllOfferedCourse() {
+	db.Where("1 = 1").Delete(&OfferedCourse{})
 }

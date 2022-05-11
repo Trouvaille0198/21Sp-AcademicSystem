@@ -12,16 +12,17 @@ type Teacher struct {
 	Age      uint8
 	Password string `gorm:"default:123"`
 
-	DepartmentID uint `json:"department_id" form:"department_id"` // 所属院系
+	DepartmentID uint // 所属院系
 }
 
 // TeacherCreateReq 创建老师的请求格式
 type TeacherCreateReq struct {
-	Number   string `json:"number"`
-	Name     string `json:"name"`
-	Sex      string `json:"sex"`
-	Age      uint   `json:"age"`
-	Password string `json:"password"`
+	Number       string `form:"number"`
+	Name         string `form:"name"`
+	Sex          string `form:"sex"`
+	Age          uint   `form:"age"`
+	Password     string `form:"password"`
+	DepartmentID uint   `form:"department_id"`
 }
 
 type TeacherRes struct {

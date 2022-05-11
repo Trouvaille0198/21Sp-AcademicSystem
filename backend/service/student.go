@@ -87,3 +87,8 @@ func DeleteStudent(id int) error {
 	}
 	return nil
 }
+
+// DeleteAllStudents 删除所有学生
+func DeleteAllStudents() {
+	db.Where("1 = 1").Delete(&model.Student{})
+}

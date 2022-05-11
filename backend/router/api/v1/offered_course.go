@@ -11,7 +11,7 @@ import (
 // GetSelectedCourses godoc
 // @Summary      获取指定学生的所有课程
 // @Description  get offered courses by student id 获取指定学生的所有课程
-// @Tags         student, course
+// @Tags         student, offered_course
 // @Accept       json
 // @Produce      json
 // @Param 		 id   path   int   true   "student ID"
@@ -48,7 +48,7 @@ func GetSelectedCourses(c *gin.Context) {
 // GetOCsByTeacher godoc
 // @Summary      获取指定教师的所有开课课程
 // @Description  get offered courses by teacher id 获取指定教师的所有开课课程
-// @Tags         teacher, course
+// @Tags         teacher, offered_course
 // @Accept       json
 // @Produce      json
 // @Param 		 id   path   int   true   "teacher ID"
