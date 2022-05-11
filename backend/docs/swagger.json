@@ -222,6 +222,94 @@
                 }
             }
         },
+        "/offered_course": {
+            "get": {
+                "description": "获取所有开课记录",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "offered_course"
+                ],
+                "summary": "获取所有开课记录",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.OfferedCourseRes"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/offered_course/{id}": {
+            "get": {
+                "description": "获取指定id的开课课程",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "offered_course"
+                ],
+                "summary": "获取指定id的开课课程",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "offered_course ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.OfferedCourseRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/offered_course/{id}/student": {
+            "get": {
+                "description": "获取指定id的开课记录下所有学生信息及成绩",
+                "tags": [
+                    "student",
+                    "offered_course"
+                ],
+                "summary": "获取指定id的开课记录下所有学生信息及成绩",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "offered_course ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.StudentWithScoreRes"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/selection": {
             "post": {
                 "description": "创建选课",
@@ -740,7 +828,7 @@
                 "department": {
                     "type": "string"
                 },
-                "final_score": {
+                "exam_score": {
                     "type": "integer"
                 },
                 "name": {
@@ -889,6 +977,38 @@
                 },
                 "sex": {
                     "type": "string"
+                }
+            }
+        },
+        "model.StudentWithScoreRes": {
+            "type": "object",
+            "properties": {
+                "age": {
+                    "type": "integer"
+                },
+                "department_name": {
+                    "type": "string"
+                },
+                "exam_score": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "number": {
+                    "type": "string"
+                },
+                "score": {
+                    "type": "integer"
+                },
+                "sex": {
+                    "type": "string"
+                },
+                "usual_score": {
+                    "type": "integer"
                 }
             }
         },

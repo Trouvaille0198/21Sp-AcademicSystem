@@ -92,3 +92,16 @@ func DeleteStudent(id int) error {
 func DeleteAllStudents() {
 	db.Where("1 = 1").Delete(&model.Student{})
 }
+
+func GetStudentsByOfferedCourse(id int) (*[]model.StudentWithScoreRes, error) {
+	var studentsRes []model.StudentWithScoreRes
+	err := db.Raw("select distinct s.id, s.name, s.number, s.sex,s.age, de.name as department_name, "+
+		"se.score, se.usual_score, se.exam_score "+
+		"from student as s, selection as se, department as de "+
+		"where se.offered_course_id = ? and s.id = se.student_id and de.id = s.department_id ", id).
+		Scan(&studentsRes).Error
+	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+		return nil, err
+	}
+	return &studentsRes, nil
+}

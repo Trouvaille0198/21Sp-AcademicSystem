@@ -38,7 +38,17 @@ type StudentRes struct {
 	DepartmentName string `json:"department_name"`
 }
 
+// StudentWithScoreRes 开课记录视角下的学生信息
 type StudentWithScoreRes struct {
+	ID             uint   `json:"id"`
+	Number         string `json:"number"`
+	Name           string `json:"name"`
+	Sex            string `json:"sex"`
+	Age            uint   `json:"age"`
+	DepartmentName string `json:"department_name"`
+	Score          int    `json:"score"`
+	UsualScore     int    `json:"usual_score"`
+	ExamScore      int    `json:"exam_score"`
 }
 
 // BeforeDelete 删除学生时级联删除选课关系

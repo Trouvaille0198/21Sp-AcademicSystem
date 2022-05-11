@@ -67,7 +67,7 @@ definitions:
         type: integer
       department:
         type: string
-      final_score:
+      exam_score:
         type: integer
       name:
         type: string
@@ -170,6 +170,27 @@ definitions:
         type: string
       sex:
         type: string
+    type: object
+  model.StudentWithScoreRes:
+    properties:
+      age:
+        type: integer
+      department_name:
+        type: string
+      exam_score:
+        type: integer
+      id:
+        type: integer
+      name:
+        type: string
+      number:
+        type: string
+      score:
+        type: integer
+      sex:
+        type: string
+      usual_score:
+        type: integer
     type: object
   model.TeacherCreateReq:
     properties:
@@ -351,6 +372,64 @@ paths:
       summary: 以教师身份登录
       tags:
       - login
+  /offered_course:
+    get:
+      consumes:
+      - application/json
+      description: 获取所有开课记录
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.OfferedCourseRes'
+            type: array
+      summary: 获取所有开课记录
+      tags:
+      - offered_course
+  /offered_course/{id}:
+    get:
+      consumes:
+      - application/json
+      description: 获取指定id的开课课程
+      parameters:
+      - description: offered_course ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.OfferedCourseRes'
+      summary: 获取指定id的开课课程
+      tags:
+      - offered_course
+  /offered_course/{id}/student:
+    get:
+      description: 获取指定id的开课记录下所有学生信息及成绩
+      parameters:
+      - description: offered_course ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.StudentWithScoreRes'
+            type: array
+      summary: 获取指定id的开课记录下所有学生信息及成绩
+      tags:
+      - student
+      - offered_course
   /selection:
     delete:
       description: 删除选课

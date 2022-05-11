@@ -9,8 +9,8 @@ import (
 // 三种情况: 未选 已选 已修
 type Selection struct {
 	ID              uint `gorm:"primarykey"`
-	StudentID       uint `gorm:"student_id"`
-	OfferedCourseID uint `gorm:"offered_course_id"`
+	StudentID       uint
+	OfferedCourseID uint
 
 	Student       Student
 	OfferedCourse OfferedCourse

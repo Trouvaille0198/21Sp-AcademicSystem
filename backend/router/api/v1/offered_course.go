@@ -8,6 +8,42 @@ import (
 	"strconv"
 )
 
+// GetOfferedCourses godoc
+// @Summary      获取所有开课记录
+// @Description  获取所有开课记录
+// @Tags         offered_course
+// @Accept       json
+// @Produce      json
+// @Success      200  {object}  []model.OfferedCourseRes
+// @Router       /offered_course [get]
+func GetOfferedCourses(c *gin.Context) {
+	courses, err := service.GetOfferedCourses()
+	if err != nil {
+		model.FailWithMessage(err.Error(), c)
+		return
+	}
+	model.OkWithData(courses, c)
+}
+
+// GetOfferedCourseByID godoc
+// @Summary      获取指定id的开课课程
+// @Description  获取指定id的开课课程
+// @Tags         offered_course
+// @Accept       json
+// @Produce      json
+// @Param 		 id   path   int   true   "offered_course ID"
+// @Success      200  {object}  model.OfferedCourseRes
+// @Router       /offered_course/{id} [get]
+func GetOfferedCourseByID(c *gin.Context) {
+	ocID, _ := utils.String2Int(c.Param("id"))
+	courses, err := service.GetOfferedCourseByID(ocID)
+	if err != nil {
+		model.FailWithMessage(err.Error(), c)
+		return
+	}
+	model.OkWithData(courses, c)
+}
+
 // GetSelectedCourses godoc
 // @Summary      获取指定学生的所有课程
 // @Description  get offered courses by student id 获取指定学生的所有课程

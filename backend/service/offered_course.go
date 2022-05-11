@@ -24,7 +24,7 @@ func CreateOfferedCoursesExample() (offeredCourses []model.OfferedCourse) {
 }
 
 // GetOfferedCourses 获取所有开课记录
-func GetOfferedCourses(id int) (*[]model.OfferedCourseRes, error) {
+func GetOfferedCourses() (*[]model.OfferedCourseRes, error) {
 	var offeredCoursesRes []model.OfferedCourseRes
 	err := db.Raw("select distinct oc.id, oc.term, c.name, c.number, c.credit, t.name as teacher_name, " +
 		"d.name as department " +
@@ -51,11 +51,6 @@ func GetOfferedCourseByID(id int) (*model.OfferedCourseRes, error) {
 	}
 	return &offeredCourseRes, nil
 }
-
-//func GetStudentsByOfferedCourseID(id int) (*[]model.StudentRes, error) {
-//	var studentsRes []model.StudentRes
-//
-//}
 
 // DeleteAllOfferedCourse 删除所有开课信息
 func DeleteAllOfferedCourse() {

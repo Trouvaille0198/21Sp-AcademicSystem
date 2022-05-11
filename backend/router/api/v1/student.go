@@ -81,3 +81,21 @@ func DeleteStudentByID(c *gin.Context) {
 	}
 	model.Ok(c)
 }
+
+// GetStudentsByOc godoc
+// @Summary      获取指定id的开课记录下所有学生信息及成绩
+// @Description  获取指定id的开课记录下所有学生信息及成绩
+// @Tags         student, offered_course
+// @Param        id   path      int  true  "offered_course ID"
+// @Success      200  {object}  []model.StudentWithScoreRes
+// @Router       /offered_course/{id}/student [get]
+func GetStudentsByOc(c *gin.Context) {
+	ocID, _ := utils.String2Int(c.Param("id"))
+
+	students, err := service.GetStudentsByOfferedCourse(ocID)
+	if err != nil {
+		model.FailWithMessage(err.Error(), c)
+		return
+	}
+	model.OkWithData(students, c)
+}
