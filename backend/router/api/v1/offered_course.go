@@ -24,7 +24,7 @@ func GetSelectedCourses(c *gin.Context) {
 	var courses *[]model.SelectedCourseRes
 	var sqlErr error
 	if !ok {
-		courses, sqlErr = service.GetSelectedCourses(studentID)
+		courses, sqlErr = service.GetSelectedCoursesByStu(studentID)
 	} else {
 		hasScore, err := strconv.ParseBool(hasScore)
 		if err != nil {

@@ -756,6 +756,9 @@ var doc = `{
                 "department": {
                     "type": "string"
                 },
+                "final_score": {
+                    "type": "integer"
+                },
                 "name": {
                     "type": "string"
                 },
@@ -779,12 +782,19 @@ var doc = `{
                 },
                 "term": {
                     "type": "string"
+                },
+                "usual_score": {
+                    "type": "integer"
                 }
             }
         },
         "model.Selection": {
             "type": "object",
             "properties": {
+                "examScore": {
+                    "description": "考试成绩, -1表示未评分",
+                    "type": "integer"
+                },
                 "id": {
                     "type": "integer"
                 },
@@ -796,7 +806,7 @@ var doc = `{
                     "type": "integer"
                 },
                 "score": {
-                    "description": "分数, -1表示未评分",
+                    "description": "总分, -1表示未评分",
                     "type": "integer"
                 },
                 "student": {
@@ -804,6 +814,10 @@ var doc = `{
                     "$ref": "#/definitions/model.Student"
                 },
                 "studentID": {
+                    "type": "integer"
+                },
+                "usualScore": {
+                    "description": "平时成绩, -1表示未评分",
                     "type": "integer"
                 }
             }

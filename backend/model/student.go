@@ -38,6 +38,9 @@ type StudentRes struct {
 	DepartmentName string `json:"department_name"`
 }
 
+type StudentWithScoreRes struct {
+}
+
 // BeforeDelete 删除学生时级联删除选课关系
 func (stu *Student) BeforeDelete(tx *gorm.DB) (err error) {
 	_ = tx.Where("student_id = ?", stu.ID).Unscoped().Delete(&Selection{}).RowsAffected

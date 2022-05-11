@@ -14,27 +14,29 @@ type Selection struct {
 
 	Student       Student
 	OfferedCourse OfferedCourse
-	Score         int `gorm:"default:-1"` // 分数, -1表示未评分
+	Score         int `gorm:"default:-1"` // 总分, -1表示未评分
+	UsualScore    int `gorm:"default:-1"` // 平时成绩, -1表示未评分
+	ExamScore     int `gorm:"default:-1"` // 考试成绩, -1表示未评分
 }
 
 // CreateSelectionsExample 创建课程关联实例
 func CreateSelectionsExample() (selections []Selection) {
 	selections = []Selection{
-		{StudentID: 1, OfferedCourseID: 1, Score: -1},
-		{StudentID: 1, OfferedCourseID: 2, Score: -1},
-		{StudentID: 1, OfferedCourseID: 4, Score: 75},
-		{StudentID: 1, OfferedCourseID: 3, Score: -1},
-		{StudentID: 1, OfferedCourseID: 6, Score: -1},
+		{StudentID: 1, OfferedCourseID: 1, Score: -1, UsualScore: -1, ExamScore: -1},
+		{StudentID: 1, OfferedCourseID: 2, Score: -1, UsualScore: -1, ExamScore: -1},
+		{StudentID: 1, OfferedCourseID: 4, Score: 75, UsualScore: 75, ExamScore: 75},
+		{StudentID: 1, OfferedCourseID: 3, Score: -1, UsualScore: -1, ExamScore: -1},
+		{StudentID: 1, OfferedCourseID: 6, Score: -1, UsualScore: -1, ExamScore: -1},
 
-		{StudentID: 2, OfferedCourseID: 1, Score: -1},
-		{StudentID: 2, OfferedCourseID: 3, Score: -1},
-		{StudentID: 2, OfferedCourseID: 4, Score: 93},
-		{StudentID: 2, OfferedCourseID: 5, Score: 70},
+		{StudentID: 2, OfferedCourseID: 1, Score: -1, UsualScore: -1, ExamScore: -1},
+		{StudentID: 2, OfferedCourseID: 3, Score: -1, UsualScore: -1, ExamScore: -1},
+		{StudentID: 2, OfferedCourseID: 4, Score: 93, UsualScore: 93, ExamScore: 93},
+		{StudentID: 2, OfferedCourseID: 5, Score: 70, UsualScore: 70, ExamScore: 70},
 
-		{StudentID: 3, OfferedCourseID: 4, Score: 68},
-		{StudentID: 1, OfferedCourseID: 6, Score: -1},
+		{StudentID: 3, OfferedCourseID: 4, Score: 68, UsualScore: 68, ExamScore: 68},
+		{StudentID: 1, OfferedCourseID: 6, Score: -1, UsualScore: -1, ExamScore: -1},
 
-		{StudentID: 5, OfferedCourseID: 4, Score: 85},
+		{StudentID: 5, OfferedCourseID: 4, Score: 85, UsualScore: 85, ExamScore: 85},
 	}
 
 	db.Model(&Selection{}).Create(&selections)

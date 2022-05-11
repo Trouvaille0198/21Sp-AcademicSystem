@@ -43,5 +43,5 @@ func main() {
 	initialize.Setup() // 初始化gorm数据库连接
 
 	r := router.NewRouter()
-	_ = r.Run(":8080")
+	_ = r.Run(":8081")
 }
