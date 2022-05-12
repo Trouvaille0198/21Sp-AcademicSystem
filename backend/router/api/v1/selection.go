@@ -3,119 +3,71 @@ package v1
 import (
 	"academic-system/model"
 	"academic-system/service"
-	"academic-system/utils"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 // UpdateSelectionScore godoc
 // @Summary      更新课程成绩
 // @Description  更新课程成绩
 // @Tags         selection, admin
-// @Param 		 student_id   path   string   true   "student ID"
-// @Param 		 course_id   path   string   true   "course ID"
-// @Param 		 score   formData   string   true   "score"
+// @Param 		 selection   body   model.SelectionUpdateReq    true   "选课信息"
 // @Success      200  {string} string
-// @Router       /student/{student_id}/course/{course_id} [put]
+// @Router       /selection [put]
 func UpdateSelectionScore(c *gin.Context) {
-	studentID, err1 := utils.String2Int(c.Param("student_id"))
-	courseID, err2 := utils.String2Int(c.Param("course_id"))
-	score, err3 := utils.String2Int(c.PostForm("score"))
-	if err1 != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "student_id 不合法！",
-		})
-		return
-	}
-	if err2 != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "course_id 不合法！",
-		})
-		return
-	}
-	if err3 != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "score 不合法！",
-		})
+	var selectionUpdateReq model.SelectionUpdateReq
+	if err := c.ShouldBindJSON(&selectionUpdateReq); err != nil {
+		model.FailWithMessage(err.Error(), c)
 		return
 	}
 
-	selection, err := service.GetSelection(studentID, courseID)
-	if err != nil || selection.ID == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "找不到选课记录",
-		})
-		return
-	}
-
-	err = service.UpdateSelectionScore(selection.ID, score)
+	err := service.UpdateSelectionScore(selectionUpdateReq)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "更新失败",
-			"error":   err.Error(),
-		})
+		model.FailWithMessage(err.Error(), c)
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"message": "更新成功",
-	})
+	model.Ok(c)
 }
 
 // CreateSelection godoc
 // @Summary      创建选课
 // @Description  创建选课
 // @Tags         selection
-// @Param 		 selection   body   model.Selection   true   "选课情况"
+// @Param 		 selection   body   model.SelectionCreateReq   true   "选课情况"
 // @Success      200  {string} string
 // @Router       /selection [post]
 func CreateSelection(c *gin.Context) {
 	var selection model.Selection
 	if err := c.ShouldBindJSON(&selection); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": err.Error(),
-		})
+		model.FailWithMessage(err.Error(), c)
 		return
 	}
 
 	newSelection, err := service.CreateSelection(selection)
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{
-			"message": "创建失败",
-			"error":   err.Error(),
-		})
+		model.FailWithMessage(err.Error(), c)
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"message":   "创建成功",
-		"selection": newSelection,
-	})
+	model.OkWithData(newSelection, c)
 }
 
 // DeleteSelection godoc
 // @Summary      删除选课
 // @Description  删除选课
 // @Tags         selection
-// @Param 		 selection   body   model.Selection   true   "选课情况"
+// @Param 		 selection   body   model.SelectionCreateReq   true   "选课情况"
 // @Success      200  {string} string
 // @Router       /selection [delete]
 func DeleteSelection(c *gin.Context) {
 	var selection model.Selection
 	if err := c.ShouldBindJSON(&selection); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": err.Error(),
-		})
+		model.FailWithMessage(err.Error(), c)
 		return
 	}
 
 	err := service.DeleteSelection(selection)
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{
-			"message": "删除失败",
-			"error":   err.Error(),
-		})
+		model.FailWithMessage(err.Error(), c)
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"message": "删除成功",
-	})
+	model.Ok(c)
 }

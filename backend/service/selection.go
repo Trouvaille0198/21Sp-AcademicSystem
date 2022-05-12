@@ -4,6 +4,7 @@ import (
 	"academic-system/model"
 	"errors"
 	"gorm.io/gorm"
+	"log"
 )
 
 // CreateSelectionsExample 创建课程关联实例
@@ -38,20 +39,23 @@ func CreateSelection(selection model.Selection) (*model.Selection, error) {
 		"student_id = ? AND offered_course_id = ?",
 		selection.StudentID, selection.OfferedCourseID).Find(&duplicatedResults).RowsAffected
 	if rowsAffected > 0 {
+
+		log.Printf("%+v \n", duplicatedResults[0])
+
 		return nil, errors.New("选课关系已存在！")
 	}
 
 	// 判断学生是否已选课名、学期均相同的课程
-	targetOc, err := model.GetOfferedCourseByID(int(selection.OfferedCourseID))
+	targetOc, err := GetOfferedCourseByID(int(selection.OfferedCourseID))
 	if err != nil {
 		return nil, errors.New("不存在该课程！")
 	}
-	coursesByStu, err := GetSelectedCourses(int(selection.StudentID))
+	coursesByStu, err := GetSelectedCoursesByStu(int(selection.StudentID))
 	if err != nil {
 		return nil, err
 	}
 	for _, course := range *coursesByStu {
-		if course.Name == targetOc.Course.Name && course.Term == targetOc.Term {
+		if course.Name == targetOc.Name && course.Term == targetOc.Term {
 			return nil, errors.New("学生已选课程名、学期均相同的课程！")
 		}
 	}
@@ -72,7 +76,7 @@ func UpdateSelection(id int, data map[string]interface{}) (err error) {
 // DeleteSelection 删除指定id选课记录
 func DeleteSelection(selection model.Selection) error {
 	result := db.Model(&model.Selection{}).Where(
-		"student_id = ? AND offered_course_id = ?", selection.StudentID, selection.OfferedCourseID).Unscoped().Delete(&Selection{})
+		"student_id = ? AND offered_course_id = ?", selection.StudentID, selection.OfferedCourseID).Unscoped().Delete(&model.Selection{})
 	err := result.Error
 	rowsAffected := result.RowsAffected
 	if err != nil {
@@ -95,26 +99,34 @@ func GetSelectionsByStudentID(studentID int) ([]*model.Selection, error) {
 
 // GetSelection 根据学生id和开课课程id获取选课记录
 func GetSelection(studentID, offeredCourseID int) (*model.Selection, error) {
-	var selection Selection
-	err := db.Model(&Selection{}).Where(
+	var selection model.Selection
+	err := db.Model(&model.Selection{}).Where(
 		"student_id = ? AND offered_course_id = ?", studentID, offeredCourseID).Find(&selection).Error
 	if err != nil || errors.Is(err, gorm.ErrRecordNotFound) {
-		return &Selection{}, err
+		return &model.Selection{}, err
 	}
 	return &selection, nil
 }
 
 // UpdateSelectionScore 更新课程成绩
-func UpdateSelectionScore(id uint, score int) error {
-	if score < 1 || score > 100 {
+func UpdateSelectionScore(selectionUpdateReq model.SelectionUpdateReq) error {
+	selection, err := GetSelection(int(selectionUpdateReq.StudentID), int(selectionUpdateReq.CourseID))
+	if err != nil || selection.ID == 0 {
+		return errors.New("没有此选课记录！")
+	}
+	usualScore := selectionUpdateReq.UsualScore
+	examScore := selectionUpdateReq.ExamScore
+	if usualScore < 1 || usualScore > 100 || examScore < 1 || examScore > 100 {
 		return errors.New("分数不合法！")
 	}
 
-	err := db.Model(&Selection{}).Where("id = ?", id).Updates(Selection{Score: score}).Error
+	err = db.Model(&model.Selection{}).
+		Where("id = ?", selection.ID).
+		Updates(model.Selection{UsualScore: usualScore, ExamScore: examScore}).Error
 	return err
 }
 
 // DeleteAllSelections 删除所有选课记录
 func DeleteAllSelections() {
-	db.Where("1 = 1").Delete(&Selection{})
+	db.Where("1 = 1").Delete(&model.Selection{})
 }
