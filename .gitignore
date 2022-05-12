@@ -1,3 +1,6 @@
+# Generated swag API docs
+/backend/docs/
+
 .secrets
 
 miniprogram_npm
@@ -18,5 +21,3 @@ node_modules
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
 
-# Dependency directories (remove the comment below to include it)
-# vendor/
