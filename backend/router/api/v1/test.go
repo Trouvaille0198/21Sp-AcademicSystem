@@ -34,7 +34,7 @@ func GenerateExamples(c *gin.Context) {
 	service.CreateTeachersExample()
 	service.CreateCoursesExample()
 	service.CreateOfferedCoursesExample()
-	model.CreateSelectionsExample()
+	service.CreateSelectionsExample()
 
 	model.OkWithMessage("生成样例数据成功", c)
 }
