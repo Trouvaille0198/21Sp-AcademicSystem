@@ -66,6 +66,7 @@ func NewRouter() *gin.Engine {
 		// 选课
 		rv1.POST("/selection", v1.CreateSelection)
 		rv1.DELETE("/selection", v1.DeleteSelection)
+		rv1.PUT("/selection", v1.UpdateSelection)
 	}
 	return r
 }

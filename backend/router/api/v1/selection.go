@@ -2,6 +2,7 @@ package v1
 
 import (
 	"academic-system/model"
+	"academic-system/service"
 	"academic-system/utils"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -39,7 +40,7 @@ func UpdateSelectionScore(c *gin.Context) {
 		return
 	}
 
-	selection, err := model.GetSelection(studentID, courseID)
+	selection, err := service.GetSelection(studentID, courseID)
 	if err != nil || selection.ID == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "找不到选课记录",
@@ -47,7 +48,7 @@ func UpdateSelectionScore(c *gin.Context) {
 		return
 	}
 
-	err = model.UpdateSelectionScore(selection.ID, score)
+	err = service.UpdateSelectionScore(selection.ID, score)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "更新失败",
@@ -76,7 +77,7 @@ func CreateSelection(c *gin.Context) {
 		return
 	}
 
-	newSelection, err := model.CreateSelection(selection)
+	newSelection, err := service.CreateSelection(selection)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{
 			"message": "创建失败",
@@ -106,7 +107,7 @@ func DeleteSelection(c *gin.Context) {
 		return
 	}
 
-	err := model.DeleteSelection(selection)
+	err := service.DeleteSelection(selection)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{
 			"message": "删除失败",
