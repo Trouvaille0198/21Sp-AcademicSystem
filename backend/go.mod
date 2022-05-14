@@ -3,12 +3,13 @@ module academic-system
 go 1.17
 
 require (
-	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
 	github.com/gin-contrib/cors v1.3.1
 	github.com/gin-gonic/gin v1.7.7
 	github.com/sirupsen/logrus v1.8.1
+	github.com/spf13/viper v1.11.0
 	github.com/swaggo/gin-swagger v1.3.2
-	github.com/swaggo/swag v1.6.7
+	github.com/swaggo/swag v1.7.9
+	gorm.io/driver/mysql v1.3.3
 	gorm.io/driver/sqlite v1.2.6
 	gorm.io/gorm v1.23.1
 )
@@ -47,7 +48,6 @@ require (
 	github.com/spf13/cast v1.4.1 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	github.com/spf13/viper v1.11.0 // indirect
 	github.com/subosito/gotenv v1.2.0 // indirect
 	github.com/ugorji/go/codec v1.2.6 // indirect
 	golang.org/x/crypto v0.0.0-20220411220226-7b82a4e95df4 // indirect
@@ -59,5 +59,4 @@ require (
 	gopkg.in/ini.v1 v1.66.4 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
-	gorm.io/driver/mysql v1.3.3 // indirect
 )
