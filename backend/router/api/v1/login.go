@@ -14,7 +14,7 @@ import (
 // @Produce      json
 // @Param        number   formData   string  true  "学号"
 // @Param        password   formData   string  true  "密码"
-// @Success 200
+// @Success      200  {object}  []model.Student
 // @Router       /login/student [post]
 func LoginAsStu(c *gin.Context) {
 	number := c.PostForm("number")
@@ -30,7 +30,7 @@ func LoginAsStu(c *gin.Context) {
 		model.FailWithMessage("密码错误", c)
 		return
 	}
-	model.OkWithMessage("登陆成功", c)
+	model.OkWithDetailed(student, "登陆成功", c)
 
 }
 
@@ -66,7 +66,7 @@ func LoginAsAdmin(c *gin.Context) {
 // @Param        password   formData   string  true  "密码"
 // @Accept       mpfd
 // @Produce      json
-// @Success      200
+// @Success      200  {object}  []model.Teacher
 // @Router       /login/teacher [post]
 func LoginAsTeacher(c *gin.Context) {
 	number := c.PostForm("number")
@@ -82,5 +82,5 @@ func LoginAsTeacher(c *gin.Context) {
 		model.FailWithMessage("密码错误", c)
 		return
 	}
-	model.OkWithMessage("登陆成功", c)
+	model.OkWithDetailed(teacher, "登陆成功", c)
 }

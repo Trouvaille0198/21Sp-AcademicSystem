@@ -25,16 +25,29 @@ func GetStudentByID(c *gin.Context) {
 	model.OkWithData(student, c)
 }
 
-// GetAllStudents godoc
+// GetStudents godoc
 // @Summary      获取所有学生信息
 // @Description  获取所有学生信息
 // @Tags         student
+// @Param        number query string false "学号, 可选"
 // @Success      200  {object}  []model.StudentRes
 // @Router       /student [get]
-func GetAllStudents(c *gin.Context) {
+func GetStudents(c *gin.Context) {
 	students, err := service.GetAllStudentsRes()
 	if err != nil {
 		model.FailWithMessage(err.Error(), c)
+		return
+	}
+
+	number, ok := c.GetQuery("number")
+	if ok {
+		for _, stu := range *students {
+			if stu.Number == number {
+				model.OkWithData(&[]model.StudentRes{stu}, c)
+				return
+			}
+		}
+		model.FailWithDetailed(&[]model.StudentRes{}, "没有找到学生", c)
 		return
 	}
 	model.OkWithData(students, c)
