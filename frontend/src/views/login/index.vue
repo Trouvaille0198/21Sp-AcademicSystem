@@ -16,8 +16,9 @@
           </div>
           <div>
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-              <el-form-item label="用户 id" prop="id">
-                <el-input v-model.number="ruleForm.id" prefix-icon="el-icon-lollipop"></el-input>
+              <el-form-item label="用户账号" prop="number">
+                <el-input v-model="ruleForm.number" placeholder="请输入账号" prefix-icon="el-icon-lollipop"></el-input>
+            <!-- 之前上方是v-model.number="..."    目的是让账号不是0开头的，现在不需要，故去掉 -->
               </el-form-item>
               <el-form-item label="用户密码" prop="password">
                 <el-input v-model="ruleForm.password" placeholder="请输入密码" show-password prefix-icon="el-icon-ice-cream-round"></el-input>
@@ -26,7 +27,7 @@
                 <el-radio-group v-model="ruleForm.type">
                   <el-radio label="student" value="student">学生</el-radio>
                   <el-radio label="teacher" value="teacher">老师</el-radio>
-                  <el-radio label="admin" value="admin">admin</el-radio>
+                  <el-radio label="admin" value="admin">管理员</el-radio>
                 </el-radio-group>
               </el-form-item>
               <el-form-item>
@@ -46,14 +47,14 @@ export default {
   data() {
     return {
       ruleForm: {
-        id: null,
-        password: null,
-        type: null,
+        number: null, // 学号
+        password: null, // 密码
+        type: null, // 用户类型  admin、student、teacher
       },
       rules: {
-        id: [
-          { required: true, message: '请输入用户 id', trigger: 'blur' },
-          { type: 'number', message: '请输入数字', trigger: 'blur' },
+        number: [
+          { required: true, message: '请输入用户 number', trigger: 'blur' },
+          // { type: 'number', message: '请输入数字', trigger: 'blur' },  // 加这里是让账号不是0开头的
         ],
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' }
@@ -69,34 +70,39 @@ export default {
       const that = this
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          let check = false
+          let check = 7
           let name = null
 
-          axios.get('http://localhost:10086/info/getCurrentTerm').then(function (resp) {
-            sessionStorage.setItem("currentTerm", resp.data)
-          })
+          // axios.get('http://localhost:16/info/getCurrentTerm').then(function (resp) {
+          //   sessionStorage.setItem("currentTerm", resp.data)
+          // })
+          sessionStorage.setItem("currentTerm", "22-春季学期")    // 暂时写死
+          sessionStorage.setItem("ForbidCourseSelection", false)  // 暂时写死
+          // axios.get('http://localhost:16/info/getForbidCourseSelection').then(function (resp) {
+          //   sessionStorage.setItem("ForbidCourseSelection", resp.data)
+          // })
 
-          axios.get('http://localhost:10086/info/getForbidCourseSelection').then(function (resp) {
-            sessionStorage.setItem("ForbidCourseSelection", resp.data)
-          })
-
-          if (that.ruleForm.type === 'admin' || that.ruleForm.type === 'teacher') {
-            let form = {tid: that.ruleForm.id, password: that.ruleForm.password}
+          if (that.ruleForm.type === 'admin') {
+            let form = new FormData();
+            form.append("number", this.ruleForm.number)
+            form.append("password", this.ruleForm.password)
+            
             console.log(form)
-            axios.post("http://localhost:10086/teacher/login", form).then(function (resp) {
-              console.log("教师登陆验证信息：" + resp.data)
-              check = resp.data
-              if (check === true) {
-                axios.get("http://localhost:10086/teacher/findById/" + that.ruleForm.id).then(function (resp) {
-                  console.log("登陆页正在获取用户信息" + resp.data)
-                  name = resp.data.tname
+            axios.post("http://1.15.130.83:8080/api/v1/login/admin", form).then(function (resp) {
+              console.log("管理员登陆验证信息：" + resp.data.code)
+              check = resp.data.code
+              if (check === 0) {
+                  name = "admin"
 
                   sessionStorage.setItem("token", 'true')
                   sessionStorage.setItem("type", that.ruleForm.type)
                   sessionStorage.setItem("name", name)
-                  sessionStorage.setItem("tid", resp.data.tid)
+                  sessionStorage.setItem("number", "123")
 
-                  console.log('name: ' + name + ' ' + that.ruleForm.type + ' ' + resp.data.tid)
+                  
+
+
+                  console.log('name: ' + name + ' ' + that.ruleForm.type + ' ' + "123")
 
                   if (that.ruleForm.type === 'admin' && name === 'admin') {
                     that.$message({
@@ -106,7 +112,49 @@ export default {
                     });
                     that.$router.push('/admin')
                   }
-                  else if(that.ruleForm.type === 'teacher' && name !== 'admin') {
+                  else {
+                    that.$message({
+                      showClose: true,
+                      message: 'admin 登陆失败，检查登陆类型',
+                      type: 'error'
+                    });
+                  }
+              }
+              else {
+                that.$message({
+                  showClose: true,
+                  message: '登陆失败，检查账号密码',
+                  type: 'error'
+                });
+              }
+            })
+          }
+
+
+
+          else if (that.ruleForm.type === 'teacher') {
+            let form = new FormData();
+            form.append("number", this.ruleForm.number)
+            form.append("password", this.ruleForm.password)
+            
+            console.log(form)
+            axios.post("http://1.15.130.83:8080/api/v1/login/teacher", form).then(function (resp) {
+              console.log("教师登陆验证信息：" + resp.data.code)
+              check = resp.data.code  // 值为0或7  ：0 true  7 false
+              console.log("登录状态:"+resp.data.msg)  // 测试
+              let id = resp.data.data.ID  // 这里一定是两个data，因为是从resp的data中读取名为data的字段
+              console.log("登录ID:"+id)  // 测试
+              if (check === 0) {
+                axios.get("http://1.15.130.83:8080/api/v1/teacher/" + id).then(function (resp) {
+                  console.log("登陆页正在获取用户信息" + resp.data.data.name)
+                  name = resp.data.data.name
+                  console.log("测试session的name:" + name)  // 测试
+                  sessionStorage.setItem("token", 'true')
+                  sessionStorage.setItem("type", that.ruleForm.type)
+                  sessionStorage.setItem("name", name)                
+                  sessionStorage.setItem("number", resp.data.data.number)
+
+                  if(that.ruleForm.type === 'teacher' && name !== 'admin') {
                     that.$message({
                       showClose: true,
                       message: '登陆成功，欢迎 ' + name + '!',
@@ -117,7 +165,7 @@ export default {
                   else {
                     that.$message({
                       showClose: true,
-                      message: 'admin 登陆失败，检查登陆类型',
+                      message: 'teacher 登陆失败，检查登陆类型',
                       type: 'error'
                     });
                   }
@@ -132,20 +180,35 @@ export default {
               }
             })
           }
-          else if (that.ruleForm.type === 'student') {
-            let form = {sid: that.ruleForm.id, password: that.ruleForm.password}
-            axios.post("http://localhost:10086/student/login", form).then(function (resp) {
-              console.log("学生登陆验证信息：" + resp.data)
-              check = resp.data
-              if (check === true) {
-                axios.get("http://localhost:10086/student/findById/" + that.ruleForm.id).then(function (resp) {
-                  console.log("登陆页正在获取用户信息" + resp.data)
-                  name = resp.data.sname
 
+
+          else if (that.ruleForm.type === 'student') {
+            console.log("测试：准备登录")   // 测试
+            let form = new FormData();
+            form.append("number", this.ruleForm.number)
+            form.append("password", this.ruleForm.password)
+            console.log(this.ruleForm.number)   // 测试
+            console.log(this.ruleForm.password)   // 测试
+
+            console.log(form.number)   // 测试为undefined  FormData对象只有一个.append()方法,它不会向其追加属性,而只存储提供的数据
+            console.log(form.password)   // 测试为undefined  FormData对象只有一个.append()方法,它不会向其追加属性,而只存储提供的数据
+
+            axios.post("http://1.15.130.83:8080/api/v1/login/student", form).then(function (resp) {
+              console.log("学生登陆验证信息：" + resp.data.code)
+              check = resp.data.code  // 值为0或7  ：0 true  7 false
+              console.log("登录状态:"+resp.data.msg)  // 测试
+              let id = resp.data.data.ID  // 这里一定是两个data，因为是从resp的data中读取名为data的字段
+              console.log("登录ID:"+id)  // 测试
+              if (check === 0) {
+                axios.get("http://1.15.130.83:8080/api/v1/student/" + id).then(function (resp) {
+                  console.log("登陆页正在获取用户信息" + resp.data.data.name)
+                  name = resp.data.data.name
+                  console.log("测试session的name:" + name)  // 测试
+                  sessionStorage.setItem("id", id)
                   sessionStorage.setItem("token", 'true')
                   sessionStorage.setItem("type", that.ruleForm.type)
-                  sessionStorage.setItem("name", name)
-                  sessionStorage.setItem("sid", resp.data.sid)
+                  sessionStorage.setItem("name", name)                
+                  sessionStorage.setItem("number", resp.data.data.number)
 
                   that.$message({
                     showClose: true,

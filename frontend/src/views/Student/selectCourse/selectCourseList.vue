@@ -8,23 +8,23 @@
         style="width: 100%">
       <el-table-column
           fixed
-          prop="cid"
-          label="课号"
-          width="150">
-      </el-table-column>
-      <el-table-column
-          prop="cname"
+          prop="courseNumber"
           label="课程号"
           width="150">
       </el-table-column>
       <el-table-column
-          prop="tid"
+          prop="courseID"
+          label="课程ID"
+          width="150">
+      </el-table-column>
+      <el-table-column
+          prop="teacherNumber"
           label="教师号"
           width="150">
       </el-table-column>
       <el-table-column
-          prop="tname"
-          label="教师名称"
+          prop="teacherID"
+          label="教师ID"
           width="150">
       </el-table-column>
       <el-table-column
@@ -60,9 +60,9 @@ export default {
   methods: {
     select(row) {
       console.log(row)
-      const cid = row.cid
-      const tid = row.tid
-      const sid = sessionStorage.getItem('sid')
+      const cid = 1
+      const tid = 1
+      const sid = sessionStorage.getItem('id')
       const term = sessionStorage.getItem('currentTerm')
       const sct = {
         cid: cid,

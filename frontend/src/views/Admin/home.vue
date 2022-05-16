@@ -2,13 +2,13 @@
   <div>
     <el-container>
       <el-main>
-        <h1>admin home</h1>
+        <h1>管理员主页面</h1>
         <el-card style="width: 40%">
-          <p><i class="el-icon-s-home" style="margin-right: 18px"></i>项目名：学生管理系统</p>
-          <p><i class="el-icon-s-custom" style="margin-right: 18px"></i>开发人员：auggie</p>
+          <p><i class="el-icon-s-home" style="margin-right: 18px"></i>数据库2实验——教务管理系统</p>
           <p><i class="el-icon-location-outline" style="margin-right: 18px"></i>上海大学</p>
-          <p><i class="el-icon-chat-round" style="margin-right: 18px"></i>QQ: 1434919953</p>
-          <p><i class="el-icon-error" style="margin-right: 18px;"></i>仅供学习，禁止抄袭</p>
+          <!-- <p><i class="el-icon-s-custom" style="margin-right: 18px"></i>作者：</p>
+          <p><i class="el-icon-chat-round" style="margin-right: 18px"></i>QQ: </p>
+          <p><i class="el-icon-error" style="margin-right: 18px;"></i>仅供学习，禁止抄袭</p> -->
         </el-card>
         <logout></logout>
       </el-main>
