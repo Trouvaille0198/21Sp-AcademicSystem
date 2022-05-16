@@ -3,7 +3,8 @@
     <el-container>
       <el-main>
         <el-card>
-          <el-form :inline="true" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="150px" class="demo-ruleForm">
+          <el-form :inline="true" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="150px"
+            class="demo-ruleForm">
             <el-form-item label="教师号" prop="teacherNumber">
               <el-input v-model.number="ruleForm.tid"></el-input>
             </el-form-item>
@@ -37,7 +38,7 @@
 <script>
 import SelectCourseList from "@/views/Student/selectCourse/selectCourseList";
 export default {
-  components: {SelectCourseList},
+  components: { SelectCourseList },
   data() {
     return {
       ruleForm: {
