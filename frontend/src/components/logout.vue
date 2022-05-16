@@ -1,8 +1,8 @@
 <template>
   <div>
       <el-popconfirm
-          confirm-button-text='好的'
-          cancel-button-text='不用了'
+          confirm-button-text='确认'
+          cancel-button-text='取消'
           icon="el-icon-info"
           icon-color="red"
           title="确定退出登陆吗？"

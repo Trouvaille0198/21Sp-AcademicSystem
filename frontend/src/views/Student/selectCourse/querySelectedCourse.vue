@@ -1,3 +1,5 @@
+<!-- 学生/选课管理/查询课表 -->
+
 <template>
   <div>
     <el-card>
@@ -7,27 +9,27 @@
           style="width: 100%">
         <el-table-column
             fixed
-            prop="cid"
-            label="课号"
-            width="150">
-        </el-table-column>
-        <el-table-column
-            prop="cname"
+            prop="number"
             label="课程号"
             width="150">
         </el-table-column>
         <el-table-column
-            prop="tid"
-            label="教师号"
+            prop="name"
+            label="课程名"
             width="150">
         </el-table-column>
         <el-table-column
-            prop="tname"
-            label="教师名称"
+            prop="teacher_name"
+            label="教师名"
             width="150">
         </el-table-column>
         <el-table-column
-            prop="ccredit"
+            prop="offered_course_id"
+            label="课程ID"
+            width="150">
+        </el-table-column>
+        <el-table-column
+            prop="credit"
             label="学分"
             width="150">
         </el-table-column>
@@ -64,20 +66,58 @@
 export default {
   methods: {
     deleteSCT(row) {
-      const cid = row.cid
-      const tid = row.tid
-      const sid = sessionStorage.getItem('sid')
-      const term = sessionStorage.getItem('currentTerm')
-      const sct = {
-        cid: cid,
-        tid: tid,
-        sid: sid,
-        term: term
-      }
+      // let courseNumber = row.number
+      let courseID = 0 
+      courseID = row.offered_course_id
+      let sid = 0 
+      sid = sessionStorage.getItem('id')
 
+      // let sct = new FormData();
+
+      // axios.get("http://1.15.130.83:8080/api/v1/student/" + sid + "/selected_course").then(function (resp) {
+      //   console.log("测试查询课程的api状态code:"+resp.data.code)  // 测试
+        // for (let i = 0; i < resp.data.data.length; i++) {
+        //   if (resp.data.data[i].number === courseNumber) {
+        //     courseID = resp.data.data[i].offered_course_id
+        //     sct.append("offeredCourseID", resp.data.data[i].offered_course_id)
+        //     console.log("courseID 1：" + courseID)  // 测试
+        //     break
+        //   }
+
+        // }
+      // })
+      // courseID = 6
+      // sct.append("offeredCourseID", 6)
+      // console.log("courseID 1：" + courseID)  // 测试
+      // setTimeout(function(){
+      //   console.log("sleep 1 seconds");
+      // },1000);
+
+
+      // console.log("courseID 2：" + courseID)  // 测试
+      // sct.append("studentID", sid)
       const that = this
-      axios.post('http://localhost:10086/SCT/deleteBySCT', sct).then(function (resp) {
-        if (resp.data === true) {
+      // console.log("student id：" + sid)  // 测试
+
+      // console.log("courseID 3：" + courseID)  // 测试
+
+
+      var config = {
+        method: 'delete',
+        url: 'http://1.15.130.83:8080/api/v1/selection',
+        data : {
+          offeredCourseID : parseInt(courseID),
+          studentID : parseInt(sid)
+        },
+        headers: { 'content-type': 'application/json',}
+      };
+
+
+      axios(config).then(function (resp) {
+        console.log("courseID api：" + courseID)  // 测试
+        console.log("student api：" + sid)  // 测试
+        console.log("退课的resp.data.msg：" + resp.data.msg)  // 测试
+        if (resp.data.code === 0) {
           that.$message({
             showClose: true,
             message: '退课成功',
@@ -109,17 +149,28 @@ export default {
       tableData: null,
       pageSize: 10,
       total: null,
-      tmpList: null,
+      tmpList: [],
       type: sessionStorage.getItem('type')
     }
   },
   created() {
-    const sid = sessionStorage.getItem('sid')
+    const sid = sessionStorage.getItem('id')
+    console.log("测试sid：" + sid)  // 测试
     const term = sessionStorage.getItem('currentTerm')
+    console.log("测试term：" + term)  // 测试
     const that = this
-    axios.get('http://localhost:10086/SCT/findBySid/' + sid + '/' + term).then(function (resp) {
-      that.tmpList = resp.data
-      that.total = resp.data.length
+    axios.get('http://1.15.130.83:8080/api/v1/student/' + sid + '/selected_course').then(function (resp) {
+      console.log("测试resp.data.data.length：" + resp.data.data.length)  // 测试
+      for (let i = 0; i < resp.data.data.length; i++) {
+        if (resp.data.data[i].term === term) {
+          console.log("测试resp.data.data[i].term：" + resp.data.data[i].term + "    ,i:" + i)  // 测试
+          that.tmpList.push(resp.data.data[i])
+        }
+          
+      }
+      console.log("测试that.tmpList.length：" + that.tmpList.length)  // 测试
+      
+      that.total = that.tmpList.length
       let start = 0, end = that.pageSize
       let length = that.tmpList.length
       let ans = (end < length) ? end : length

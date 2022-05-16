@@ -4,7 +4,7 @@
       <el-card>
         <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
           <el-form-item label="姓名" prop="name">
-            <el-input v-model.name="ruleForm.name" :value="ruleForm.name"></el-input>
+            <el-input v-model="ruleForm.name" :value="ruleForm.name"></el-input>
           </el-form-item>
           <el-form-item label="密码" prop="pass">
             <el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
@@ -74,16 +74,16 @@ export default {
           if (type === 'student') {
             ss = 'Student'
             form = {
-              sid: sessionStorage.getItem('sid'),
-              sname: that.ruleForm.name,
+              number: sessionStorage.getItem('number'),
+              name: that.ruleForm.name,
               password: that.ruleForm.pass,
             }
           }
           else {
             ss = 'Teacher'
             form = {
-              tid: sessionStorage.getItem('tid'),
-              tname: that.ruleForm.name,
+              number: sessionStorage.getItem('number'),
+              name: that.ruleForm.name,
               password: that.ruleForm.pass,
             }
           }

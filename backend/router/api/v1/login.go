@@ -1,9 +1,9 @@
 package v1
 
 import (
+	"academic-system/model"
 	"academic-system/service"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 // LoginAsStu godoc
@@ -14,7 +14,7 @@ import (
 // @Produce      json
 // @Param        number   formData   string  true  "学号"
 // @Param        password   formData   string  true  "密码"
-// @Success      200  {object}  model.Student
+// @Success      200  {object}  []model.Student
 // @Router       /login/student [post]
 func LoginAsStu(c *gin.Context) {
 	number := c.PostForm("number")
@@ -22,21 +22,15 @@ func LoginAsStu(c *gin.Context) {
 
 	student, err := service.GetStudentByNumber(number)
 	if err != nil || student.ID == 0 {
-		c.JSON(http.StatusNotFound, gin.H{
-			"message": "找不到此账号",
-		})
+		model.FailWithMessage("找不到此账号", c)
 		return
 	}
 	// 简单地验证一下密码
 	if student.Password != password {
-		c.JSON(http.StatusUnauthorized, gin.H{
-			"message": "密码错误",
-		})
+		model.FailWithMessage("密码错误", c)
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"student": student,
-	})
+	model.OkWithDetailed(student, "登陆成功", c)
 
 }
 
@@ -56,15 +50,11 @@ func LoginAsAdmin(c *gin.Context) {
 
 	// 简单地验证一下账号和密码
 	if number != "123" || password != "123" {
-		c.JSON(http.StatusUnauthorized, gin.H{
-			"message": "账号密码错误",
-		})
+		model.FailWithMessage("账号和密码错误", c)
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"message": "登录成功",
-	})
+	model.OkWithMessage("登陆成功", c)
 
 }
 
@@ -76,7 +66,7 @@ func LoginAsAdmin(c *gin.Context) {
 // @Param        password   formData   string  true  "密码"
 // @Accept       mpfd
 // @Produce      json
-// @Success      200
+// @Success      200  {object}  []model.Teacher
 // @Router       /login/teacher [post]
 func LoginAsTeacher(c *gin.Context) {
 	number := c.PostForm("number")
@@ -84,19 +74,13 @@ func LoginAsTeacher(c *gin.Context) {
 
 	teacher, err := service.GetTeacherByNumber(number)
 	if err != nil || teacher.ID == 0 {
-		c.JSON(http.StatusNotFound, gin.H{
-			"message": "找不到此账号",
-		})
+		model.FailWithMessage("找不到此账号", c)
 		return
 	}
 	// 简单地验证一下密码
 	if teacher.Password != password {
-		c.JSON(http.StatusUnauthorized, gin.H{
-			"message": "密码错误",
-		})
+		model.FailWithMessage("密码错误", c)
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"teacher": teacher,
-	})
+	model.OkWithDetailed(teacher, "登陆成功", c)
 }

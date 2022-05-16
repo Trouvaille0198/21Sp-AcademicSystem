@@ -52,6 +52,7 @@ func GetOfferedCourseByID(c *gin.Context) {
 // @Produce      json
 // @Param 		 id   path   int   true   "student ID"
 // @Param        hasScore query bool false "是否有成绩 不写即全部返回"
+// @Param        term query string false "指定学期"
 // @Success      200  {object}  []model.SelectedCourseRes
 // @Router       /student/{id}/selected_course [get]
 func GetSelectedCourses(c *gin.Context) {

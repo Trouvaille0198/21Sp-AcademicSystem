@@ -5,6 +5,7 @@ type OfferedCourse struct {
 	ID   uint   `gorm:"primarykey"`
 	Term string // 学期
 
+	Course    Course
 	CourseID  uint // 课号
 	TeacherID uint // 教师工号
 
