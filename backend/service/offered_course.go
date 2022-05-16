@@ -9,14 +9,23 @@ import (
 // CreateOfferedCoursesExample 创建课程样例
 func CreateOfferedCoursesExample() (offeredCourses []model.OfferedCourse) {
 	offeredCourses = []model.OfferedCourse{
-		{Term: "21-冬季学期", TeacherID: 1, CourseID: 1},
-		{Term: "22-春季学期", TeacherID: 3, CourseID: 3},
-		{Term: "21-冬季学期", TeacherID: 2, CourseID: 4},
-		{Term: "21-春季学期", TeacherID: 2, CourseID: 2},
-		{Term: "21-秋季学期", TeacherID: 1, CourseID: 1},
-		{Term: "22-春季学期", TeacherID: 2, CourseID: 6},
-		{Term: "22-春季学期", TeacherID: 3, CourseID: 8},
-		{Term: "22-春季学期", TeacherID: 1, CourseID: 7},
+		{Term: "21-秋季学期", TeacherID: 5, CourseID: 9},  // 1 大物
+		{Term: "21-秋季学期", TeacherID: 6, CourseID: 10}, // 2 大英
+		{Term: "21-秋季学期", TeacherID: 1, CourseID: 1},  // 3 算法设计与分析
+		{Term: "21-秋季学期", TeacherID: 2, CourseID: 2},  // 4 操作系统(1)
+		{Term: "21-秋季学期", TeacherID: 3, CourseID: 2},  // 5 操作系统(1)
+
+		{Term: "21-冬季学期", TeacherID: 1, CourseID: 4}, // 6 操作系统(2)
+		{Term: "21-冬季学期", TeacherID: 2, CourseID: 4}, // 7 操作系统(2)
+		{Term: "21-冬季学期", TeacherID: 2, CourseID: 3}, // 8 数据库原理(1)
+		{Term: "21-冬季学期", TeacherID: 3, CourseID: 3}, // 9 数据库原理(1)
+		{Term: "21-冬季学期", TeacherID: 4, CourseID: 7}, // 10 数字电路
+
+		{Term: "22-春季学期", TeacherID: 1, CourseID: 5}, // 11 数据库原理(2)
+		{Term: "22-春季学期", TeacherID: 3, CourseID: 5}, // 12 数据库原理(2)
+		{Term: "22-春季学期", TeacherID: 1, CourseID: 6}, // 13 编译原理
+		{Term: "22-春季学期", TeacherID: 2, CourseID: 6}, // 14 编译原理
+		{Term: "22-春季学期", TeacherID: 4, CourseID: 8}, // 15 模拟电路
 	}
 
 	db.Model(&model.OfferedCourse{}).Create(&offeredCourses)

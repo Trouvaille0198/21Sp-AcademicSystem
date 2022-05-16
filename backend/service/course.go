@@ -10,14 +10,16 @@ import (
 // CreateCoursesExample 创建课程样例
 func CreateCoursesExample() (courses []model.Course) {
 	courses = []model.Course{
-		{Number: "0121", Name: "数据库原理(1)", Credit: 4, DepartmentID: 1},
-		{Number: "0122", Name: "数据库原理(2)", Credit: 4, DepartmentID: 1},
-		{Number: "0830", Name: "操作系统(2)", Credit: 5, DepartmentID: 1},
-		{Number: "0451", Name: "大学物理(3)", Credit: 2, DepartmentID: 2},
-		{Number: "0279", Name: "算法设计与分析", Credit: 2, DepartmentID: 3},
-		{Number: "0022", Name: "编译原理", Credit: 4, DepartmentID: 2},
-		{Number: "0023", Name: "编译原理", Credit: 4, DepartmentID: 3},
-		{Number: "0024", Name: "编译原理", Credit: 4, DepartmentID: 1},
+		{Number: "j0001", Name: "算法设计与分析", Credit: 4, DepartmentID: 1},
+		{Number: "j0002", Name: "操作系统(1)", Credit: 5, DepartmentID: 1},
+		{Number: "j1001", Name: "数据库原理(1)", Credit: 4, DepartmentID: 1},
+		{Number: "j1002", Name: "操作系统(2)", Credit: 5, DepartmentID: 1},
+		{Number: "j2001", Name: "数据库原理(2)", Credit: 4, DepartmentID: 1},
+		{Number: "j2002", Name: "编译原理", Credit: 3, DepartmentID: 1},
+		{Number: "t1001", Name: "数字电路", Credit: 5, DepartmentID: 2},
+		{Number: "t1002", Name: "模拟电路", Credit: 5, DepartmentID: 2},
+		{Number: "l0001", Name: "大学物理", Credit: 4, DepartmentID: 3},
+		{Number: "w0001", Name: "大学英语", Credit: 3, DepartmentID: 4},
 	}
 	db.Model(&model.Course{}).Create(&courses)
 	return

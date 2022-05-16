@@ -10,11 +10,12 @@ import (
 // CreateTeachersExample 创建教师样例
 func CreateTeachersExample() (teachers []model.Teacher) {
 	teachers = []model.Teacher{
-		{Number: "0596", Name: "老师A", Sex: "男", Age: 41, DepartmentID: 1},
-		{Number: "0597", Name: "老师B", Sex: "女", Age: 32, DepartmentID: 2},
-		{Number: "0598", Name: "老师C", Sex: "男", Age: 50, DepartmentID: 3},
-		{Number: "0599", Name: "老师D", Sex: "女", Age: 44, DepartmentID: 4},
-		{Number: "0600", Name: "老师E", Sex: "男", Age: 38, DepartmentID: 1},
+		{Number: "0001", Name: "计算机老师A", Sex: "男", Age: 41, DepartmentID: 1},
+		{Number: "0002", Name: "计算机老师B", Sex: "女", Age: 32, DepartmentID: 1},
+		{Number: "0003", Name: "计算机老师C", Sex: "女", Age: 32, DepartmentID: 1},
+		{Number: "0004", Name: "通讯老师A", Sex: "男", Age: 50, DepartmentID: 2},
+		{Number: "0005", Name: "物理老师A", Sex: "女", Age: 44, DepartmentID: 3},
+		{Number: "0006", Name: "英语老师A", Sex: "男", Age: 38, DepartmentID: 4},
 	}
 
 	db.Model(&model.Teacher{}).Create(&teachers)

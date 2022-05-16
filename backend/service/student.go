@@ -11,10 +11,10 @@ import (
 func CreateStudentsExample() (students []model.Student) {
 	students = []model.Student{
 		{Number: "0196", Name: "学生A", Sex: "男", Age: 21, DepartmentID: 1},
-		{Number: "0197", Name: "学生B", Sex: "女", Age: 22, DepartmentID: 2},
-		{Number: "0198", Name: "学生C", Sex: "男", Age: 20, DepartmentID: 3},
-		{Number: "0199", Name: "学生D", Sex: "女", Age: 21, DepartmentID: 4},
-		{Number: "0200", Name: "学生E", Sex: "男", Age: 21, DepartmentID: 1},
+		{Number: "0197", Name: "学生B", Sex: "女", Age: 22, DepartmentID: 1},
+		{Number: "0198", Name: "学生C", Sex: "男", Age: 20, DepartmentID: 1},
+		{Number: "0199", Name: "学生D", Sex: "女", Age: 21, DepartmentID: 1},
+		{Number: "1200", Name: "学生E", Sex: "男", Age: 21, DepartmentID: 2},
 	}
 
 	db.Model(&model.Student{}).Create(&students)

@@ -10,7 +10,8 @@ import (
 // CreateSelectionsExample 创建课程关联实例
 func CreateSelectionsExample() (selections []model.Selection) {
 	selections = []model.Selection{
-		{StudentID: 1, OfferedCourseID: 1, Score: -1},
+		{StudentID: 1, OfferedCourseID: 9, UsualScore: 77, ExamScore: 91, Score: -1},
+		{StudentID: 1, OfferedCourseID: 10, Score: -1},
 		{StudentID: 1, OfferedCourseID: 2, Score: -1},
 		{StudentID: 1, OfferedCourseID: 4, Score: 75},
 		{StudentID: 1, OfferedCourseID: 3, Score: -1},
