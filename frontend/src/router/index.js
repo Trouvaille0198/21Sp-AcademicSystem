@@ -300,7 +300,7 @@ const routes = [
     children: [
       {
         path: '/student',
-        name: 'hi! student',
+        name: '主页面',
         component: studentHome,
         meta: {requireAuth: true},
         children: [
@@ -312,20 +312,20 @@ const routes = [
           },
         ],
       },
-      {
-        path: '/updateInfo',
-        name: '学生编辑',
-        component: updateInfo,
-        meta: {requireAuth: true},
-        children: [
-          {
-            path: '/updateInfoHome',
-            name: '编辑学生信息',
-            component: updateInfo,
-            meta: {requireAuth: true}
-          }
-        ]
-      },
+      // {
+      //   path: '/updateInfo',
+      //   name: '学生编辑',
+      //   component: updateInfo,
+      //   meta: {requireAuth: true},
+      //   children: [
+      //     {
+      //       path: '/updateInfoHome',
+      //       name: '编辑学生信息',
+      //       component: updateInfo,
+      //       meta: {requireAuth: true}
+      //     }
+      //   ]
+      // },
       {
         path: '/studentSelectCourseManage',
         name: '选课管理',
