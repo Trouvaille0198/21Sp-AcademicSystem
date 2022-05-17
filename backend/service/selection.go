@@ -10,22 +10,41 @@ import (
 // CreateSelectionsExample 创建课程关联实例
 func CreateSelectionsExample() (selections []model.Selection) {
 	selections = []model.Selection{
-		{StudentID: 1, OfferedCourseID: 9, UsualScore: 77, ExamScore: 91, Score: -1},
-		{StudentID: 1, OfferedCourseID: 10, Score: -1},
-		{StudentID: 1, OfferedCourseID: 2, Score: -1},
-		{StudentID: 1, OfferedCourseID: 4, Score: 75},
-		{StudentID: 1, OfferedCourseID: 3, Score: -1},
-		{StudentID: 1, OfferedCourseID: 6, Score: -1},
+		{StudentID: 1, OfferedCourseID: 1, UsualScore: 70, ExamScore: 80, Score: -1},
+		{StudentID: 1, OfferedCourseID: 2, UsualScore: 88, ExamScore: 90, Score: -1},
+		{StudentID: 1, OfferedCourseID: 3, UsualScore: 60, ExamScore: 70, Score: -1},
+		{StudentID: 1, OfferedCourseID: 4, UsualScore: 90, ExamScore: 88, Score: -1},
+		{StudentID: 1, OfferedCourseID: 6, UsualScore: -1, ExamScore: -1, Score: -1},
+		{StudentID: 1, OfferedCourseID: 8, UsualScore: 90, ExamScore: -1, Score: -1},
+		{StudentID: 1, OfferedCourseID: 11, UsualScore: -1, ExamScore: -1, Score: -1},
+		{StudentID: 1, OfferedCourseID: 13, UsualScore: -1, ExamScore: -1, Score: -1},
 
-		{StudentID: 2, OfferedCourseID: 1, Score: -1},
-		{StudentID: 2, OfferedCourseID: 3, Score: -1},
-		{StudentID: 2, OfferedCourseID: 4, Score: 93},
-		{StudentID: 2, OfferedCourseID: 5, Score: 70},
+		{StudentID: 2, OfferedCourseID: 1, UsualScore: 66, ExamScore: 70, Score: -1},
+		{StudentID: 2, OfferedCourseID: 2, UsualScore: 93, ExamScore: 87, Score: -1},
+		{StudentID: 2, OfferedCourseID: 4, UsualScore: 78, ExamScore: 68, Score: -1},
+		{StudentID: 2, OfferedCourseID: 6, UsualScore: -1, ExamScore: -1, Score: -1},
+		{StudentID: 2, OfferedCourseID: 8, UsualScore: -1, ExamScore: -1, Score: -1},
+		{StudentID: 2, OfferedCourseID: 13, UsualScore: -1, ExamScore: -1, Score: -1},
 
-		{StudentID: 3, OfferedCourseID: 4, Score: 68},
-		{StudentID: 1, OfferedCourseID: 6, Score: -1},
+		{StudentID: 3, OfferedCourseID: 1, UsualScore: 76, ExamScore: 70, Score: -1},
+		{StudentID: 3, OfferedCourseID: 2, UsualScore: 84, ExamScore: 87, Score: -1},
+		{StudentID: 3, OfferedCourseID: 3, UsualScore: 68, ExamScore: 68, Score: -1},
+		{StudentID: 3, OfferedCourseID: 5, UsualScore: 78, ExamScore: 68, Score: -1},
+		{StudentID: 3, OfferedCourseID: 7, UsualScore: -1, ExamScore: -1, Score: -1},
+		{StudentID: 3, OfferedCourseID: 9, UsualScore: -1, ExamScore: -1, Score: -1},
+		{StudentID: 3, OfferedCourseID: 12, UsualScore: -1, ExamScore: -1, Score: -1},
+		{StudentID: 3, OfferedCourseID: 14, UsualScore: -1, ExamScore: -1, Score: -1},
 
-		{StudentID: 5, OfferedCourseID: 4, Score: 85},
+		{StudentID: 4, OfferedCourseID: 1, UsualScore: 86, ExamScore: 67, Score: -1},
+		{StudentID: 4, OfferedCourseID: 2, UsualScore: 88, ExamScore: 78, Score: -1},
+		{StudentID: 4, OfferedCourseID: 5, UsualScore: 79, ExamScore: 73, Score: -1},
+		{StudentID: 4, OfferedCourseID: 7, UsualScore: -1, ExamScore: -1, Score: -1},
+		{StudentID: 4, OfferedCourseID: 9, UsualScore: -1, ExamScore: -1, Score: -1},
+
+		{StudentID: 5, OfferedCourseID: 1, UsualScore: 77, ExamScore: 83, Score: -1},
+		{StudentID: 5, OfferedCourseID: 2, UsualScore: 84, ExamScore: 72, Score: -1},
+		{StudentID: 5, OfferedCourseID: 10, UsualScore: 86, ExamScore: -1, Score: -1},
+		{StudentID: 5, OfferedCourseID: 15, UsualScore: -1, ExamScore: -1, Score: -1},
 	}
 
 	db.Model(&model.Selection{}).Create(&selections)
@@ -40,9 +59,7 @@ func CreateSelection(selection model.Selection) (*model.Selection, error) {
 		"student_id = ? AND offered_course_id = ?",
 		selection.StudentID, selection.OfferedCourseID).Find(&duplicatedResults).RowsAffected
 	if rowsAffected > 0 {
-
 		log.Printf("%+v \n", duplicatedResults[0])
-
 		return nil, errors.New("选课关系已存在！")
 	}
 
