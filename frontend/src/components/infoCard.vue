@@ -2,10 +2,10 @@
   <div class="p-9 shadow-md rounded-lg bg-white">
     <div class="text-lg semibold mb-4">用户信息
     </div>
-    <div class="flex-col space-y-2">
-      <div>账号：{{ number }}</div>
-      <div>姓名：{{ name }}</div>
-      <div>类型：
+    <div class="flex-col space-y-3">
+      <div><i class="el-icon-s-management mr-2"></i>账号：{{ number }}</div>
+      <div><i class="el-icon-s-custom mr-2"></i>姓名：{{ name }}</div>
+      <div><i class="el-icon-s-ticket mr-2"></i>类型：
         <el-tag>{{ type }}</el-tag>
       </div>
     </div>
