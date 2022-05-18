@@ -1,12 +1,17 @@
 <template>
-  <div>
-    <el-form :inline="true">
-      <el-form-item label="课程搜索">
+  <div class="p-10">
+    <div class="mb-10">
+      <div class="text-lg semibold mb-5">课程搜索</div>
+      <div class="flex space-x-6 mb-4">
         <el-input v-model.trim="query.number" placeholder="输入课程号"></el-input>
         <el-input v-model.trim="query.name" placeholder="输入课程名"></el-input>
+      </div>
+      <div class="flex space-x-6">
+        <el-input v-model.trim="query.teacher_name" placeholder="输入教师名"></el-input>
         <el-input v-model.trim="query.credit" placeholder="输入学分"></el-input>
-      </el-form-item>
-    </el-form>
+      </div>
+
+    </div>
     <template>
       <el-table :data="filteredTableData" border show-header stripe style="width: 100%">
         <el-table-column fixed prop="number" label="课程号" width="150">
@@ -17,25 +22,27 @@
         </el-table-column>
         <el-table-column prop="credit" label="学分" width="150">
         </el-table-column>
-        <el-table-column prop="department" label="学院" width="150">
+        <el-table-column prop="department" label="学院" width="150"
+          :filters="[{ text: '计算机学院', value: '计算机学院' }, { text: '外国语学院', value: '外国语学院' }, { text: '理学院', value: '理学院' }, { text: '通信学院', value: '通信学院' }]"
+          :filter-method="filterHandler">
         </el-table-column>
         <el-table-column prop="term" label="学期" width="150"
           :filters="[{ text: '21-秋季学期', value: '21-秋季学期' }, { text: '21-冬季学期', value: '21-冬季学期' }, { text: '22-春季学期', value: '22-春季学期' }]"
           :filter-method="filterHandler">
         </el-table-column>
-        <el-table-column label="操作" width="100">
+        <el-table-column label="操作">
 
           <template slot-scope="scope">
             <el-popconfirm confirm-button-text='选择' cancel-button-text='取消' icon="el-icon-info" title="确定选择该教师开设的课程？"
               @confirm="select(scope.row)">
-              <el-button slot="reference" type="text" size="small">选课</el-button>
+              <el-button slot="reference" type="text">选课</el-button>
             </el-popconfirm>
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination background layout="prev, pager, next" :total="total" :page-size="pageSize"
+      <!-- <el-pagination background layout="prev, pager, next" :total="total" :page-size="pageSize"
         @current-change="changePage">
-      </el-pagination>
+      </el-pagination> -->
     </template>
   </div>
 </template>
@@ -44,7 +51,7 @@
 export default {
   methods: {
     // axios是异步操作，改为同步  标识为1，配合2使用
-    async select(row) { 
+    async select(row) {
       console.log(row)
       const sid = sessionStorage.getItem('id')
       const courseNumber = row.number
@@ -60,26 +67,25 @@ export default {
         console.log("测试resp.data.data.length：" + resp.data.data.length)  // 测试
         for (let i = 0; i < resp.data.data.length; i++) {
           if (resp.data.data[i].number === courseNumber &&
-             resp.data.data[i].teacher_name === courseTeacher &&
-             resp.data.data[i].term === courseTerm) 
-          {
+            resp.data.data[i].teacher_name === courseTeacher &&
+            resp.data.data[i].term === courseTerm) {
             courseID = resp.data.data[i].id
             break
           }
         }
       })
-      
+
       console.log("选课测试 courseID ：" + courseID)  // 测试
       const that = this
 
       var config = {
         method: 'post',
         url: 'http://1.15.130.83:8080/api/v1/selection',
-        data : {
-          offeredCourseID : parseInt(courseID),
-          studentID : parseInt(sid)
+        data: {
+          offeredCourseID: parseInt(courseID),
+          studentID: parseInt(sid)
         },
-        headers: { 'content-type': 'application/json',}
+        headers: { 'content-type': 'application/json', }
       };
 
       axios(config).then(function (resp) {
@@ -142,9 +148,9 @@ export default {
         number: '',
         name: '',
         credit: '',
-        teacher_name:''
+        teacher_name: ''
       },
-      
+
     }
   },
 
@@ -158,6 +164,7 @@ export default {
         if (
           (this.query.number === '' || item.number.includes(this.query.number)) &&
           (this.query.name === '' || item.name.includes(this.query.name)) &&
+          (this.query.teacher_name === '' || item.teacher_name.includes(this.query.teacher_name)) &&
           (this.query.credit === '' || item.credit == parseInt(this.query.credit))
         )
           return item

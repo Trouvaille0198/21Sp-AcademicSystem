@@ -1,14 +1,20 @@
 <template>
-  <div>
-    <el-button type="text" style="color: #333333; font-size: 18px" @click="out()">
-      logout
-    </el-button>
-    <el-divider direction="vertical" style="color: #333333"></el-divider>
-    <i class="el-icon-paperclip" style="margin-right: 18px"></i>
-    <span>{{ currentTerm }}</span>
-    <el-divider direction="vertical"></el-divider>
-    <i class="el-icon-user" style="margin-right: 18px"></i>
-    <span>{{ name }}</span>
+  <div class="flex justify-between">
+
+    <div class="flex items-center">
+      <div class="flex items-center space-x-2">
+        <i class="el-icon-magic-stick"></i>
+        <div>{{ currentTerm }}</div>
+      </div>
+
+      <el-divider direction="vertical" class="m-4"></el-divider>
+      <div class="flex items-center space-x-2">
+        <i class="el-icon-user"></i>
+        <div>{{ name }}</div>
+      </div>
+
+    </div>
+    <el-button icon="el-icon-switch-button" class="m-3" round @click="out()"></el-button>
   </div>
 </template>
 
