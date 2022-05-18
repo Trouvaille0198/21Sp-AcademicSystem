@@ -19,8 +19,12 @@ import teacherHome from "@/views/Teacher/home";
 import setCourse from "@/views/Teacher/setCourse";
 import studentHome from "@/views/Student/home";
 import myOfferCourse from "@/views/Teacher/myOfferCourse";
+
 import CourseTeacherManage from "@/views/Admin/selectCourseManage/index";
 import offeredCourseManage from "@/views/Admin/selectCourseManage/offeredCourseManage";
+import departmentManage from "@/views/Admin/departmentManage/index";
+import departmentList from "@/views/Admin/departmentManage/departmentList";
+
 import studentSelectCourseManage from "@/views/Student/selectCourse/index";
 import selectCourse from "@/views/Student/selectCourse/selectCourse";
 import querySelectedCourse from "@/views/Student/selectCourse/querySelectedCourse";
@@ -145,6 +149,22 @@ const routes = [
           }
         ]
       },
+
+      {
+        path: '/departmentManage',
+        name: '学院管理',
+        component: departmentManage,
+        meta: {requireAuth: true},
+        children: [
+          {
+            path: '/departmentList',
+            name: '学院列表',
+            component: departmentList,
+            meta: {requireAuth: true},
+          }
+        ]
+      },
+
       
     ]
   },
