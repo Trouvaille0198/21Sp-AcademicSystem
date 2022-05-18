@@ -56,7 +56,6 @@ func NewRouter() *gin.Engine {
 		rv1.GET("/student/:id", v1.GetStudentByID)
 		rv1.DELETE("/student/:id", v1.DeleteStudentByID)
 		rv1.GET("/student/:id/selected_course", v1.GetSelectedCourses)
-
 		rv1.PUT("/student/:student_id/course/:course_id", v1.UpdateSelectionScore)
 		// 课程
 		rv1.POST("/course", v1.CreateCourse)
