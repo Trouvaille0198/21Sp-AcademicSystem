@@ -128,7 +128,7 @@ func GetSelection(studentID, offeredCourseID int) (*model.Selection, error) {
 
 // UpdateSelectionScore 更新课程成绩
 func UpdateSelectionScore(selectionUpdateReq model.SelectionUpdateReq) error {
-	selection, err := GetSelection(int(selectionUpdateReq.StudentID), int(selectionUpdateReq.CourseID))
+	selection, err := GetSelection(int(selectionUpdateReq.StudentID), int(selectionUpdateReq.OfferedCourseID))
 	if err != nil || selection.ID == 0 {
 		return errors.New("没有此选课记录！")
 	}
