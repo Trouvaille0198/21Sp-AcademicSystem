@@ -9,7 +9,7 @@
               <el-input v-model.number="ruleForm.cnumber"></el-input>
             </el-form-item>
             <el-form-item label="学期">
-              <el-select v-model="value" @change="courseTermChange" placeholder="请选择">
+              <el-select v-model="value" style="width: 93%" @change="courseTermChange" placeholder="请选择">
                 <el-option
                 v-for="item in options"
                 :key="item.value"
@@ -45,6 +45,12 @@
         </el-table-column>
         <el-table-column 
             prop="department_name" label="学院" width="150">
+        </el-table-column>
+        <el-table-column 
+            prop="usual_score" label="平时分" width="150">
+        </el-table-column>
+        <el-table-column 
+            prop="exam_score" label="考试分" width="150">
         </el-table-column>
 
       </el-table>

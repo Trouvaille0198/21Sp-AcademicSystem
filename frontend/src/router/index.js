@@ -34,8 +34,6 @@ import queryCourseGrade from "@/views/Student/courseGrade/queryCourseGrade";
 import queryGradeCourse from "@/views/Admin/gradeCourseManage/queryGradeCourse";
 import editorGradeCourse from "@/views/Admin/gradeCourseManage/editorGradeCourse";
 import teacherGradeCourseManage from "@/views/Teacher/teacherGradeCourseManage/index";
-import teacherQueryGradeCourse from "@/views/Teacher/teacherGradeCourseManage/teacherQueryGradeCourse";
-import teacherGradeCourseList from "@/views/Teacher/teacherGradeCourseManage/teacherGradeCourseList";
 import teacherEditorGradeCourse from "@/views/Teacher/teacherGradeCourseManage/teacherEditorGradeCourse";
 import updateInfo from "@/components/updateInfo";
 
@@ -43,7 +41,7 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    // 随便定义的首页
+    // 首页
     path: '/',
     name: 'index',
     component: login,
@@ -235,20 +233,7 @@ const routes = [
           },
         ]
       },
-      // {
-      //   path: '/updateInfo',
-      //   name: '教师编辑',
-      //   component: updateInfo,
-      //   meta: {requireAuth: true},
-      //   children: [
-      //     {
-      //       path: '/updateInfoHome',
-      //       name: '编辑教师信息',
-      //       component: updateInfo,
-      //       meta: {requireAuth: true}
-      //     }
-      //   ]
-      // },
+
       {
         path: '/courseManage',
         name: '课程设置',
@@ -275,12 +260,6 @@ const routes = [
         component: teacherGradeCourseManage,
         meta: {requireAuth: true},
         children: [
-          {
-            path: '/teacherQueryGradeCourseManage',
-            name: '成绩管理',
-            component: teacherQueryGradeCourse,
-            meta: {requireAuth: true}
-          },
           {
             path: '/teacherEditorGradeCourse',
             name: '编辑成绩',
@@ -312,20 +291,7 @@ const routes = [
           },
         ],
       },
-      // {
-      //   path: '/updateInfo',
-      //   name: '学生编辑',
-      //   component: updateInfo,
-      //   meta: {requireAuth: true},
-      //   children: [
-      //     {
-      //       path: '/updateInfoHome',
-      //       name: '编辑学生信息',
-      //       component: updateInfo,
-      //       meta: {requireAuth: true}
-      //     }
-      //   ]
-      // },
+      
       {
         path: '/studentSelectCourseManage',
         name: '选课管理',
