@@ -149,6 +149,7 @@ export default {
                   console.log("登陆页正在获取用户信息" + resp.data.data.name)
                   name = resp.data.data.name
                   console.log("测试session的name:" + name)  // 测试
+                  sessionStorage.setItem("id", id)
                   sessionStorage.setItem("token", 'true')
                   sessionStorage.setItem("type", that.ruleForm.type)
                   sessionStorage.setItem("name", name)                

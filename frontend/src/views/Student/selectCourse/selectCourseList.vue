@@ -143,7 +143,8 @@ export default {
         name: '',
         credit: '',
         teacher_name:''
-      }
+      },
+      
     }
   },
 
