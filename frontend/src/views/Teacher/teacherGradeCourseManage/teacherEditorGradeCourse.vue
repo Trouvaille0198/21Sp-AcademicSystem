@@ -136,9 +136,9 @@ export default {
             url: 'http://1.15.130.83:8080/api/v1/selection',
             data : {
               courseID : parseInt(courseID),
-              examScore : parseInt(uscore),
+              examScore : parseInt(escore),
               studentID : parseInt(studentID),
-              usualScore : parseInt(escore)
+              usualScore : parseInt(uscore)
             },
             headers: { 'content-type': 'application/json',}
           };
