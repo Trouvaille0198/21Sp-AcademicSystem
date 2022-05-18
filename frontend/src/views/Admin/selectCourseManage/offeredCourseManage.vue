@@ -22,18 +22,18 @@
         </el-table-column>
 
         <el-table-column 
-            prop="department_name" label="学院" width="150">
+            prop="teacher_name" label="任课教师" width="150">
         </el-table-column>
 
         <el-table-column 
-            label="操作" width="100">
-            <template slot-scope="scope">
-              <el-popconfirm confirm-button-text='确认' cancel-button-text='取消' icon="el-icon-info" title="确定删除该课程？"
-                @confirm="deleteStudent(scope.row)">
-                <el-button slot="reference" type="text" size="small">删除课程</el-button>
-              </el-popconfirm>
-            </template>
+            prop="department" label="学院" width="150">
         </el-table-column>
+
+        <el-table-column 
+            prop="term" label="开课学期" width="150">
+        </el-table-column>
+
+        
 
       </el-table>
 
@@ -47,49 +47,6 @@
 <script>
 export default {
   methods: {
-    // 第1步 ： 找出要删除的课程的ID
-        async deleteStudent(row) { 
-          console.log(row)
-          const studentNumber = row.number
-          let studentID
-          console.log("课程的studentNumber ：" + studentNumber)  // 测试
-
-          await axios.get('http://1.15.130.83:8080/api/v1/course').then(function (resp) {
-            console.log("找出课程IDresp.data.msg：" + resp.data.msg)  // 测试
-            for (let i = 0; i < resp.data.data.length; i++) {
-              if (resp.data.data[i].number === studentNumber) 
-              {
-                studentID = resp.data.data[i].id
-                break
-              }
-            }
-          })
-          
-          console.log("删除课程 studentID ：" + studentID)  // 测试
-          const that = this
-    // 第2步 ： 通过ID删除课程
-      
-        await axios.delete('http://1.15.130.83:8080/api/v1/course/' + studentID).then(function (resp) {
-          console.log("删除课程的resp.data.msg：" + resp.data.msg)  // 测试
-          if (resp.data.code === 0) {
-            that.$message({
-              showClose: true,
-              message: '删除课程成功',
-              type: 'success'
-            });
-            window.location.reload()
-          }
-          else {
-            that.$message({
-              showClose: true,
-              message: resp.data.msg,
-              type: 'error，请检查数据库'
-            });
-          }
-        })
-
-
-    },
 
     changePage(page) {
       page = page - 1
@@ -147,7 +104,7 @@ export default {
   watch: {},
 
   mounted: function () {
-    axios.get('http://1.15.130.83:8080/api/v1/course').then((resp) => {
+    axios.get('http://1.15.130.83:8080/api/v1/offered_course').then((resp) => {
       console.log(resp.data)
       this.tableData = resp.data.data
       // console.log(this.tableData)

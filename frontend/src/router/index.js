@@ -6,33 +6,30 @@ import adminHome from '../views/Admin/home';
 import studentManage from '../views/Admin/studentManage/index'
 import addStudent from "@/views/Admin/studentManage/addStudent";
 import studentList from "@/views/Admin/studentManage/studentList";
-import editorStudent from "@/views/Admin/studentManage/editorStudent";
 import teacherManage from "@/views/Admin/teacherManage/index"
 import addTeacher from "@/views/Admin/teacherManage/addTeacher";
-import editorTeacher from "@/views/Admin/teacherManage/editorTeacher";
 import courseManage from "@/views/Admin/courseManage/index";
 import addCourse from "@/views/Admin/courseManage/addCourse";
 import teacher from "@/views/Teacher/index";
-import queryStudent from "@/views/Admin/studentManage/queryStudent";
-import queryTeacher from "@/views/Admin/teacherManage/queryTeacher";
+import teacherList from "@/views/Admin/teacherManage/teacherList";
 import student from "@/views/Student/index";
-import editorCourse from "@/views/Admin/courseManage/editorCourse";
 import courseList from "@/views/Admin/courseManage/courseList";
-import queryCourse from "@/views/Admin/courseManage/queryCourse";
 import offerCourseClassInfo from "@/views/Teacher/offerCourseClassInfo";
 import teacherHome from "@/views/Teacher/home";
 import setCourse from "@/views/Teacher/setCourse";
 import studentHome from "@/views/Student/home";
 import myOfferCourse from "@/views/Teacher/myOfferCourse";
+
 import CourseTeacherManage from "@/views/Admin/selectCourseManage/index";
-import queryCourseTeacher from "@/views/Admin/selectCourseManage/queryCourseTeacher";
+import offeredCourseManage from "@/views/Admin/selectCourseManage/offeredCourseManage";
+import departmentManage from "@/views/Admin/departmentManage/index";
+import departmentList from "@/views/Admin/departmentManage/departmentList";
+
 import studentSelectCourseManage from "@/views/Student/selectCourse/index";
 import selectCourse from "@/views/Student/selectCourse/selectCourse";
 import querySelectedCourse from "@/views/Student/selectCourse/querySelectedCourse";
 import studentCourseGrade from "@/views/Student/courseGrade/index";
 import queryCourseGrade from "@/views/Student/courseGrade/queryCourseGrade";
-import queryGradeCourse from "@/views/Admin/gradeCourseManage/queryGradeCourse";
-import editorGradeCourse from "@/views/Admin/gradeCourseManage/editorGradeCourse";
 import teacherGradeCourseManage from "@/views/Teacher/teacherGradeCourseManage/index";
 import teacherEditorGradeCourse from "@/views/Teacher/teacherGradeCourseManage/teacherEditorGradeCourse";
 import updateInfo from "@/components/updateInfo";
@@ -63,13 +60,13 @@ const routes = [
     children: [
       {
         path: '/adminHome',
-        name: 'Hi! admin',
+        name: '主页面',
         component: adminHome,
         meta: {requireAuth: true},
         children: [
           {
             path: '/adminHome',
-            name: 'admin 主页',
+            name: '管理员主页',
             component: adminHome,
             meta: {requireAuth: true},
           }
@@ -93,25 +90,7 @@ const routes = [
             component: studentList,
             meta: {requireAuth: true},
           },
-          {
-            path: '/editorStudent',
-            name: '编辑学生',
-            component: editorStudent,
-            meta: {requireAuth: true}
-          },
-          {
-            path: '/queryStudent',
-            name: '搜索',
-            component: queryStudent,
-            meta: {requireAuth: true},
-            children: [
-              {
-                path: '/queryStudent/studentList',
-                component: studentList,
-                meta: {requireAuth: true}
-              }
-            ]
-          }
+          
         ]
       },
       {
@@ -127,18 +106,11 @@ const routes = [
             meta: {requireAuth: true}
           },
           {
-            path: '/queryTeacher',
+            path: '/teacherList',
             name: '教师列表',
-            component: queryTeacher,
+            component: teacherList,
             meta: {requireAuth: true},
-            children: [
-            ]
-          },
-          {
-            path: '/editorTeacher',
-            name: '编辑教师',
-            component: editorTeacher,
-            meta: {requireAuth: true}
+            
           },
         ]
       },
@@ -155,61 +127,45 @@ const routes = [
             meta: {requireAuth: true}
           },
           {
-            path: '/queryCourse',
-            name: '搜索课程',
-            component: queryCourse,
+            path: '/courseList',
+            name: '课程列表',
+            component: courseList,
             meta: {requireAuth: true},
-            children: [
-              {
-                path: '/courseList',
-                name: '课程列表',
-                component: courseList,
-                meta: {requireAuth: true}
-              },
-            ]
           },
-          {
-            path: '/editorCourse',
-            name: '编辑课程',
-            component: editorCourse,
-            meta: {requireAuth: true}
-          },
+          
         ]
       },
       {
         path: '/CourseTeacher',
-        name: '开课表管理',
+        name: '开课管理',
         component: CourseTeacherManage,
         meta: {requireAuth: true},
         children: [
           {
-            path: '/queryCourseTeacher',
-            name: '开课管理',
-            component: queryCourseTeacher,
+            path: '/offeredCourseManage',
+            name: '开课列表',
+            component: offeredCourseManage,
             meta: {requireAuth: true},
           }
         ]
       },
+
       {
-        name: 'admin 学生成绩管理',
-        path: "/gradeCourseManage",
-        component: studentManage,
+        path: '/departmentManage',
+        name: '学院管理',
+        component: departmentManage,
         meta: {requireAuth: true},
         children: [
           {
-            path: '/queryGradeCourse',
-            name: '学生成绩查询',
-            component: queryGradeCourse,
+            path: '/departmentList',
+            name: '学院列表',
+            component: departmentList,
             meta: {requireAuth: true},
-          },
-          {
-            path: '/editorGradeCourse',
-            name: '编辑',
-            component: editorGradeCourse,
-            meta: {requireAuth: true}
           }
         ]
-      }
+      },
+
+      
     ]
   },
   {
