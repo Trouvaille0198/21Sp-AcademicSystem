@@ -9,17 +9,13 @@ BEGIN
     IF ((OLD.usual_score <> NEW.usual_score OR OLD.exam_score <> NEW.exam_score)
         AND NEW.usual_score <> -1 AND NEW.exam_score <> -1)
     THEN
-        -- UPDATE selection
         SET NEW.score = (NEW.usual_score + NEW.exam_score) / 2;
-        -- WHERE id = NEW.id;
     END IF;
 END
 ;;
 DELIMITER ;
 
--- ----------------------------
--- Triggers structure for table department
--- ----------------------------
+-- 当删除学院时，清除与该学院相关的所有记录
 DROP TRIGGER IF EXISTS AFT_DEL_DEPARTMENT;
 DELIMITER ;;
 CREATE TRIGGER AFT_DEL_DEPARTMENT
@@ -44,6 +40,20 @@ BEGIN
     DELETE FROM course WHERE department_id = old.id;
     DELETE FROM teacher WHERE department_id = old.id;
     DELETE FROM student WHERE department_id = old.id;
+END
+;;
+DELIMITER ;
+
+
+-- 获取指定学院的学生、老师、课程数量
+DROP PROCEDURE IF EXISTS DEP_INFO;
+DELIMITER ;;
+CREATE PROCEDURE DEP_INFO(in dep_id integer,
+                          out student_num integer, out teacher_num integer, out course_num integer)
+BEGIN
+    SELECT count(*) INTO student_num FROM student WHERE department_id = dep_id;
+    SELECT count(*) INTO teacher_num FROM teacher WHERE department_id = dep_id;
+    SELECT count(*) INTO course_num FROM course WHERE department_id = dep_id;
 END
 ;;
 DELIMITER ;

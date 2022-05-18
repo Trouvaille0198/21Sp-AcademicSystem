@@ -70,6 +70,9 @@ func NewRouter() *gin.Engine {
 		rv1.POST("/selection", v1.CreateSelection)
 		rv1.DELETE("/selection", v1.DeleteSelection)
 		rv1.PUT("/selection", v1.UpdateSelectionScore)
+		// 学院
+		rv1.GET("/department/:id", v1.GetDepartmentByID)
+		rv1.GET("/department", v1.GetDepartments)
 	}
 	return r
 }

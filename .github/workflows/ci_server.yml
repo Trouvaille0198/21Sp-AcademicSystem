@@ -37,4 +37,4 @@ jobs:
           first_ssh: |
             echo "Begin deploy"
             bash ~/Repo/21Sp-AcademicSystem/backend/update.sh
-            
+            bash ~/Repo/21Sp-AcademicSystem/frontend/update.sh
