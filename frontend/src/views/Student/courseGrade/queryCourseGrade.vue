@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-form >
+    <el-form>
       <el-form-item label="选择学期">
         <el-select v-model="term" @change="currTermChange" placeholder="请选择学期">
           <el-option v-for="(item, index) in termList" :key="index" :label="item" :value="item"></el-option>
@@ -8,61 +8,33 @@
       </el-form-item>
     </el-form>
     <el-card>
-      <el-table
-          :data="tableData"
-          border
-          style="width: 100%">
-        <el-table-column
-            fixed
-            prop="number"
-            label="课程号"
-            width="150">
+      <el-table :data="tableData" border style="width: 100%">
+        <el-table-column fixed prop="number" label="课程号" width="150">
         </el-table-column>
-        <el-table-column
-            prop="name"
-            label="课程名"
-            width="150">
+        <el-table-column prop="name" label="课程名" width="150">
         </el-table-column>
-        <el-table-column
-            prop="department"
-            label="学院"
-            width="150">
+        <el-table-column prop="department" label="学院" width="150">
         </el-table-column>
-        <el-table-column
-            prop="teacher_name"
-            label="教师名"
-            width="150">
+        <el-table-column prop="teacher_name" label="教师名" width="150">
         </el-table-column>
-        <el-table-column
-            prop="credit"
-            label="学分"
-            width="150">
+        <el-table-column prop="credit" label="学分" width="150">
         </el-table-column>
-        <el-table-column
-            prop="score"
-            label="绩点"
-            width="150">
-            <template slot-scope="scope">
-              <span style="margin-left: 10px">{{ caculateGPA(scope.row.score) }}</span>
-            </template>
+        <el-table-column prop="score" label="成绩" width="150">
         </el-table-column>
-        <el-table-column
-            prop="score"
-            label="成绩"
-            width="150">
+        <el-table-column prop="score" label="绩点" width="150">
+          <template slot-scope="scope">
+            <span style="margin-left: 10px">{{ caculateGPA(scope.row.score) }}</span>
+          </template>
         </el-table-column>
+
       </el-table>
-      <p>
-        平均成绩：{{ avg }}
-      </p>
-      <el-pagination
-          background
-          layout="prev, pager, next"
-          :total="total"
-          :page-size="pageSize"
-          @current-change="changePage"
-      >
-      </el-pagination>
+      <div class="mt-3 flex space-x-2">
+        <div>平均成绩：{{ avg }}</div>
+        <div>平均绩点：{{ caculateGPA(avg) }}</div>
+      </div>
+      <!-- <el-pagination background layout="prev, pager, next" :total="total" :page-size="pageSize"
+        @current-change="changePage">
+      </el-pagination> -->
     </el-card>
   </div>
 </template>
@@ -82,21 +54,20 @@ export default {
     currTermChange(changeTerm) {
       console.log("method中更改了selectedTerm：" + changeTerm)  // 测试
       sessionStorage.setItem("selectedTerm", changeTerm)
-      
+
     },
-    caculateGPA(score)
-    {
+    caculateGPA(score) {
       let ans = 0
-      if(score >= 90) ans = 4
-      else if(score >= 85) ans = 3.7
-      else if(score >= 82) ans = 3.3
-      else if(score >= 78) ans = 3.0
-      else if(score >= 75) ans = 2.7
-      else if(score >= 72) ans = 2.3
-      else if(score >= 68) ans = 2.0
-      else if(score >= 66) ans = 1.7
-      else if(score >= 64) ans = 1.5
-      else if(score >= 60) ans = 1.0
+      if (score >= 90) ans = 4
+      else if (score >= 85) ans = 3.7
+      else if (score >= 82) ans = 3.3
+      else if (score >= 78) ans = 3.0
+      else if (score >= 75) ans = 2.7
+      else if (score >= 72) ans = 2.3
+      else if (score >= 68) ans = 2.0
+      else if (score >= 66) ans = 1.7
+      else if (score >= 64) ans = 1.5
+      else if (score >= 60) ans = 1.0
       else ans = 0
       return ans.toFixed(1)
     },
@@ -114,7 +85,7 @@ export default {
   },
   created() {
     const that = this
-    that.termList = ["21-秋季学期", "21-冬季学期", "21-春季学期", "22-秋季学期", "22-冬季学期", "22-春季学期"] 
+    that.termList = ["21-秋季学期", "21-冬季学期", "22-春季学期"]
   },
 
   watch: {
@@ -129,12 +100,12 @@ export default {
         // const term = sessionStorage.getItem('currentTerm')
         let selectedTerm = sessionStorage.getItem('selectedTerm')
         console.log("测试selectedTerm：" + selectedTerm)  // 测试
-      
+
         // console.log("测试term：" + term)  // 测试
-        
+
         this.tmpList = []
         axios.get('http://1.15.130.83:8080/api/v1/student/' + sid + '/selected_course?hasScore=true').then(function (resp) {
-          
+
           for (let i = 0; i < resp.data.data.length; i++) {
             if (resp.data.data[i].term === selectedTerm) {
               console.log("测试resp.data.data[i].term：" + resp.data.data[i].term + "    ,i:" + i)  // 测试

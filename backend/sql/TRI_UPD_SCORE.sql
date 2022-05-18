@@ -57,3 +57,6 @@ BEGIN
 END
 ;;
 DELIMITER ;
+
+# call DEP_INFO(1, @student_num, @teacher_num, @course_num);
+# select @student_num, @teacher_num, @course_num;

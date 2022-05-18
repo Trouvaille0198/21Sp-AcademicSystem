@@ -15,7 +15,6 @@
         <el-table-column prop="credit" label="学分" width="150">
         </el-table-column>
         <el-table-column label="操作" width="100">
-
           <template slot-scope="scope">
             <el-popconfirm confirm-button-text='退课' cancel-button-text='取消' icon="el-icon-info" title="确定退课？"
               @confirm="deleteSCT(scope.row)">
@@ -40,35 +39,8 @@ export default {
       courseID = row.offered_course_id
       let sid = 0
       sid = sessionStorage.getItem('id')
-
-      // let sct = new FormData();
-
-      // axios.get("http://1.15.130.83:8080/api/v1/student/" + sid + "/selected_course").then(function (resp) {
-      //   console.log("测试查询课程的api状态code:"+resp.data.code)  // 测试
-      // for (let i = 0; i < resp.data.data.length; i++) {
-      //   if (resp.data.data[i].number === courseNumber) {
-      //     courseID = resp.data.data[i].offered_course_id
-      //     sct.append("offeredCourseID", resp.data.data[i].offered_course_id)
-      //     console.log("courseID 1：" + courseID)  // 测试
-      //     break
-      //   }
-
-      // }
-      // })
-      // courseID = 6
-      // sct.append("offeredCourseID", 6)
-      // console.log("courseID 1：" + courseID)  // 测试
-      // setTimeout(function(){
-      //   console.log("sleep 1 seconds");
-      // },1000);
-
-
-      // console.log("courseID 2：" + courseID)  // 测试
-      // sct.append("studentID", sid)
       const that = this
-      // console.log("student id：" + sid)  // 测试
 
-      // console.log("courseID 3：" + courseID)  // 测试
 
 
       var config = {
@@ -102,7 +74,6 @@ export default {
           });
         }
       })
-
     },
     changePage(page) {
       page = page - 1

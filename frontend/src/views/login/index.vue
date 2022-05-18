@@ -78,7 +78,7 @@ export default {
           // axios.get('http://localhost:16/info/getCurrentTerm').then(function (resp) {
           //   sessionStorage.setItem("currentTerm", resp.data)
           // })
-          sessionStorage.setItem("currentTerm", "22-春季学期")    // 暂时写死
+          sessionStorage.setItem("currentTerm", "21-冬季学期")    // 暂时写死
           sessionStorage.setItem("ForbidCourseSelection", false)  // 暂时写死
           // axios.get('http://localhost:16/info/getForbidCourseSelection').then(function (resp) {
           //   sessionStorage.setItem("ForbidCourseSelection", resp.data)

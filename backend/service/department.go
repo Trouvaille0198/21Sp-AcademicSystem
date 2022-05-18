@@ -45,6 +45,7 @@ func GetDepartments() (*[]model.DepartmentRes, error) {
 		_ = db.Raw("SELECT count(*) FROM course WHERE department_id = ?", v.ID).Scan(&courseNum).Error
 		departments = append(departments, model.DepartmentRes{
 			ID:         v.ID,
+			Number:     v.Number,
 			Name:       v.Name,
 			StudentNum: studentNum,
 			TeacherNum: teacherNum,
