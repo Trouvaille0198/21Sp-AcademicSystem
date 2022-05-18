@@ -1,156 +1,159 @@
 <template>
   <div>
-    <el-table
-        :data="tableData"
-        border
-        style="width: 100%">
-      <el-table-column
-          fixed
-          prop="sid"
-          label="学号"
-          width="150">
-      </el-table-column>
-      <el-table-column
-          prop="sname"
-          label="姓名"
-          width="120">
-      </el-table-column>
-      <el-table-column
-          prop="password"
-          label="密码"
-          width="120">
-      </el-table-column>
-      <el-table-column
-          label="操作"
-          width="100">
-        <template slot-scope="scope">
-          <el-popconfirm
-              confirm-button-text='删除'
-              cancel-button-text='取消'
-              icon="el-icon-info"
-              icon-color="red"
-              title="删除不可复原"
-              @confirm="deleteStudent(scope.row)"
-          >
-            <el-button slot="reference" type="text" size="small">删除</el-button>
-          </el-popconfirm>
-          <el-button @click="editor(scope.row)" type="text" size="small">编辑</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <el-pagination
-        background
-        layout="prev, pager, next"
-        :total="total"
-        :page-size="pageSize"
-        @current-change="changePage"
-    >
-    </el-pagination>
+    <el-form :inline="true">
+      <el-form-item label="学生搜索">
+        <el-input v-model.trim="query.number" placeholder="输入学号"></el-input>
+        <el-input v-model.trim="query.name" placeholder="输入姓名"></el-input>
+      </el-form-item>
+    </el-form>
+    <template>
+      <el-table :data="filteredTableData" border show-header stripe style="width: 100%">
+        <el-table-column 
+            fixed prop="number" label="学号" width="150">
+        </el-table-column>
+
+        <el-table-column 
+            prop="name" label="姓名" width="150">
+        </el-table-column>
+
+        <el-table-column 
+              prop="sex" label="性别" width="150">
+        </el-table-column>
+
+        <el-table-column 
+            prop="age" label="年龄" width="150">
+        </el-table-column>
+
+        <el-table-column 
+            prop="department_name" label="学院" width="150">
+        </el-table-column>
+
+        <el-table-column 
+            label="操作" width="100">
+            <template slot-scope="scope">
+              <el-popconfirm confirm-button-text='确认' cancel-button-text='取消' icon="el-icon-info" title="确定删除该学生？"
+                @confirm="deleteStudent(scope.row)">
+                <el-button slot="reference" type="text" size="small">删除学生</el-button>
+              </el-popconfirm>
+            </template>
+        </el-table-column>
+
+      </el-table>
+
+      <el-pagination background layout="prev, pager, next" :total="total" :page-size="pageSize"
+        @current-change="changePage">
+      </el-pagination>
+    </template>
   </div>
 </template>
 
 <script>
 export default {
   methods: {
-    deleteStudent(row) {
-      const that = this
-      axios.get('http://localhost:10086/student/deleteById/' + row.sid).then(function (resp) {
-        if (resp.data === true) {
-          that.$message({
-            showClose: true,
-            message: '删除成功',
-            type: 'success'
-          });
-          console.log(that.tmpList === null)
-          if (that.tmpList === null) {
+    // 第1步 ： 找出要删除的学生的ID
+        async deleteStudent(row) { 
+          console.log(row)
+          const studentNumber = row.number
+          let studentID
+          console.log("学生的studentNumber ：" + studentNumber)  // 测试
+
+          await axios.get('http://1.15.130.83:8080/api/v1/student').then(function (resp) {
+            console.log("找出学生IDresp.data.msg：" + resp.data.msg)  // 测试
+            for (let i = 0; i < resp.data.data.length; i++) {
+              if (resp.data.data[i].number === studentNumber) 
+              {
+                studentID = resp.data.data[i].id
+                break
+              }
+            }
+          })
+          
+          console.log("删除学生 studentID ：" + studentID)  // 测试
+          const that = this
+    // 第2步 ： 通过ID删除学生
+      
+        await axios.delete('http://1.15.130.83:8080/api/v1/student/' + studentID).then(function (resp) {
+          console.log("删除学生的resp.data.msg：" + resp.data.msg)  // 测试
+          if (resp.data.code === 0) {
+            that.$message({
+              showClose: true,
+              message: '删除学生成功',
+              type: 'success'
+            });
             window.location.reload()
           }
           else {
-            that.$router.push('/queryStudent')
+            that.$message({
+              showClose: true,
+              message: resp.data.msg,
+              type: 'error，请检查数据库'
+            });
           }
-        }
-        else {
-          that.$message({
-            showClose: true,
-            message: '删除出错，请查询数据库连接',
-            type: 'error'
-          });
-        }
-      }).catch(function (e) {
-        that.$message({
-          showClose: true,
-          message: '删除出错，存在外键依赖',
-          type: 'error'
-        });
-      })
+        })
+
+
     },
+
     changePage(page) {
       page = page - 1
-      if (this.tmpList === null) {
-        const that = this
-        axios.get('http://localhost:10086/student/findByPage/' + page + '/' + that.pageSize).then(function (resp) {
-          that.tableData = resp.data
-        })
-      }
-      else {
-        let that = this
-        let start = page * that.pageSize, end = that.pageSize * (page + 1)
-        let length = that.tmpList.length
-        let ans = end < length ? end : length
-        that.tableData = that.tmpList.slice(start, ans)
-      }
+      const that = this
+      let start = page * that.pageSize, end = that.pageSize * (page + 1)
+      let length = that.tmpList.length
+      let ans = (end < length) ? end : length
+      that.tableData = that.tmpList.slice(start, ans)
     },
-    editor(row) {
-      this.$router.push({
-        path: '/editorStudent',
-        query: {
-          sid: row.sid
-        }
-      })
-    }
+
   },
 
   data() {
     return {
-      tableData: null,
-      pageSize: 7,
+      tableData: [
+        {
+          "id": 1,
+          "number": "0121",
+          "name": "朝承恩",
+          "sex": "男",
+          "age": 20,
+          "department_name": "计算机学院",
+        }
+      ],
+      pageSize: 10,
       total: null,
-      ruleForm: null,
-      tmpList: null
+      tmpList: null,
+      type: sessionStorage.getItem('type'),
+      query: {
+        number: '',
+        name: '',
+      },
+      
     }
   },
 
-  created() {
-    if (this.tmpList !== null)
-      this.tmpList = null
-    const that = this
-    // 是否从查询页跳转
-    this.ruleForm = this.$route.query.ruleForm
-    if (this.$route.query.ruleForm === undefined || (this.ruleForm.sid === null && this.ruleForm.sname === null)) {
-      axios.get('http://localhost:10086/student/getLength').then(function (resp) {
-        console.log("获取列表总长度: " + resp.data)
-        that.total = resp.data
-      })
+  props: {
+    ruleForm: Object
+  },
 
-      axios.get('http://localhost:10086/student/findByPage/0/' + that.pageSize).then(function (resp) {
-        that.tableData = resp.data
+  computed: {
+    filteredTableData() {
+      return this.tableData.filter(item => {
+        if (
+          (this.query.number === '' || item.number.includes(this.query.number)) &&
+          (this.query.name === '' || item.name.includes(this.query.name)) 
+        )
+          return item
       })
-    }
-    else {
-      // 从查询页跳转并且含查询
-      console.log('正在查询跳转数据')
-      console.log(this.ruleForm)
-      axios.post('http://localhost:10086/student/findBySearch', this.ruleForm).then(function (resp) {
-        console.log('获取查询数据：')
-        that.tmpList = resp.data
-        that.total = resp.data.length
-        console.log(that.tmpList)
-        let start = 0, end = that.pageSize
-        let length = that.tmpList.length
-        let ans = end < length ? end : length
-        that.tableData = that.tmpList.slice(start, ans)
-      })
-    }
+    },
+
+  },
+
+  watch: {},
+
+  mounted: function () {
+    axios.get('http://1.15.130.83:8080/api/v1/student').then((resp) => {
+      console.log(resp.data)
+      this.tableData = resp.data.data
+      // console.log(this.tableData)
+    })
   }
 }
 </script>
