@@ -40,6 +40,14 @@
         </el-table-column>
         <el-table-column
             prop="score"
+            label="绩点"
+            width="150">
+            <template slot-scope="scope">
+              <span style="margin-left: 10px">{{ caculateGPA(scope.row.score) }}</span>
+            </template>
+        </el-table-column>
+        <el-table-column
+            prop="score"
             label="成绩"
             width="150">
         </el-table-column>
@@ -75,6 +83,22 @@ export default {
       console.log("method中更改了selectedTerm：" + changeTerm)  // 测试
       sessionStorage.setItem("selectedTerm", changeTerm)
       
+    },
+    caculateGPA(score)
+    {
+      let ans = 0
+      if(score >= 90) ans = 4
+      else if(score >= 85) ans = 3.7
+      else if(score >= 82) ans = 3.3
+      else if(score >= 78) ans = 3.0
+      else if(score >= 75) ans = 2.7
+      else if(score >= 72) ans = 2.3
+      else if(score >= 68) ans = 2.0
+      else if(score >= 66) ans = 1.7
+      else if(score >= 64) ans = 1.5
+      else if(score >= 60) ans = 1.0
+      else ans = 0
+      return ans.toFixed(1)
     },
   },
   data() {
@@ -114,6 +138,7 @@ export default {
           for (let i = 0; i < resp.data.data.length; i++) {
             if (resp.data.data[i].term === selectedTerm) {
               console.log("测试resp.data.data[i].term：" + resp.data.data[i].term + "    ,i:" + i)  // 测试
+              resp.data.data[i]
               that.tmpList.push(resp.data.data[i])
               // console.log("第二次测试selectedTerm：" + selectedTerm)  // 测试
             }
