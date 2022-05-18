@@ -19,7 +19,7 @@ import student from "@/views/Student/index";
 import editorCourse from "@/views/Admin/courseManage/editorCourse";
 import courseList from "@/views/Admin/courseManage/courseList";
 import queryCourse from "@/views/Admin/courseManage/queryCourse";
-import offerCourse from "@/views/Teacher/offerCourse";
+import offerCourseClassInfo from "@/views/Teacher/offerCourseClassInfo";
 import teacherHome from "@/views/Teacher/home";
 import setCourse from "@/views/Teacher/setCourse";
 import studentHome from "@/views/Student/home";
@@ -223,7 +223,7 @@ const routes = [
     children: [
       {
         path: '/teacherHome',
-        name: 'Hi! teacher',
+        name: '主页面',
         meta: {requireAuth: true},
         component: teacherHome,
         children: [
@@ -235,20 +235,20 @@ const routes = [
           },
         ]
       },
-      {
-        path: '/updateInfo',
-        name: '教师编辑',
-        component: updateInfo,
-        meta: {requireAuth: true},
-        children: [
-          {
-            path: '/updateInfoHome',
-            name: '编辑教师信息',
-            component: updateInfo,
-            meta: {requireAuth: true}
-          }
-        ]
-      },
+      // {
+      //   path: '/updateInfo',
+      //   name: '教师编辑',
+      //   component: updateInfo,
+      //   meta: {requireAuth: true},
+      //   children: [
+      //     {
+      //       path: '/updateInfoHome',
+      //       name: '编辑教师信息',
+      //       component: updateInfo,
+      //       meta: {requireAuth: true}
+      //     }
+      //   ]
+      // },
       {
         path: '/courseManage',
         name: '课程设置',
@@ -262,9 +262,9 @@ const routes = [
             meta: {requireAuth: true}
           },
           {
-            path: '/offerCourse',
-            name: '开设课程',
-            component: offerCourse,
+            path: '/offerCourseClassInfo',
+            name: '查看课程班级',
+            component: offerCourseClassInfo,
             meta: {requireAuth: true}
           },
         ]
@@ -300,7 +300,7 @@ const routes = [
     children: [
       {
         path: '/student',
-        name: 'hi! student',
+        name: '主页面',
         component: studentHome,
         meta: {requireAuth: true},
         children: [
@@ -312,20 +312,20 @@ const routes = [
           },
         ],
       },
-      {
-        path: '/updateInfo',
-        name: '学生编辑',
-        component: updateInfo,
-        meta: {requireAuth: true},
-        children: [
-          {
-            path: '/updateInfoHome',
-            name: '编辑学生信息',
-            component: updateInfo,
-            meta: {requireAuth: true}
-          }
-        ]
-      },
+      // {
+      //   path: '/updateInfo',
+      //   name: '学生编辑',
+      //   component: updateInfo,
+      //   meta: {requireAuth: true},
+      //   children: [
+      //     {
+      //       path: '/updateInfoHome',
+      //       name: '编辑学生信息',
+      //       component: updateInfo,
+      //       meta: {requireAuth: true}
+      //     }
+      //   ]
+      // },
       {
         path: '/studentSelectCourseManage',
         name: '选课管理',

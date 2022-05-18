@@ -7,20 +7,35 @@
         style="width: 100%">
       <el-table-column
           fixed
-          prop="cid"
-          label="课程号"
+          prop="number"
+          label="学号"
           width="150">
       </el-table-column>
       <el-table-column
-          prop="cname"
-          label="课程名"
+          prop="name"
+          label="姓名"
           width="150">
       </el-table-column>
       <el-table-column
-          prop="ccredit"
-          label="学分"
+          prop="department_name"
+          label="学院"
           width="150">
       </el-table-column>
+      <!-- <el-table-column
+          prop="usual_score"
+          label="平时分"
+          width="150">
+      </el-table-column>
+      <el-table-column
+          prop="exam_score"
+          label="考试分"
+          width="150">
+      </el-table-column>
+      <el-table-column
+          prop="score"
+          label="总分"
+          width="150">
+      </el-table-column> -->
       <el-table-column
           label="操作"
           width="100">
