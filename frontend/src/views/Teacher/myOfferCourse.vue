@@ -2,7 +2,7 @@
   <div>
     <el-container>
       <el-main>
-        <h1>当前学期开设的课程</h1>
+        <h1>我开设的所有课程</h1>
         <el-card>
           <el-table
               :data="tableData"
@@ -11,19 +11,29 @@
               style="width: 100%">
             <el-table-column
                 fixed
-                prop="cid"
+                prop="number"
                 label="课程号"
                 width="150">
             </el-table-column>
             <el-table-column
-                prop="cname"
+                prop="name"
                 label="课程名"
                 width="150">
             </el-table-column>
             <el-table-column
-                prop="ccredit"
+                prop="credit"
                 label="学分"
                 width="150">
+            </el-table-column>
+            <el-table-column
+              prop="department"
+              label="学院"
+              width="150">
+            </el-table-column>
+            <el-table-column
+              prop="term"
+              label="学期"
+              width="150">
             </el-table-column>
           </el-table>
           <el-pagination
@@ -64,16 +74,16 @@ export default {
     }
   },
   created() {
-    this.tid = sessionStorage.getItem("tid");
+    this.tid = sessionStorage.getItem("id");
     this.term = sessionStorage.getItem("currentTerm");
-
-    console.log(this.term)
+    console.log("测试teacher id ：" + this.tid)  // 测试
+    console.log("测试term：" + this.term)  // 测试
 
     const that = this
-    axios.get('http://localhost:10086/courseTeacher/findMyCourse/' + this.tid + '/' + this.term).then(function (resp) {
+    axios.get('http://1.15.130.83:8080/api/v1/teacher/' + this.tid + '/offered_course').then(function (resp) {
 
-      that.tmpList = resp.data
-      that.total = resp.data.length
+      that.tmpList = resp.data.data
+      that.total = resp.data.data.length
       let start = 0, end = that.pageSize
       let length = that.tmpList.length
       let ans = (end < length) ? end : length
