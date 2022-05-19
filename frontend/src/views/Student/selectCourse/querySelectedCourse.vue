@@ -96,7 +96,7 @@ export default {
   created() {
     const sid = sessionStorage.getItem('id')
     console.log("测试sid：" + sid)  // 测试
-    const term = sessionStorage.getItem('currentTerm')
+    const term = "22-春季学期"
     console.log("测试term：" + term)  // 测试
     const that = this
     axios.get('http://1.15.130.83:8080/api/v1/student/' + sid + '/selected_course').then(function (resp) {
