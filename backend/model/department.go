@@ -16,8 +16,12 @@ type DepartmentCreateReq struct {
 }
 
 type DepartmentRes struct {
-	Number string `json:"number"` // 院系号
-	Name   string `json:"name"`   // 院系名
+	ID         uint   `json:"id"`
+	Number     string `json:"number"` // 院系号
+	Name       string `json:"name"`   // 院系名
+	StudentNum int    `json:"student_num"`
+	TeacherNum int    `json:"teacher_num"`
+	CourseNum  int    `json:"course_num"`
 }
 
 // CreateDepartmentsExample 创建学院样例

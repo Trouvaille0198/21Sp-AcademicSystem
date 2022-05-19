@@ -68,11 +68,7 @@ func CreateStudent(c *gin.Context) {
 	}
 	newStudent, err := service.CreateStudent(student)
 	if err != nil {
-		if err.Error() == "UNIQUE constraint failed: students.number" {
-			model.FailWithMessage("学号已存在", c)
-			return
-		}
-		model.FailWithMessage(err.Error(), c)
+		model.FailWithMessage("学号已存在", c)
 		return
 	}
 	model.OkWithData(newStudent, c)

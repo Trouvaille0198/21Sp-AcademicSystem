@@ -2,48 +2,22 @@
   <div>
     <el-container>
       <el-main>
-        <h1>我开设的所有课程</h1>
-        <el-card>
-          <el-table
-              :data="tableData"
-              border
-              stripe
-              style="width: 100%">
-            <el-table-column
-                fixed
-                prop="number"
-                label="课程号"
-                width="150">
+        <el-card class="p-5">
+          <el-table :data="tableData" border stripe style="width: 100%">
+            <el-table-column fixed prop="number" label="课程号" width="150">
             </el-table-column>
-            <el-table-column
-                prop="name"
-                label="课程名"
-                width="150">
+            <el-table-column prop="name" label="课程名" width="150">
             </el-table-column>
-            <el-table-column
-                prop="credit"
-                label="学分"
-                width="150">
+            <el-table-column prop="credit" label="学分" width="150">
             </el-table-column>
-            <el-table-column
-              prop="department"
-              label="学院"
-              width="150">
+            <el-table-column prop="department" label="学院" width="150">
             </el-table-column>
-            <el-table-column
-              prop="term"
-              label="学期"
-              width="150">
+            <el-table-column prop="term" label="学期" width="150">
             </el-table-column>
           </el-table>
-          <el-pagination
-              background
-              layout="prev, pager, next"
-              :total="total"
-              :page-size="pageSize"
-              @current-change="changePage"
-          >
-          </el-pagination>
+          <!-- <el-pagination background layout="prev, pager, next" :total="total" :page-size="pageSize"
+            @current-change="changePage">
+          </el-pagination> -->
         </el-card>
       </el-main>
     </el-container>

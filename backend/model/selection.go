@@ -22,8 +22,8 @@ type SelectionCreateReq struct {
 
 // SelectionUpdateReq 更新选课记录的请求结构体
 type SelectionUpdateReq struct {
-	StudentID  uint `form:"student_id"`
-	CourseID   uint `form:"course_id"`
-	UsualScore int  `form:"usual_score"`
-	ExamScore  int  `form:"exam_score"`
+	StudentID       uint `form:"student_id"`
+	OfferedCourseID uint `form:"offered_course_id"`
+	UsualScore      int  `form:"usual_score"`
+	ExamScore       int  `form:"exam_score"`
 }
