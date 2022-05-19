@@ -2,13 +2,13 @@
   <div>
     <el-container>
       <el-main>
-        <el-card>
+        <!-- <el-card>
           <el-form :inline="true" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="120px" class="demo-ruleForm">
-            <el-form-item label="课程号" prop="cid">
-              <el-input v-model.number="ruleForm.cid"></el-input>
+            <el-form-item label="课程号" prop="number">
+              <el-input v-model.number="ruleForm.number"></el-input>
             </el-form-item>
-            <el-form-item label="课程名" prop="cname">
-              <el-input v-model="ruleForm.cname"></el-input>
+            <el-form-item label="课程名" prop="name">
+              <el-input v-model="ruleForm.name"></el-input>
             </el-form-item>
             <el-form-item label="模糊查询" prop="fuzzy">
               <el-switch v-model="ruleForm.fuzzy"></el-switch>
@@ -23,7 +23,7 @@
               <el-button type="primary" @click="resetForm('ruleForm')">重置</el-button>
             </el-form-item>
           </el-form>
-        </el-card>
+        </el-card> -->
         <el-card>
           <course-list :ruleForm="ruleForm" :isActive="true"></course-list>
         </el-card>
@@ -38,15 +38,15 @@ export default {
   data() {
     return {
       ruleForm: {
-        cid: null,
-        cname: null,
+        number: null,
+        name: null,
         fuzzy: true,
         lowBound: null,
         highBound: null
       },
       rules: {
-        cid: [
-          { type: 'number', message: '必须是数字类型' }
+        number: [
+          // { type: 'number', message: '必须是数字类型' }
         ],
         cname: [
         ],
